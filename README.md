@@ -115,4 +115,4 @@ Et afsnit i rapporten beskriver projektets aktuelle status – hvad er implement
 
 ---
 
-> ✨ *Denne README fungerer både som intern dokumentation og som præsentation af projektet for vejledere og censor. Husk at linke til relaterede filer som f.eks. CONTRIBUTING.md og evt. testdata/scripts, hvis de findes i projektet.*
+> ✨ *Husk at linke til relaterede filer som f.eks. CONTRIBUTING.md og evt. testdata/scripts, hvis de findes i projektet.*
