@@ -36,7 +36,8 @@ Formålet med projektet er at skabe et system, der opfylder kravene fremlagt af 
 ## 🛠 Teknologistak
 
 Systemet er udviklet med følgende teknologier:  
-(*Angiv versionsnumre og IDE, f.eks.* `IntelliJ 2025.1`)
+IntelliJ IDEA 2024.2 (Ultimate Edition)
+Build #IU-242.20224.300, built on August 6, 2024
 
 - Java (Spring Boot)
 - JDBC
