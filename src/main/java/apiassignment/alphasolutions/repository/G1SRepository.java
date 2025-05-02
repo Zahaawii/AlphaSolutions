@@ -1,4 +1,4 @@
-package repository;
+package apiassignment.alphasolutions.repository;
 
 import org.springframework.stereotype.Repository;
 
