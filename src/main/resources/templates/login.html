@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div >
+        <form action="/login" method="post">
+            <h1>LOGIN</h1>
+            <p th:if="${wrongLogin}">Wrong username or password</p>
+            <div>
+                <label for="checkUsername"> </label>
+                <input type="text" id="checkUsername" name="checkUsername" placeholder="username" required>
+            </div>
+
+            <div>
+                <label for="checkUserpassword"></label>
+                <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="password" required>
+            </div>
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" Remember me> Remember me </label>
+
+                <a href="#"> Forgot password?</a>
+            </div>
+            <button type="submit" class="loginButton">Login</button>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
