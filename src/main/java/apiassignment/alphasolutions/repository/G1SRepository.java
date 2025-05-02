@@ -50,4 +50,14 @@ public class G1SRepository {
         }
     }
 
+    public void deleteProject(int projectID) {
+        String sql = "DELETE FROM project WHERE project.projectID = ?";
+        jdbcTemplate.update(sql,projectID);
+    }
+
+    public void updateProject(Project project) {
+        String sql = "UPDATE project SET project_Name = ?, project_status = ?, project_start_date = ?, project_end_date = ? WHERE project.projectID = ?";
+        jdbcTemplate.update(sql,project.getProjectName(),project.getProjectStatus(),project.getProjectStartDate(),project.getProjectEndDate(),project.getProjectId());
+    }
+
 }
