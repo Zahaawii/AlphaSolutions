@@ -1,4 +1,4 @@
-package controller;
+package apiassignment.alphasolutions.controller;
 
 import org.springframework.stereotype.Controller;
 

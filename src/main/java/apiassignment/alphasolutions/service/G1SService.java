@@ -1,4 +1,4 @@
-package service;
+package apiassignment.alphasolutions.service;
 
 import org.springframework.stereotype.Service;
 
