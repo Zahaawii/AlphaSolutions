@@ -1,5 +1,6 @@
 package apiassignment.alphasolutions.service;
 
+import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,30 @@ public class G1SService {
         return g1SRepository.getAllProjects(employeeID);
     }
 
-    public void createProject(Project project) {
+    public Project getProjectById(int projectId) {
+        return g1SRepository.getProjectById(projectId);
+    }
+
+    public void createProjectWithAssignees(Project project, List<Integer> assigneeIds) {
         g1SRepository.createProject(project);
+        g1SRepository.assignEmployeesToProject(project.getProjectId(), assigneeIds);
+    }
+
+    public void updateProjectWithAssignees(Project project, List<Integer> assigneeIds) {
+        g1SRepository.updateProject(project);
+        g1SRepository.clearProjectAssignees(project.getProjectId());
+        g1SRepository.assignEmployeesToProject(project.getProjectId(), assigneeIds);
     }
 
     public void deleteProject(int projectID) {
         g1SRepository.deleteProject(projectID);
     }
 
-    public void updateProject(Project project) {
-        g1SRepository.updateProject(project);
+    public List<Employee> getAllEmployees() {
+        return g1SRepository.getAllEmployees();
+    }
+
+    public List<Integer> getProjectAssignees(int projectId) {
+        return g1SRepository.getProjectAssignees(projectId);
     }
 }

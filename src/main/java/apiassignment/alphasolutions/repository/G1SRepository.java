@@ -1,6 +1,8 @@
 package apiassignment.alphasolutions.repository;
 
+import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
+import apiassignment.alphasolutions.rowmappers.EmployeeRowmapper;
 import apiassignment.alphasolutions.rowmappers.ProjectRowmapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,9 +21,18 @@ public class G1SRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // Returnerer alle projekterne en medarbejder er tilknyttet samt de projekter en projektleder har oprettet.
     public List<Project> getAllProjects(int employeeID) {
-        String sql = "SELECT project.* FROM project WHERE project.employeeID = ?";
-        return jdbcTemplate.query(sql,new ProjectRowmapper(),employeeID);
+        String sql = "SELECT DISTINCT project.* \n" +
+                "FROM project\n" +
+                "LEFT JOIN projectassginees ON project.projectID = projectassginees.projectID\n" +
+                "WHERE project.employeeID = ? OR projectassginees.employeeID = ?";
+        return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
+    }
+
+    public Project getProjectById(int projectId) {
+        String sql = "SELECT * FROM project WHERE projectID = ?";
+        return jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
     }
 
     public void createProject(Project project) {
@@ -42,7 +53,7 @@ public class G1SRepository {
             int projectID = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
 
             if (projectID != -1) {
-                project.setEmployeeId(projectID);
+                project.setProjectId(projectID);
             }
             // Der anvendes en DataAccessException, da der håndteres en databaseoperation i metoden.
         } catch (DataAccessException e) {
@@ -51,13 +62,40 @@ public class G1SRepository {
     }
 
     public void deleteProject(int projectID) {
-        String sql = "DELETE FROM project WHERE project.projectID = ?";
-        jdbcTemplate.update(sql,projectID);
+        String deleteAssignees = "DELETE FROM projectassginees WHERE project.projectID = ?";
+        String deleteProject = "DELETE FROM project WHERE project.projectID = ?";
+        jdbcTemplate.update(deleteAssignees,projectID);
+        jdbcTemplate.update(deleteProject,projectID);
     }
 
     public void updateProject(Project project) {
         String sql = "UPDATE project SET project_Name = ?, project_status = ?, project_start_date = ?, project_end_date = ? WHERE project.projectID = ?";
         jdbcTemplate.update(sql,project.getProjectName(),project.getProjectStatus(),project.getProjectStartDate(),project.getProjectEndDate(),project.getProjectId());
+    }
+
+    public void assignEmployeesToProject(int projectId, List<Integer> employeeIds) {
+        String sql = "INSERT INTO projectassginees (projectID, employeeID) VALUES (?, ?)";
+        for (Integer empId : employeeIds) {
+            jdbcTemplate.update(sql,projectId,employeeIds);
+        }
+    }
+
+    // Remove all assignees from a project
+    public void clearProjectAssignees(int projectId) {
+        String sql = "DELETE FROM projectAssginees WHERE projectID = ?";
+        jdbcTemplate.update(sql, projectId);
+    }
+
+    // Get assignee employee IDs for a project
+    public List<Integer> getProjectAssignees(int projectId) {
+        String sql = "SELECT employeeID FROM projectAssginees WHERE projectID = ?";
+        return jdbcTemplate.queryForList(sql, Integer.class, projectId);
+    }
+
+    // Get all employees (for dropdown in form)
+    public List<Employee> getAllEmployees() {
+        String sql = "SELECT * FROM employee";
+        return jdbcTemplate.query(sql, new EmployeeRowmapper());
     }
 
 }

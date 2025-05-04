@@ -61,7 +61,7 @@ public class Project {
         this.projectEndDate = projectEndDate;
     }
 
-    public void setProjectStatus(String status) {
+    public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus;
     }
 }

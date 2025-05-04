@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Project</title>
+</head>
+<body>
+<h1>Rediger projekt</h1>
+
+<form th:action="@{/projects/update}" th:object="${project}" method="post">
+  <input type="hidden" th:field="*{projectId}">
+
+  <label>Projekt Navn:</label>
+  <input type="text" th:field="*{projectName}" required><br><br>
+
+  <label>Status:</label>
+  <input type="text" th:field="*{projectStatus}"><br><br>
+
+  <label>Startdato:</label>
+  <input type="date" th:field="*{projectStartDate}"><br><br>
+
+  <label>Slutdato:</label>
+  <input type="date" th:field="*{projectEndDate}"><br><br>
+
+  <label>Medarbejdere tilknyttet:</label><br>
+  <div th:each="employee : ${employees}">
+    <label>
+      <input type="checkbox" name="assignees"
+             th:value="${employee.employeeID}"
+             th:checked="${assignees.contains(employee.employeeID)}">
+      <span th:text="${employee.employeeName}"></span>
+    </label><br>
+  </div>
+  <br>
+
+  <button type="submit">Gem ændringer</button>
+</form>
+
+<a th:href="@{/projects}">Tilbage til mine projekter</a>
+</body>
+</html>

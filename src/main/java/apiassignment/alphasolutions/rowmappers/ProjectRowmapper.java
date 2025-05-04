@@ -11,7 +11,7 @@ public class ProjectRowmapper implements RowMapper<Project> {
     public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
         Project project = new Project();
 
-        project.setEmployeeId(rs.getInt("projectID"));
+        project.setProjectId(rs.getInt("projectID"));
         project.setProjectName(rs.getString("project_Name"));
         project.setProjectStatus(rs.getString("project_status"));
         project.setProjectStartDate(rs.getDate("project_start_date"));
