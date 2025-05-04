@@ -53,7 +53,7 @@ public class G1SController {
         // Her sættes projektlederen som ejer af projektet.
         project.setEmployeeId(loggedInId);
         if (assigneeIds == null) {
-            assigneeIds = List.of(); // håndter null
+            assigneeIds = List.of();
         }
 
         g1SService.createProjectWithAssignees(project, assigneeIds);
@@ -72,7 +72,7 @@ public class G1SController {
         model.addAttribute("project", project);
         model.addAttribute("employees", g1SService.getAllEmployees());
         model.addAttribute("assignees", g1SService.getProjectAssignees(id));
-        return "editProject"; // vis redigeringsside
+        return "editProject";
     }
 
     @PostMapping("/projects/update")
