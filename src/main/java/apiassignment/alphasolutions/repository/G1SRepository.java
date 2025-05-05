@@ -1,7 +1,9 @@
 package apiassignment.alphasolutions.repository;
 
 import apiassignment.alphasolutions.model.Employee;
+import apiassignment.alphasolutions.model.Role;
 import apiassignment.alphasolutions.rowmapper.EmployeeRowmapper;
+import apiassignment.alphasolutions.rowmapper.RoleRowmapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,9 +22,17 @@ public class G1SRepository {
     }
 
 
+
+    //henter alle employees i systemet
     public List<Employee>getAllEmployee(){
         String sql = "SELECT * FROM employee";
         return jdbcTemplate.query(sql, new EmployeeRowmapper());
+    }
+
+    //henter alle employees som ikke er projektleder og admin, så dem der har role 1
+    public List<Employee> getAllCommonWorkers(){
+        String sql = "SELECT * FROM employee WHERE roleID =?";
+        return jdbcTemplate.query(sql, new EmployeeRowmapper(), 1);
     }
 
 
@@ -74,6 +84,31 @@ public class G1SRepository {
         }
 
         return employee;
+    }
+
+    public void deleteEmployee(int id){
+        String sql ="DELETE FROM employee WHERE employeeID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public Employee getEmployeeById(int id){
+        String sql = "SELECT * FROM employee WHERE employeeID = ?";
+        List<Employee> employees = jdbcTemplate.query(sql, new EmployeeRowmapper(), id);
+        if(employees.isEmpty()){
+            return null;
+        }
+        return employees.getFirst();
+    }
+
+    public Employee updateEmployee(Employee employee){
+        String sql = "UPDATE employee SET employee_name = ?, employee_email = ?, employee_username = ?, employee_password = ?, employee_password = ?, roleID = ? WHERE employeeID = ?";
+        jdbcTemplate.update(sql, employee.getEmployeeName(), employee.getEmployeeEmail(), employee.getEmployeeUsername(), employee.getEmployeePassword(), employee.getRoleId(), employee.getRoleId());
+        return employee;
+    }
+
+    public List<Role> getAllRoles(){
+        String sql = "SELECT * from roles";
+        return jdbcTemplate.query(sql, new RoleRowmapper());
     }
 
 

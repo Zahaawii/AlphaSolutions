@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register Employee</title>
 </head>
 <body>
+    <div>
+        <h1>Register Employee</h1>
+        <p th:if="${notFree}">There is already an employee with this username</p>
+
+            <form th:action="@{/admin/register}" th:object="${employee}" method="post">
+                <div>
+                    <label for="employeeName"></label>
+                    <input type="text" id="employeeName" name="employeeName" placeholder="Name" required>
+                </div>
+                <div>
+                    <label for="employeeEmail"></label>
+                    <input type="text" id="employeeEmail" name="employeeEmail" placeholder="Email" required>
+                </div>
+                <div>
+                    <label for="employeeUsername"></label>
+                    <input type="text" id="employeeUsername" name="employeeUsername" placeholder="Username" required>
+                </div>
+                <div>
+                    <label for="employeePassword"></label>
+                    <input type="password" id="employeePassword" name="employeePassword" placeholder="Password" required>
+                </div>
+
+                <div th:if="${admin}">
+                    <label for="roleId"></label>
+                    <select id="roleId" name="roleId">
+                        <option th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
+                    </select>
+                </div>
+
+                    <button type="submit">Register</button>
+
+            </form>
+
+    </div>
+
 
 </body>
 </html>

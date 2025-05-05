@@ -1,6 +1,7 @@
 package apiassignment.alphasolutions.service;
 
 import apiassignment.alphasolutions.model.Employee;
+import apiassignment.alphasolutions.model.Role;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,30 @@ public class G1SService {
         return g1SRepository.getAllEmployee();
     }
 
-    public boolean isUsernameFree(String username){
+    public List<Employee> getAllCommonWorkers(){
+        return g1SRepository.getAllCommonWorkers();
+    }
+
+        public boolean isUsernameFree(String username){
         return g1SRepository.isUsernameFree(username);
     }
 
     public Employee adminRegisterEmployee(Employee employee){
         return g1SRepository.adminRegisterEmployee(employee);
+    }
+
+    public void deleteEmployee(int id){
+        g1SRepository.deleteEmployee(id);
+    }
+    public Employee getEmployeeById(int id){
+        return g1SRepository.getEmployeeById(id);
+    }
+
+    public Employee updateEmployee(Employee employee){
+        return g1SRepository.updateEmployee(employee);
+    }
+    public List<Role> getAllRoles(){
+        return g1SRepository.getAllRoles();
     }
 
     }

@@ -68,4 +68,16 @@ public class Employee {
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeeUsername='" + employeeUsername + '\'' +
+                ", employeePassword='" + employeePassword + '\'' +
+                ", roleId=" + roleId +
+                '}';
+    }
 }
