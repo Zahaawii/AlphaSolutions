@@ -47,7 +47,7 @@ public class G1SController {
     @GetMapping("/projects/new")
     public String newProject(Model model) {
         model.addAttribute("project", new Project());
-        model.addAttribute("employees", g1SService.getAllEmployees());
+        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
         return "newProject";
     }
 

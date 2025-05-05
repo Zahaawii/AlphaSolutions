@@ -2,6 +2,7 @@ package apiassignment.alphasolutions.service;
 
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
+import apiassignment.alphasolutions.model.Skill;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,16 @@ public class G1SService {
 
     public List<Integer> getProjectAssignees(int projectId) {
         return g1SRepository.getProjectAssignees(projectId);
+    }
+
+    public List<Employee> getAllEmployeeWithSkills() {
+        List<Employee> employees = g1SRepository.getAllEmployees();
+
+        for(Employee emp : employees) {
+            List<Skill> skills = g1SRepository.getSkillsByEmployeeId(emp.getEmployeeID());
+            emp.setSkills(skills);
+        }
+
+        return employees;
     }
 }

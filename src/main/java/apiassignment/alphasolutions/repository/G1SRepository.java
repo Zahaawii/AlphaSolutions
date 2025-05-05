@@ -2,8 +2,10 @@ package apiassignment.alphasolutions.repository;
 
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
+import apiassignment.alphasolutions.model.Skill;
 import apiassignment.alphasolutions.rowmappers.EmployeeRowmapper;
 import apiassignment.alphasolutions.rowmappers.ProjectRowmapper;
+import apiassignment.alphasolutions.rowmappers.SkillRowmapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -101,5 +103,14 @@ public class G1SRepository {
         String sql = "SELECT * FROM employee";
         return jdbcTemplate.query(sql, new EmployeeRowmapper());
     }
+
+    public List<Skill> getSkillsByEmployeeId(int employeeId) {
+        String sql = "SELECT skill.skillID, skill.skill_name " +
+                "FROM skill" +
+                "JOIN skillRelation ON skill.skillID = skillRelation.skillID " +
+                "WHERE skillRelation.employeeID = ?";
+        return jdbcTemplate.query(sql, new SkillRowmapper(), employeeId);
+    }
+
 
 }
