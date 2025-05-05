@@ -111,14 +111,22 @@
                     <div class="taskelementStart">
                         <h5>Actions</h5>
                         <div>
-                            <i class="fas fa-edit"></i>
-                            <i class="fa-solid fa-trash"></i>
+                            <a href="">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
                         </div>
 
                         <div th:each="subtask : ${task.getSubtasks()}">
                             <div>
-                                <i class="far fa-edit fa-sm"></i>
-                                <i class="fas fa-trash-alt fa-sm"></i>
+                                <a href="">
+                                    <i class="far fa-edit fa-sm"></i>
+                                </a>
+                                <a href="">
+                                    <i class="fas fa-trash-alt fa-sm"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
