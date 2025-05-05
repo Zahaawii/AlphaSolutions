@@ -2,28 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New Project</title>
-    <link rel="stylesheet" th:href="@{static.sql/css/newProject.css}">
+    <link rel="stylesheet" th:href="@{/css/newProject.css}">
 </head>
 <body>
 
 <form th:action="@{/projects}" th:object="${project}" method="post">
-    <label>PROJECT NAME</label>
-    <input type="text" th:field="*{projectName}" required><br><br>
+    <div class="input-group">
+        <input type="text" placeholder="PROJECT NAME" th:field="*{projectName}" required>
+    </div>
 
-    <label>DESCRIPTION</label>
+    <label class="description-label">DESCRIPTION</label>
     <div class="description-box">
         <textarea th:field="*{projectDescription}" id="description" maxlength="256"></textarea>
         <div class="char-counter">Max. 256 characters</div>
     </div>
 
-    <label>STATUS</label>
-    <input type="text" th:field="*{projectStatus}"><br><br>
-
-    <label>START DATE</label>
-    <input type="date" th:field="*{projectStartDate}"><br><br>
-
-    <label>END DATE</label>
-    <input type="date" th:field="*{projectEndDate}"><br><br>
+    <div class="date-container">
+        <div class="date-group">
+            <label for="startDate">START DATE</label>
+            <input type="date" id="startDate" th:field="*{projectStartDate}">
+        </div>
+        <div class="date-group">
+            <label for="endDate">END DATE</label>
+            <input type="date" id="endDate" th:field="*{projectEndDate}">
+        </div>
+    </div>
 
     <label>COLLABORATORS</label><br>
     <div th:each="employee : ${employees}">
@@ -32,7 +35,6 @@
             <span th:text="${employee.employeeName}"></span>
         </label><br>
     </div>
-    <br>
 
     <button type="submit">Opret projekt</button>
 </form>
