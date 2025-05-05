@@ -95,7 +95,7 @@ INSERT INTO project (project_Name, project_status, project_start_date, project_e
 ('Internal HR System', 'Not Started', '2025-07-15', '2025-11-30', 1);
 
 -- Project Assignees
-INSERT INTO projectAssginees (projectID, employeeID) VALUES
+INSERT INTO projectAssignees (projectID, employeeID) VALUES
 (1, 1), -- Anders på Customer Portal
 (1, 4), -- Louise på Customer Portal
 (1, 5), -- Mikkel på Customer Portal

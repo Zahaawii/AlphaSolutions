@@ -25,8 +25,8 @@ public class G1SRepository {
     public List<Project> getAllProjects(int employeeID) {
         String sql = "SELECT DISTINCT project.* \n" +
                 "FROM project\n" +
-                "LEFT JOIN projectassginees ON project.projectID = projectassginees.projectID\n" +
-                "WHERE project.employeeID = ? OR projectassginees.employeeID = ?";
+                "LEFT JOIN projectassignees ON project.projectID = projectassignees.projectID\n" +
+                "WHERE project.employeeID = ? OR projectassignees.employeeID = ?";
         return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
     }
 
@@ -63,7 +63,7 @@ public class G1SRepository {
     }
 
     public void deleteProject(int projectID) {
-        String deleteAssignees = "DELETE FROM projectassginees WHERE project.projectID = ?";
+        String deleteAssignees = "DELETE FROM projectassignees WHERE project.projectID = ?";
         String deleteProject = "DELETE FROM project WHERE project.projectID = ?";
         jdbcTemplate.update(deleteAssignees,projectID);
         jdbcTemplate.update(deleteProject,projectID);
@@ -81,19 +81,19 @@ public class G1SRepository {
     }
 
     public void assignEmployeesToProject(int projectId, List<Integer> employeeIds) {
-        String sql = "INSERT INTO projectassginees (projectID, employeeID) VALUES (?, ?)";
+        String sql = "INSERT INTO projectassignees (projectID, employeeID) VALUES (?, ?)";
         for (Integer empId : employeeIds) {
             jdbcTemplate.update(sql,projectId,employeeIds);
         }
     }
 
     public void clearProjectAssignees(int projectId) {
-        String sql = "DELETE FROM projectAssginees WHERE projectID = ?";
+        String sql = "DELETE FROM projectassignees WHERE projectID = ?";
         jdbcTemplate.update(sql, projectId);
     }
 
     public List<Integer> getProjectAssignees(int projectId) {
-        String sql = "SELECT employeeID FROM projectAssginees WHERE projectID = ?";
+        String sql = "SELECT employeeID FROM projectassignees WHERE projectID = ?";
         return jdbcTemplate.queryForList(sql, Integer.class, projectId);
     }
 

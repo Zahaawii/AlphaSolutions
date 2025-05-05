@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New Project</title>
-    <link rel="stylesheet" th:href="@{/css/newProject.css}">
+    <link rel="stylesheet" th:href="@{static.sql/css/newProject.css}">
 </head>
 <body>
 
@@ -11,8 +11,9 @@
     <input type="text" th:field="*{projectName}" required><br><br>
 
     <label>DESCRIPTION</label>
-    <div>
-        <textarea></textarea>
+    <div class="description-box">
+        <textarea th:field="*{projectDescription}" id="description" maxlength="256"></textarea>
+        <div class="char-counter">Max. 256 characters</div>
     </div>
 
     <label>STATUS</label>
