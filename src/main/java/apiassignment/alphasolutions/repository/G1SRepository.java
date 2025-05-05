@@ -18,6 +18,7 @@ public class G1SRepository {
     private JdbcTemplate jdbcTemplate;
 
     public G1SRepository(JdbcTemplate jdbcTemplate) {
+
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -110,6 +111,7 @@ public class G1SRepository {
         String sql = "SELECT * from roles";
         return jdbcTemplate.query(sql, new RoleRowmapper());
     }
+
 
 
 }

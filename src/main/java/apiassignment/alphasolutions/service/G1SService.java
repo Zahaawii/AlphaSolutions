@@ -3,6 +3,7 @@ package apiassignment.alphasolutions.service;
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Role;
 import apiassignment.alphasolutions.repository.G1SRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,3 +51,4 @@ public class G1SService {
     }
 
     }
+

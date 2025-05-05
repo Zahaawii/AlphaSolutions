@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+
 <head>
     <meta charset="UTF-8">
-    <title>home</title>
+    <title>Title</title>
 </head>
 <body>
-<h1>Det virker</h1>
-    <a href="/adminPanel">Admin</a>
+
+<div th:replace="fragments/dashboard :: dashboard"></div>
 
 </body>
 </html>
