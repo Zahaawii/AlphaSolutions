@@ -28,15 +28,10 @@
         </div>
     </div>
 
-    <label>COLLABORATORS</label><br>
-    <div th:each="employee : ${employees}">
-        <label>
-            <input type="checkbox" name="assignees" th:value="${employee.employeeID}">
-            <span th:text="${employee.employeeName}"></span>
-        </label><br>
+    <div class="create-project-header">
+        <h2>CREATE PROJECT</h2>
+        <button type="submit" class="submit-btn">+</button>
     </div>
-
-    <button type="submit">Opret projekt</button>
 </form>
 
 <a th:href="@{/projects}">Tilbage til mine projekter</a>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Select Collaborators</title>
+  <link rel="stylesheet" th:href="@{/css/newProject.css}">
+</head>
+<body>
+<form th:action="@{/select-collaborators}" method="post">
+  <h2>Vælg medarbejdere</h2>
+  <div th:each="employee : ${employees}" class="employee-option">
+    <label>
+      <input type="checkbox" name="employeeIds" th:value="${employee.employeeID}">
+      <span th:text="${employee.employeeName}"></span>
+      <ul>
+        <li th:each="skill : ${employee.skills}" th:text="${skill.skillName}"></li>
+      </ul>
+    </label>
+  </div>
+  <button type="submit">Tilføj valgte</button>
+</form>
+</body>
+</html>

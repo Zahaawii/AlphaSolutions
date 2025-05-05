@@ -13,6 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -105,12 +107,23 @@ public class G1SRepository {
     }
 
     public List<Skill> getSkillsByEmployeeId(int employeeId) {
-        String sql = "SELECT skill.skillID, skill.skill_name " +
-                "FROM skill" +
-                "JOIN skillRelation ON skill.skillID = skillRelation.skillID " +
+        String sql = "SELECT skill.skillID, skill.skill_name\n" +
+                "FROM skill\n" +
+                "JOIN skillRelation ON skill.skillID = skillRelation.skillID\n" +
                 "WHERE skillRelation.employeeID = ?";
         return jdbcTemplate.query(sql, new SkillRowmapper(), employeeId);
     }
 
+    public List<Employee> getEmployeesByIds(List<Integer> ids) {
+        List<Employee> all = getAllEmployees();
+        List<Employee> selected = new ArrayList<>();
 
+        for (Employee emp : all) {
+            if (ids.contains(emp.getEmployeeID())) {
+                selected.add(emp);
+            }
+        }
+
+        return selected;
+    }
 }

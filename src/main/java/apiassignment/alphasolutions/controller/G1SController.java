@@ -1,5 +1,6 @@
 package apiassignment.alphasolutions.controller;
 
+import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -45,9 +47,13 @@ public class G1SController {
     }
 
     @GetMapping("/projects/new")
-    public String newProject(Model model) {
+    public String newProject(Model model, HttpSession session) {
         model.addAttribute("project", new Project());
-        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
+
+        List<Employee> selected = (List<Employee>) session.getAttribute("selectedCollaborators");
+        if (selected == null) selected = new ArrayList<>();
+
+        model.addAttribute("selectedEmployees", selected);
         return "newProject";
     }
 
@@ -112,5 +118,18 @@ public class G1SController {
         }
 
         return "redirect:/projects";
+    }
+
+    @GetMapping("/select-collaborators")
+    public String selectCollaborators(Model model) {
+        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
+        return "selectCollaborators";
+    }
+
+    @PostMapping("/save-collaborators")
+    public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
+        List<Employee> selected = g1SService.getEmployeesByIds(ids);
+        session.setAttribute("selectedCollaborators", selected);
+        return "redirect:/projects/new";
     }
 }

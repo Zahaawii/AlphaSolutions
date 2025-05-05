@@ -58,4 +58,8 @@ public class G1SService {
 
         return employees;
     }
+
+    public List<Employee> getEmployeesByIds(List<Integer> ids) {
+        return g1SRepository.getEmployeesByIds(ids);
+    }
 }
