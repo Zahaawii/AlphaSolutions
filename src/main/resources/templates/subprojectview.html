@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 
 <head>
@@ -79,7 +81,7 @@
 
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
 
-                    <div class="taskelementStart">
+                    <div class="taskelement">
                         <h5>Assignees</h5>
                         <div class="avatargrid">
                             <div th:each="assignee : ${task.getAssignees()}">
@@ -102,6 +104,23 @@
                         </div>
 
 
+                    </div>
+
+                    <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
+
+                    <div class="taskelementStart">
+                        <h5>Actions</h5>
+                        <div>
+                            <i class="fas fa-edit"></i>
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+
+                        <div th:each="subtask : ${task.getSubtasks()}">
+                            <div>
+                                <i class="far fa-edit fa-sm"></i>
+                                <i class="fas fa-trash-alt fa-sm"></i>
+                            </div>
+                        </div>
                     </div>
 
 
