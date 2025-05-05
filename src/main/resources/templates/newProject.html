@@ -2,24 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New Project</title>
+    <link rel="stylesheet" th:href="@{/css/newProject.css}">
 </head>
 <body>
-<h1>Opret nyt projekt</h1>
 
 <form th:action="@{/projects}" th:object="${project}" method="post">
-    <label>Projekt Navn:</label>
+    <label>PROJECT NAME</label>
     <input type="text" th:field="*{projectName}" required><br><br>
 
-    <label>Status:</label>
+    <label>DESCRIPTION</label>
+    <div>
+        <textarea></textarea>
+    </div>
+
+    <label>STATUS</label>
     <input type="text" th:field="*{projectStatus}"><br><br>
 
-    <label>Startdato:</label>
+    <label>START DATE</label>
     <input type="date" th:field="*{projectStartDate}"><br><br>
 
-    <label>Slutdato:</label>
+    <label>END DATE</label>
     <input type="date" th:field="*{projectEndDate}"><br><br>
 
-    <label>Tilføj medarbejdere:</label><br>
+    <label>COLLABORATORS</label><br>
     <div th:each="employee : ${employees}">
         <label>
             <input type="checkbox" name="assignees" th:value="${employee.employeeID}">

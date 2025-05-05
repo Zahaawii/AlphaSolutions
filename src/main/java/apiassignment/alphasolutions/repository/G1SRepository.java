@@ -37,7 +37,7 @@ public class G1SRepository {
 
     public void createProject(Project project) {
         try {
-            String sql = "INSERT INTO project (project_Name, project_status, project_start_date, project_end_date, employeeID) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO project (project_Name, project_status, project_start_date, project_end_date, employeeID, project_description) VALUES (?, ?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             jdbcTemplate.update(connection -> {
@@ -47,6 +47,7 @@ public class G1SRepository {
                 ps.setDate(3,project.getProjectStartDate());
                 ps.setDate(4,project.getProjectEndDate());
                 ps.setInt(5,project.getEmployeeId());
+                ps.setString(6,project.getProjectDescription());
                 return ps;
             }, keyHolder);
 
@@ -69,8 +70,14 @@ public class G1SRepository {
     }
 
     public void updateProject(Project project) {
-        String sql = "UPDATE project SET project_Name = ?, project_status = ?, project_start_date = ?, project_end_date = ? WHERE project.projectID = ?";
-        jdbcTemplate.update(sql,project.getProjectName(),project.getProjectStatus(),project.getProjectStartDate(),project.getProjectEndDate(),project.getProjectId());
+        String sql = "UPDATE project SET project_Name = ?, project_status = ?, project_start_date = ?, project_end_date = ?, project_description = ? WHERE project.projectID = ?";
+        jdbcTemplate.update(sql,project.getProjectName(),
+                project.getProjectStatus(),
+                project.getProjectStartDate(),
+                project.getProjectEndDate(),
+                project.getProjectDescription(),
+                project.getProjectId()
+        );
     }
 
     public void assignEmployeesToProject(int projectId, List<Integer> employeeIds) {
@@ -80,19 +87,16 @@ public class G1SRepository {
         }
     }
 
-    // Remove all assignees from a project
     public void clearProjectAssignees(int projectId) {
         String sql = "DELETE FROM projectAssginees WHERE projectID = ?";
         jdbcTemplate.update(sql, projectId);
     }
 
-    // Get assignee employee IDs for a project
     public List<Integer> getProjectAssignees(int projectId) {
         String sql = "SELECT employeeID FROM projectAssginees WHERE projectID = ?";
         return jdbcTemplate.queryForList(sql, Integer.class, projectId);
     }
 
-    // Get all employees (for dropdown in form)
     public List<Employee> getAllEmployees() {
         String sql = "SELECT * FROM employee";
         return jdbcTemplate.query(sql, new EmployeeRowmapper());

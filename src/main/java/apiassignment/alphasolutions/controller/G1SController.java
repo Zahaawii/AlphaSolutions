@@ -21,8 +21,8 @@ public class G1SController {
     // Husk at slette når der skal pushes
     @GetMapping("/testlogin")
     public String testLogin(HttpSession session) {
-        session.setAttribute("employeeID", 4);
-        session.setAttribute("roleID",4);
+        session.setAttribute("employeeID", 1);
+        session.setAttribute("roleID",1);
         return "redirect:/projects";
     }
 

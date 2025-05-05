@@ -8,6 +8,7 @@ public class Project {
     private int employeeId;
     private Date projectStartDate;
     private Date projectEndDate;
+    private String projectDescription;
     private String projectStatus;
 
     public Project() {}
@@ -37,6 +38,10 @@ public class Project {
         return (java.sql.Date) projectEndDate;
     }
 
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
     public String getProjectStatus() {
         return projectStatus;
     }
@@ -59,6 +64,10 @@ public class Project {
 
     public void setProjectEndDate(Date projectEndDate) {
         this.projectEndDate = projectEndDate;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
     }
 
     public void setProjectStatus(String projectStatus) {
