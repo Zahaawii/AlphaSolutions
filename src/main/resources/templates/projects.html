@@ -4,9 +4,9 @@
     <title>Mine Projekter</title>
 </head>
 <body>
-<h1>Mine Projekter</h1>
+<h1>My Projects</h1>
 
-<a th:href="@{/projects/new}">+ Nyt Projekt</a>
+<a th:if="${isProjectManager}" th:href="@{/projects/new}">New Project</a>
 <br><br>
 
 <table border="1">
@@ -16,7 +16,7 @@
         <th>Status</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th></th>
+        <th th:if="${isProjectManager}"></th>
     </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
         <td th:text="${project.projectStatus}"></td>
         <td th:text="${project.projectStartDate}"></td>
         <td th:text="${project.projectEndDate}"></td>
-        <td>
+        <td th:if="${isProjectManager}">
             <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">Edit</a> |
             <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
                onclick="return confirm('Er du sikker på, at du vil slette projektet?');">Delete</a>

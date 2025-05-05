@@ -18,17 +18,26 @@ public class G1SController {
         this.g1SService = g1SService;
     }
 
+    // Husk at slette når der skal pushes
     @GetMapping("/testlogin")
     public String testLogin(HttpSession session) {
-        session.setAttribute("employeeID", 1);
+        session.setAttribute("employeeID", 4);
+        session.setAttribute("roleID",4);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
         Integer employeeID = (Integer) session.getAttribute("employeeID");
-        if (employeeID == null) {
+        Integer roleID = (Integer) session.getAttribute("roleID");
+
+        if (employeeID == null || roleID == null) {
             return "redirect:/login";
+        }
+
+        if (roleID == 1) {
+            boolean isProjectManager = true;
+            model.addAttribute("isProjectManager",isProjectManager);
         }
 
         model.addAttribute("projects", g1SService.getAllProjects(employeeID));
@@ -38,7 +47,7 @@ public class G1SController {
     @GetMapping("/projects/new")
     public String newProject(Model model) {
         model.addAttribute("project", new Project());
-        model.addAttribute("employees", g1SService.getAllEmployees()); // til multiselect
+        model.addAttribute("employees", g1SService.getAllEmployees());
         return "newProject";
     }
 
