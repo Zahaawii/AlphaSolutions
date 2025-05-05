@@ -1,15 +1,8 @@
 package apiassignment.alphasolutions.repository;
 
 
-import apiassignment.alphasolutions.model.SubTask;
-import apiassignment.alphasolutions.model.Task;
-import apiassignment.alphasolutions.rowmapper.SubTaskRowMapper;
-import apiassignment.alphasolutions.rowmapper.TaskRowMapper;
-
-import apiassignment.alphasolutions.model.Employee;
-import apiassignment.alphasolutions.model.Role;
-import apiassignment.alphasolutions.rowmapper.EmployeeRowmapper;
-import apiassignment.alphasolutions.rowmapper.RoleRowmapper;
+import apiassignment.alphasolutions.model.*;
+import apiassignment.alphasolutions.rowmapper.*;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,9 +36,35 @@ public class G1SRepository {
         return tasks;
     }
 
+    public SubProject getSubProjectById (int id) {
+        String sql = "SELECT * FROM subproject WHERE subprojectID = ?";
+        return jdbcTemplate.query(sql, new SubprojectRowMapper(), id).getFirst();
+    }
+
     public List<SubTask> getSubtasksByTaskId(int id) {
         String sql = "SELECT * FROM subtask WHERE taskID = ?";
         return jdbcTemplate.query(sql, new SubTaskRowMapper(), id);
+    }
+
+    public List<Employee> getEmployeesByTaskId (int id) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN taskassignees ON employee.employeeID = taskassignees.employeeID
+        WHERE taskassignees.taskID = ?
+    """;
+
+        return jdbcTemplate.query(sql, new EmployeeRowmapper(), id);
+    }
+
+    public List<Employee> getEmployeesBySubtaskId(int id) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN subtaskassignees ON employee.employeeID = subtaskassignees.employeeID
+        WHERE subtaskassignees.subtaskID = ?
+    """;
+        return jdbcTemplate.query(sql, new EmployeeRowmapper(), id);
     }
 
     //henter alle employees i systemet

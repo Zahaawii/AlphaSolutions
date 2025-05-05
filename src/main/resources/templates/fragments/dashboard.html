@@ -12,18 +12,30 @@
 
 <div th:fragment="dashboard">
   <div class="dashboardMainContainer">
+
     <div class="dashboardTextContainer">
       <h1>DASHBOARD</h1>
 
-      <h2>Home</h2>
-      <h2>New Project</h2>
-      <h2>My Projects</h2>
-      <h2>My Tasks</h2>
-      <h2>Admin Panel</h2>
-
-
+      <a href="/home">
+        <h2>Home</h2>
+      </a>
+      <a href="/home">
+        <h2>New Project</h2>
+      </a>
+      <a href="/home">
+        <h2>My Projects</h2>
+      </a>
+      <a href="/home">
+        <h2>My Tasks</h2>
+      </a>
+      <a href="/adminpanel">
+        <h2>Admin Panel</h2>
+      </a>
 
     </div>
+    <a href="/logout" class="logout">
+      <h2>Log out</h2>
+    </a>
   </div>
 </div>
 

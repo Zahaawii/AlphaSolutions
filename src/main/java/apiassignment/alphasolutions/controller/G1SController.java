@@ -1,10 +1,7 @@
 package apiassignment.alphasolutions.controller;
 
 
-import apiassignment.alphasolutions.model.Task;
-
-import apiassignment.alphasolutions.model.Employee;
-import apiassignment.alphasolutions.model.Role;
+import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
@@ -67,8 +64,21 @@ public class G1SController {
 
     @GetMapping("/subproject/{id}")
     public String subProjectView (@PathVariable("id") int subprojectId, Model model) {
-        List<Task> tasks = g1sService.getTasksBySubprojectId(subprojectId);
+        List<Task> tasks = g1SService.getTasksBySubprojectId(subprojectId);
+
+        //loop igennem alle tasks og sæt assignees til deres respektive task. Samme sker med subtasks.
+        for (Task task : tasks) {
+            task.setAssignees(g1SService.getEmployeesByTaskId(task.getTaskId()));
+
+            for (SubTask subtask : task.getSubtasks()) {
+                subtask.setAssignees(g1SService.getEmployeesBySubtaskId(subtask.getSubtaskID()));
+            }
+        }
+
         model.addAttribute("tasks", tasks);
+        SubProject subproject = g1SService.getSubProjectById(subprojectId);
+        model.addAttribute("subproject", subproject);
+
 
 
 
@@ -77,13 +87,13 @@ public class G1SController {
 
     @GetMapping("/test/{id}")
     public String testUrl (@PathVariable("id") int subprojectId, Model model) {
-        model.addAttribute("tasks", g1sService.getTasksBySubprojectId(subprojectId));
+        model.addAttribute("tasks", g1SService.getTasksBySubprojectId(subprojectId));
 
         return "test";
     }
 
 
-    @GetMapping("/adminPanel")
+    @GetMapping("/adminpanel")
     public String adminPanel(HttpSession session, Model model){
         Employee checkEmployee = (Employee) session.getAttribute("employee");
         if(checkEmployee.getRoleId() != 2 && checkEmployee.getRoleId() != 3){

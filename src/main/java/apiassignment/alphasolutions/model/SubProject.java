@@ -23,28 +23,12 @@ public class SubProject {
 
     }
 
-    public int getProjectID() {
-        return projectID;
+    public int getSubprojectID() {
+        return subprojectID;
     }
 
-    public void setProjectID(int projectID) {
-        this.projectID = projectID;
-    }
-
-    public Date subprojectEndDate() {
-        return subprojectEndDate;
-    }
-
-    public void subprojectEndDate(Date subprojectEndDate) {
-        this.subprojectEndDate = subprojectEndDate;
-    }
-
-    public Date subprojectStartDate() {
-        return subprojectStartDate;
-    }
-
-    public void setSubprojectStartDate(Date subprojectStartDate) {
-        this.subprojectStartDate = subprojectStartDate;
+    public void setSubprojectID(int subprojectID) {
+        this.subprojectID = subprojectID;
     }
 
     public String getSubprojectName() {
@@ -55,12 +39,28 @@ public class SubProject {
         this.subprojectName = subprojectName;
     }
 
-    public int getSubprojectID() {
-        return subprojectID;
+    public Date getSubprojectStartDate() {
+        return subprojectStartDate;
     }
 
-    public void setSubprojectID(int subprojectID) {
-        this.subprojectID = subprojectID;
+    public void setSubprojectStartDate(Date subprojectStartDate) {
+        this.subprojectStartDate = subprojectStartDate;
+    }
+
+    public Date getSubprojectEndDate() {
+        return subprojectEndDate;
+    }
+
+    public void setSubprojectEndDate(Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
+    }
+
+    public int getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 
     @Override
