@@ -1,12 +1,21 @@
 package apiassignment.alphasolutions.controller;
 
+
+import apiassignment.alphasolutions.model.Task;
+
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Role;
+
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -53,6 +62,26 @@ public class G1SController {
     public String home(){
         return "home";
     }
+
+
+
+    @GetMapping("/subproject/{id}")
+    public String subProjectView (@PathVariable("id") int subprojectId, Model model) {
+        List<Task> tasks = g1sService.getTasksBySubprojectId(subprojectId);
+        model.addAttribute("tasks", tasks);
+
+
+
+        return "subprojectview";
+    }
+
+    @GetMapping("/test/{id}")
+    public String testUrl (@PathVariable("id") int subprojectId, Model model) {
+        model.addAttribute("tasks", g1sService.getTasksBySubprojectId(subprojectId));
+
+        return "test";
+    }
+
 
     @GetMapping("/adminPanel")
     public String adminPanel(HttpSession session, Model model){
@@ -152,6 +181,7 @@ public class G1SController {
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminPanel";
     }
+
 
 
 

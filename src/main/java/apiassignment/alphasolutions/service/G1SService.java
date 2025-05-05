@@ -1,7 +1,12 @@
 package apiassignment.alphasolutions.service;
 
+
+import apiassignment.alphasolutions.model.SubTask;
+import apiassignment.alphasolutions.model.Task;
+
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Role;
+
 import apiassignment.alphasolutions.repository.G1SRepository;
 
 import org.springframework.stereotype.Service;
@@ -51,4 +56,15 @@ public class G1SService {
     }
 
     }
+
+
+
+    public List<Task> getTasksBySubprojectId (int id) {
+        return g1SRepository.getTasksBySubprojectId(id);
+    }
+
+    public List<SubTask> getSubtasksByTaskId (int id) {
+        return g1SRepository.getSubtasksByTaskId(id);
+    }
+}
 

@@ -1,17 +1,26 @@
 package apiassignment.alphasolutions.repository;
 
+
+import apiassignment.alphasolutions.model.SubTask;
+import apiassignment.alphasolutions.model.Task;
+import apiassignment.alphasolutions.rowmapper.SubTaskRowMapper;
+import apiassignment.alphasolutions.rowmapper.TaskRowMapper;
+
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Role;
 import apiassignment.alphasolutions.rowmapper.EmployeeRowmapper;
 import apiassignment.alphasolutions.rowmapper.RoleRowmapper;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+
 
 @Repository
 public class G1SRepository {
@@ -23,6 +32,21 @@ public class G1SRepository {
     }
 
 
+    public List<Task> getTasksBySubprojectId(int id) {
+        String sql = "SELECT * FROM task WHERE subProjectId = ?";
+        List<Task> tasks = jdbcTemplate.query(sql, new TaskRowMapper(), id);
+
+        for (Task task : tasks) {
+            task.setSubtasks(getSubtasksByTaskId(task.getTaskId()));
+        }
+
+        return tasks;
+    }
+
+    public List<SubTask> getSubtasksByTaskId(int id) {
+        String sql = "SELECT * FROM subtask WHERE taskID = ?";
+        return jdbcTemplate.query(sql, new SubTaskRowMapper(), id);
+    }
 
     //henter alle employees i systemet
     public List<Employee>getAllEmployee(){
