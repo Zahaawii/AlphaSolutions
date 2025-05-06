@@ -228,16 +228,16 @@ public class G1SController {
     @GetMapping("/adminpanel")
     public String adminPanel(HttpSession session, Model model){
         Employee checkEmployee = (Employee) session.getAttribute("employee");
-        if(checkEmployee.getRoleId() != 2 && checkEmployee.getRoleId() != 3){
+        if(checkEmployee.getRoleID() != 2 && checkEmployee.getRoleID() != 3){
             return "redirect:/home";
         }
         //projekleder(role 2) kan kun se medarbejdere
-        if(checkEmployee.getRoleId() == 2){
+        if(checkEmployee.getRoleID() == 2){
             List<Employee>getAllCommonWorkers = g1SService.getAllCommonWorkers();
             model.addAttribute("getAllEmployee", getAllCommonWorkers);
         }
         //admins(role 3) kan se alle, medarbejdere, projektledere og admins
-        if(checkEmployee.getRoleId() == 3) {
+        if(checkEmployee.getRoleID() == 3) {
             List<Employee> getAllEmployee = g1SService.getAllEmployee();
             model.addAttribute("getAllEmployee", getAllEmployee);
         }
@@ -248,17 +248,17 @@ public class G1SController {
     public String adminPanelAddEmployee(HttpSession session, Model model){
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
-        if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
+        if(checkEmployee.getRoleID() != 3 && checkEmployee.getRoleID() != 2){
             return "redirect:/home";
         }
         //tilføjer et nyt employee objekt
         Employee employee = new Employee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
-        if(checkEmployee.getRoleId() == 2) {
-            employee.setRoleId(1);
+        if(checkEmployee.getRoleID() == 2) {
+            employee.setRoleID(1);
         }
-        if(checkEmployee.getRoleId() == 3) {
+        if(checkEmployee.getRoleID() == 3) {
             //Hvis den givne employee er role 3(admin), så tilgår de siden og har mulighed for at ændre roleID
             model.addAttribute("admin", true);
             List<Role> listOfRoles = g1SService.getAllRoles();
@@ -290,7 +290,7 @@ public class G1SController {
     public String adminUpdateEmployeeGet(@PathVariable int id, HttpSession session, Model model){
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
-        if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
+        if(checkEmployee.getRoleID() != 3 && checkEmployee.getRoleID() != 2){
             return "redirect:/home";
         }
         //laver et employee objekt ud fra det id vi får med i URL'en
@@ -300,11 +300,11 @@ public class G1SController {
         Employee newEmployee = new Employee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
-        if(checkEmployee.getRoleId() == 2) {
-            newEmployee.setRoleId(1);
+        if(checkEmployee.getRoleID() == 2) {
+            newEmployee.setRoleID(1);
         }
         //Hvis den givne employee er role 3(admin), så tilgår de siden og har mulighed for at ændre roleID
-        if(checkEmployee.getRoleId() == 3) {
+        if(checkEmployee.getRoleID() == 3) {
             model.addAttribute("admin", true);
             List<Role> listOfRoles = g1SService.getAllRoles();
             model.addAttribute("roles", listOfRoles);
@@ -315,7 +315,7 @@ public class G1SController {
 
     @PostMapping("/admin/update")
     public String adminUpdateEmployeePost(@ModelAttribute Employee newEmployee, HttpSession session, Model model){
-        int employeeID = newEmployee.getEmployeeId();
+        int employeeID = newEmployee.getEmployeeID();
         if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + employeeID; //hvis det ikke er frit, bliver man smidt tilbage til update siden
