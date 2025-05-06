@@ -44,10 +44,10 @@ public class SubProject {
 
     public java.sql.Date getSubprojectEndDate() {
         return (java.sql.Date) subprojectEndDate;
+    }
 
     public void setSubprojectName(String subprojectName) {
         this.subprojectName = subprojectName;
-    }
 
     }
 
@@ -55,13 +55,6 @@ public class SubProject {
         this.subprojectStartDate = subprojectStartDate;
     }
 
-    public Date getSubprojectEndDate() {
-        return subprojectEndDate;
-    }
-
-    public void setSubprojectEndDate(Date subprojectEndDate) {
-        this.subprojectEndDate = subprojectEndDate;
-    }
 
     public int getProjectID() {
         return projectID;

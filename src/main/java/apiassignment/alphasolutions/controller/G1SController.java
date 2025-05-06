@@ -33,7 +33,6 @@ public class G1SController {
     public String subProjects(Model model) {
         List<SubProject> getAllSubProjects = g1SService.getAllSubProjects();
         model.addAttribute("AllSubProjects", getAllSubProjects);
-        System.out.println(getAllSubProjects);
         return "subprojects";
     }
 
