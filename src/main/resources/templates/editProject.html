@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Project</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="fragments/dashboard :: dashboard"></div>
+
+<form th:action="@{/projects/update}" th:object="${project}" method="post">
+  <input type="hidden" th:field="*{projectId}"/>
+
+  <div class="input-group">
+    <input type="text" placeholder="PROJECT NAME" th:field="*{projectName}" required>
+  </div>
+
+  <label class="description-label">DESCRIPTION</label>
+  <div class="description-box">
+    <textarea th:field="*{projectDescription}" id="description" maxlength="256"></textarea>
+    <div class="char-counter">Max. 256 characters</div>
+  </div>
+
+  <div class="date-container">
+    <div class="date-group">
+      <label for="startDate">START DATE</label>
+      <input type="date" id="startDate" th:field="*{projectStartDate}">
+    </div>
+    <div class="date-group">
+      <label for="endDate">END DATE</label>
+      <input type="date" id="endDate" th:field="*{projectEndDate}">
+    </div>
+  </div>
+
+  <div class="create-project-header">
+    <h2>UPDATE PROJECT</h2>
+    <button type="submit" class="submit-btn">+</button>
+  </div>
+</form>
+
+<a th:href="@{/projects}">Back to My Projects</a>
+</body>
+</html>

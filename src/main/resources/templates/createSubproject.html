@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create sub project</title>
+</head>
+<body>
+
+
+<form th:action="@{/create/subproject}" th:object="${subproject}" method="post">
+
+
+  <label for="subprojectName"> Subproject Name</label>
+  <input type="text" id="subprojectName" name="subprojectName" required>
+
+  <label for="subprojectStartDate"></label>
+  <input type="date" id="subprojectStartDate" name="subprojectStartDate" required>
+
+  <label for="subprojectEndDate"></label>
+  <input type="date" id="subprojectEndDate" name="subprojectEndDate" required>
+
+  <label for="projectID"></label>
+  <input type="number" id="projectID" name="projectID">
+
+  <button type="submit"> Add sub project </button>
+
+</form>
+
+</body>
+</html>
