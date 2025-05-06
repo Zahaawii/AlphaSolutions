@@ -137,7 +137,11 @@ public class G1SService {
     }
 
     public void deleteSubprojectBysubProjectId(int id) {
-        g1SRepository.deleteEmployee(id);
+        g1SRepository.deleteSubProject(id);
+    }
+
+    public void updateSubproject(SubProject subProject) {
+        g1SRepository.updateSubproject(subProject);
     }
 
 }

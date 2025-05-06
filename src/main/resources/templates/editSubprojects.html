@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Create sub project</title>
+  <title>Edit Project</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-
-
-<form th:action="@{/create/subproject}" th:object="${subproject}" method="post">
+<form th:action="@{/subprojects/update}" th:object="${subprojects}" method="post">
+  <input type="hidden" th:field="*{subprojectID}"/>
 
   <div class="input-group">
     <input type="text" placeholder="PROJECT NAME" th:field="*{subprojectName}" required>
@@ -18,21 +17,22 @@
   <div class="date-container">
     <div class="date-group">
       <label for="startDate">START DATE</label>
-      <input type="date" id="startDate" th:field="*{subprojectStartDate}" required>
+      <input type="date" id="startDate" th:field="*{subprojectStartDate}">
     </div>
     <div class="date-group">
       <label for="endDate">END DATE</label>
-      <input type="date" id="endDate" th:field="*{subprojectEndDate}" required>
+      <input type="date" id="endDate" th:field="*{subprojectEndDate}">
     </div>
   </div>
 
+  <input type="hidden" th:field="*{projectID}"/>
+
   <div class="create-project-header">
-    <h2>CREATE SUB PROJECT</h2>
+    <h2>UPDATE SUB PROJECT</h2>
     <button type="submit" class="submit-btn">+</button>
   </div>
 </form>
 
 <a th:href="@{/projects}">Back to My Projects</a>
-
 </body>
 </html>

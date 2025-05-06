@@ -88,6 +88,7 @@ public class G1SController {
 
     @PostMapping("/projects/update")
     public String updateProject(@ModelAttribute Project project) {
+        System.out.println(project);
         g1SService.updateProject(project);
         return "redirect:/projects";
     }
@@ -105,9 +106,10 @@ public class G1SController {
 
     @GetMapping("/project/{id}")
     public String projectView (@PathVariable int id, Model model, HttpSession session) {
+        List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
 
-
-        return "myprojects";
+        model.addAttribute("subprojects", subProjectByProjectId);
+        return "myprojectSubproject";
     }
 
     @GetMapping("/select-collaborators")
@@ -123,10 +125,6 @@ public class G1SController {
         return "redirect:/projects";
     }
 
-  
-    
-
-  
     @GetMapping("")
     public String homepage() {
         return "homepage";
@@ -189,6 +187,7 @@ public class G1SController {
         return "home";
     }
 
+   /* Ikke relevant længere tror jeg
     @GetMapping("/{id}/subproject")
     public String subProjectByProjectId(@PathVariable("id") int projectId, Model model) {
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(projectId);
@@ -197,11 +196,13 @@ public class G1SController {
 
         return "subprojectByProjectId";
     }
+    */
 
     @PostMapping("/subproject/delete/{id}")
-    public String deleteSubprojectBySubprojectId(@PathVariable("id") int id) {
+    public String deleteSubprojectBySubprojectId(@PathVariable int id) {
+        System.out.println(g1SService.getSubProjectById(id));
         g1SService.deleteSubprojectBysubProjectId(id);
-        return "redirect:/subprojects";
+        return "redirect:/projects";
     }
 
 
@@ -289,7 +290,6 @@ public class G1SController {
 
     @PostMapping("/admin/delete/{id}")
     public String adminDeleteEmployee(@PathVariable int id, HttpSession session){
-
         g1SService.deleteEmployee(id);
         return "redirect:/adminPanel";
     }
@@ -339,8 +339,24 @@ public class G1SController {
         return "redirect:/adminPanel";
     }
 
+    @GetMapping("/subproject/edit/{id}")
+    public String editSubProject(@PathVariable int id, Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
 
+        SubProject subProject = g1SService.getSubProjectById(id);
+        model.addAttribute("subprojects", subProject);
+        return "editSubprojects";
+    }
 
+    @PostMapping("/subprojects/update")
+    public String updateSubProject(@ModelAttribute SubProject subProject) {
+        System.out.println(subProject);
+        g1SService.updateSubproject(subProject);
+        return "redirect:/projects";
+    }
 
 
 }
