@@ -44,9 +44,9 @@
                 <h2 th:text="${project.projectEndDate}"></h2>
             </div>
 
-            <div class="v-separator" style="height: 60px;" th:if="${isProjectManager}"></div>
+            <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>
 
-            <div class="taskelementStart" th:if="${isProjectManager}">
+            <div class="taskelementStart" th:if="${isProjectManager or isAdmin}">
                 <h5>Actions</h5>
                 <div>
                     <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">

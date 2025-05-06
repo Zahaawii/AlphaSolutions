@@ -319,5 +319,15 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new RoleRowmapper());
     }
 
+    public void updateSubproject(SubProject subProject) {
+        String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";
+        jdbcTemplate.update(sql,
+                subProject.getSubprojectName(),
+                subProject.getSubprojectStartDate(),
+                subProject.getSubprojectEndDate(),
+                subProject.getSubprojectID()
+        );
+    }
+
 
 }
