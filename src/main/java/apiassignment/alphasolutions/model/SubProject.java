@@ -6,11 +6,11 @@ public class SubProject {
 
     private int subprojectID;
     private String subprojectName;
-    private Date subprojectStartDate;
-    private Date subprojectEndDate;
+    private java.sql.Date subprojectStartDate;
+    private java.sql.Date subprojectEndDate;
     private int projectID;
 
-    public SubProject(int subprojectID, String subprojectName, Date subprojectStartDate, Date subprojectEndDate, int projectID) {
+    public SubProject(int subprojectID, String subprojectName, java.sql.Date subprojectStartDate, java.sql.Date subprojectEndDate, int projectID) {
         this.subprojectID = subprojectID;
         this.subprojectName = subprojectName;
         this.subprojectStartDate = subprojectStartDate;
@@ -38,7 +38,7 @@ public class SubProject {
         return (java.sql.Date) subprojectStartDate;
     }
 
-    public void subprojectEndDate(Date subprojectEndDate) {
+    public void subprojectEndDate(java.sql.Date subprojectEndDate) {
         this.subprojectEndDate = subprojectEndDate;
     }
 
@@ -51,7 +51,7 @@ public class SubProject {
 
     }
 
-    public void setSubprojectStartDate(Date subprojectStartDate) {
+    public void setSubprojectStartDate(java.sql.Date subprojectStartDate) {
         this.subprojectStartDate = subprojectStartDate;
     }
 
@@ -63,7 +63,7 @@ public class SubProject {
         this.projectID = projectID;
     }
 
-    public void setSubprojectEndDate(Date subprojectEndDate) {
+    public void setSubprojectEndDate(java.sql.Date subprojectEndDate) {
         this.subprojectEndDate = subprojectEndDate;
     }
 
