@@ -134,8 +134,10 @@ a:hover {
 .taskelementStart h2, i {
     font-size: 1.5em;
 }
+
 .taskelementStart i {
     margin-bottom: 1em;
+    margin-right: .5em;
 }
 .trashcan {
     color: var(--accent-color);
@@ -224,6 +226,25 @@ a:hover {
     display: flex;
     align-items: center;
 }
+
+
+.iconbutton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    cursor: pointer;
+}
+.iconbutton:hover {
+    color: var(--accent-color);
+    transition: 0.4s;
+}
+
+.buttoncontainer {
+    display: flex;
+}
+
 
 .description-box {
     border: 2px solid #000;
@@ -339,6 +360,7 @@ h2, .description-label, .date-group label {
     font-weight: normal;
     text-align: center;
 }
+
 
 
 

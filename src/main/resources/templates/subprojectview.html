@@ -111,22 +111,27 @@
                     <div class="taskelementStart">
                         <h5>Actions</h5>
                         <div>
-                            <a href="">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+                            <button type="submit" class="iconbutton">
+                                <i class="fas fa-edit fa-2x"></i>
+                            </button>
+                            <button type="submit" class="iconbutton">
+                                <i class="fa-solid fa-trash fa-2x"></i>
+                            </button>
                         </div>
 
                         <div th:each="subtask : ${task.getSubtasks()}">
-                            <div>
-                                <a href="">
-                                    <i class="far fa-edit fa-sm"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fas fa-trash-alt fa-sm"></i>
-                                </a>
+                            <div class="buttoncontainer">
+                                <button type="submit" class="iconbutton">
+                                    <i class="far fa-edit fa-lg"></i>
+                                </button>
+                                <form th:action="@{/subproject/{subprojectid}/delete/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}"
+                                      method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete this subtask?')">
+                                    <button type="submit" class="iconbutton">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                    </button>
+                                </form>
+
                             </div>
                         </div>
                     </div>

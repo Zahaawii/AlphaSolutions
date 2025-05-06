@@ -292,9 +292,9 @@ public class G1SController {
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
     public String deleteSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
-
+        String subprojectIdString = String.valueOf(subprojectid);
         g1SService.deleteSubtask(subtaskid);
-        return "redirect:/subproject/" + subprojectid;
+        return "redirect:/subproject/" + subprojectIdString;
     }
 
     @GetMapping("/admin/update/{id}")
