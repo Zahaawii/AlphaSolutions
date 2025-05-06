@@ -1,14 +1,22 @@
 package apiassignment.alphasolutions.model;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import jdk.jfr.DataAmount;
+
+
 public class Employee {
     private int employeeID;
+
     private String employeeName;
     private String employeeEmail;
     private String employeeUsername;
     private String employeePassword;
+
     private List<Skill> skills = new ArrayList<>();
     private int roleID;
 
@@ -49,23 +57,42 @@ public class Employee {
 
     public void setEmployeeID(int employeeID) {
         this.employeeID = employeeID;
-    }
+
+   
+
+  
+    
+    
+
+    
+
+   
+
+    
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
 
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
-    }
+
+    
+
+
+
+
+
 
     public void setEmployeeUsername(String employeeUsername) {
         this.employeeUsername = employeeUsername;
     }
 
+
+
+
     public void setEmployeePassword(String employeePassword) {
         this.employeePassword = employeePassword;
     }
+
 
     public void setSkills(List<Skill> skills) {
         this.skills = skills;
@@ -74,5 +101,24 @@ public class Employee {
     public void setRoleID(int roleID) {
         this.roleID = roleID;
     }
+
+
+
+    
+
+    
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeeUsername='" + employeeUsername + '\'' +
+                ", employeePassword='" + employeePassword + '\'' +
+                ", roleId=" + roleId +
+                '}';
+    }
+
 }
 

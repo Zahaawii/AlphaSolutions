@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<head>
+    <meta charset="UTF-8">
+    <title>subprojects</title>
+</head>
+<body>
+
+<h1> Sub project </h1>
+
+
+<div th:each="i : ${AllSubProjects}">
+    <h3 th:text="${i.subprojectID}"></h3>
+    <h3 th:text="${i.subprojectName}"></h3>
+    <h3 th:text="${i.subprojectID}"></h3>
+    <h3 th:text="${i.subprojectStartDate}"></h3>
+    <h3 th:text="${i.subprojectEndDate}"></h3>
+
+</div>
+</body>
+</html>
