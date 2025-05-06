@@ -65,6 +65,12 @@ a:hover {
     max-height: 100vh;
     overflow-y: scroll;
     gap: 4em;
+    transform: scale(85%);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.taskListContainer::-webkit-scrollbar {
+    display: none;
 }
 .taskListContainer h1 {
     font-size: 3em;
