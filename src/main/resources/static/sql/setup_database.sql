@@ -1,13 +1,17 @@
 -- Opretter databasen
+
 CREATE DATABASE IF NOT EXISTS alphasolutions;
 USE alphasolutions;
+
 
 -- Slet tabeller i korrekt rækkefølge (pga foreign keys)
 DROP TABLE IF EXISTS skillRelation;
 DROP TABLE IF EXISTS subtaskAssignees;
 DROP TABLE IF EXISTS taskAssignees;
 DROP TABLE IF EXISTS subprojectAssignees;
-DROP TABLE IF EXISTS projectAssginees;
+
+DROP TABLE IF EXISTS projectAssignees;
+
 DROP TABLE IF EXISTS subtask;
 DROP TABLE IF EXISTS task;
 DROP TABLE IF EXISTS subproject;
@@ -15,6 +19,7 @@ DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS skill;
+
 
 CREATE TABLE roles (
     roleID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
@@ -42,18 +47,23 @@ CREATE TABLE project (
     project_status VARCHAR(100),
     project_start_date DATE,
     project_end_date DATE,
+    project_description VARCHAR(256),
     employeeID INTEGER,
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
+
 
 CREATE TABLE subproject (
     subprojectID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
     subproject_Name VARCHAR(100) NOT NULL,
     subproject_start_date DATE,
     subproject_end_date DATE,
+    subproject_description VARCHAR(256),
     projectID INTEGER,
-    FOREIGN KEY (projectID) REFERENCES project(projectID)
+    FOREIGN KEY (projectID) REFERENCES project (projectID)
 );
+
+
 
 CREATE TABLE task (
     taskID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
@@ -68,6 +78,7 @@ CREATE TABLE task (
     task_status VARCHAR(50)
 );
 
+
 CREATE TABLE subtask (
     subtaskID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
     subtask_Name VARCHAR(100) NOT NULL,
@@ -81,42 +92,49 @@ CREATE TABLE subtask (
     subtask_status VARCHAR(50)
 );
 
-CREATE TABLE projectAssginees (
+
+CREATE TABLE projectAssignees
+(
     projectID INTEGER,
     employeeID INTEGER,
     PRIMARY KEY (projectID, employeeID),
-    FOREIGN KEY (projectID) REFERENCES project(projectID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (projectID) REFERENCES project (projectID),
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
 
-CREATE TABLE subprojectAssignees (
+CREATE TABLE subprojectAssignees
+(
     subprojectID INTEGER,
     employeeID INTEGER,
     PRIMARY KEY (subprojectID, employeeID),
-    FOREIGN KEY (subprojectID) REFERENCES subproject(subprojectID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (subprojectID) REFERENCES subproject (subprojectID),
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
 
-CREATE TABLE taskAssignees (
+CREATE TABLE taskAssignees
+(
     taskID INTEGER,
     employeeID INTEGER,
     PRIMARY KEY (taskID, employeeID),
-    FOREIGN KEY (taskID) REFERENCES task(taskID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (taskID) REFERENCES task (taskID),
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
 
-CREATE TABLE subtaskAssignees (
+CREATE TABLE subtaskAssignees
+(
     subtaskID INTEGER,
     employeeID INTEGER,
     PRIMARY KEY (subtaskID, employeeID),
-    FOREIGN KEY (subtaskID) REFERENCES subtask(subtaskID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (subtaskID) REFERENCES subtask (subtaskID),
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
 
-CREATE TABLE skillRelation (
+CREATE TABLE skillRelation
+(
     skillID INTEGER,
     employeeID INTEGER,
     PRIMARY KEY (skillID, employeeID),
-    FOREIGN KEY (skillID) REFERENCES skill(skillID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
+    FOREIGN KEY (skillID) REFERENCES skill (skillID),
+    FOREIGN KEY (employeeID) REFERENCES employee (employeeID)
 );
+

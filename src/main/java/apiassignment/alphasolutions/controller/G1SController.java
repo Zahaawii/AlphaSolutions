@@ -1,27 +1,126 @@
 package apiassignment.alphasolutions.controller;
 
+
 import apiassignment.alphasolutions.model.*;
+
 
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+
+import java.util.ArrayList;
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @Controller
 public class G1SController {
-  
+
+
     private final G1SService g1SService;
 
-    public G1SController (G1SService g1SService){
+    public G1SController(G1SService g1SService) {
         this.g1SService = g1SService;
     }
+
+    @ModelAttribute
+    public void addRoleAttributesToModel(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        if (employee != null) {
+            int roleId = employee.getRoleId();
+            model.addAttribute("isProjectManager", roleId == 1);
+            model.addAttribute("isAdmin", roleId == 2);
+            model.addAttribute("canManageProjects", roleId == 1 || roleId == 2);
+            model.addAttribute("isEmployee", roleId == 3);
+        }
+    }
+
+    @GetMapping("/projects")
+    public String getMyProjects(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        if (employee == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("projects", g1SService.getAllProjects(employee.getEmployeeId()));
+        return "projects";
+    }
+
+    @GetMapping("/projects/new")
+    public String newProject(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
+        }
+        model.addAttribute("project", new Project());
+        return "newProject";
+    }
+
+    @PostMapping("/projects")
+    public String createProject(@ModelAttribute Project project, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        // Her sættes projektlederen som ejer af projektet.
+        project.setEmployeeId(employee.getEmployeeId());
+
+        g1SService.createProject(project);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/projects/edit/{id}")
+    public String editProject(@PathVariable int id, Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
+        }
+
+        Project project = g1SService.getProjectById(id);
+        model.addAttribute("project", project);
+        return "editProject";
+    }
+
+    @PostMapping("/projects/update")
+    public String updateProject(@ModelAttribute Project project) {
+        g1SService.updateProject(project);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/projects/delete/{id}")
+    public String deleteProject(@PathVariable int id, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
+        }
+
+        g1SService.deleteProject(id);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/select-collaborators")
+    public String selectCollaborators(Model model) {
+        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
+        return "selectCollaborators";
+    }
+
+    @PostMapping("/save-collaborators")
+    public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
+        List<Employee> selected = g1SService.getEmployeesByIds(ids);
+        session.setAttribute("selectedCollaborators", selected);
+        return "redirect:/projects";
+    }
+
+  
+    
 
   
     @GetMapping("")
@@ -78,7 +177,11 @@ public class G1SController {
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home(HttpSession session, Model model){
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
         return "home";
     }
 
@@ -231,6 +334,7 @@ public class G1SController {
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminPanel";
     }
+
 
 
 

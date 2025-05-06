@@ -1,5 +1,11 @@
 package apiassignment.alphasolutions.model;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+
 import jdk.jfr.DataAmount;
 
 
@@ -9,62 +15,66 @@ public class Employee {
     private String employeeEmail;
     private String employeeUsername;
     private String employeePassword;
+    private List<Skill> skills = new ArrayList<>();
     private int roleId;
 
-    public Employee(int employeeId, String employeeName, String employeeEmail, String employeeUsername, String employeePassword, int roleId) {
+    public Employee() {}
+
+    public Employee(int employeeId, String employeeName) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
-        this.employeeEmail = employeeEmail;
-        this.employeeUsername = employeeUsername;
-        this.employeePassword = employeePassword;
-        this.roleId = roleId;
-    }
-    public Employee(){
-
     }
 
     public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
     public String getEmployeeName() {
         return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
     }
 
     public String getEmployeeEmail() {
         return employeeEmail;
     }
 
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
-    }
-
     public String getEmployeeUsername() {
         return employeeUsername;
-    }
-
-    public void setEmployeeUsername(String employeeUsername) {
-        this.employeeUsername = employeeUsername;
     }
 
     public String getEmployeePassword() {
         return employeePassword;
     }
 
-    public void setEmployeePassword(String employeePassword) {
-        this.employeePassword = employeePassword;
+    public List<Skill> getSkills() {
+        return skills;
     }
 
     public int getRoleId() {
         return roleId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
+    }
+
+    public void setEmployeeUsername(String employeeUsername) {
+        this.employeeUsername = employeeUsername;
+    }
+
+    public void setEmployeePassword(String employeePassword) {
+        this.employeePassword = employeePassword;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     public void setRoleId(int roleId) {
@@ -84,3 +94,4 @@ public class Employee {
     }
 
 }
+
