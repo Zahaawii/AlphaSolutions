@@ -15,6 +15,7 @@ public class Task {
     private String taskDescription;
     private String taskStatus;
     private List<SubTask> subtasks;
+    private List<Employee> assignees;
 
     public Task() {
     }
@@ -112,6 +113,14 @@ public class Task {
         this.subtasks = subtasks;
     }
 
+    public List<Employee> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(List<Employee> assignees) {
+        this.assignees = assignees;
+    }
+
     public String remainingDays () {
         if (taskStartDate == null || taskEndDate == null) {
             return "0";
@@ -122,6 +131,20 @@ public class Task {
         return days + " days";
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", taskName='" + taskName + '\'' +
+                ", subprojectId=" + subprojectId +
+                ", taskEstimate=" + taskEstimate +
+                ", taskStartDate=" + taskStartDate +
+                ", taskEndDate=" + taskEndDate +
+                ", taskPriority='" + taskPriority + '\'' +
+                ", taskDescription='" + taskDescription + '\'' +
+                ", taskStatus='" + taskStatus + '\'' +
+                ", subtasks=" + subtasks +
+                ", assignees=" + assignees +
+                '}';
+    }
 }

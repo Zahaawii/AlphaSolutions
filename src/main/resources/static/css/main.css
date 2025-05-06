@@ -13,6 +13,14 @@ html, body {
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    color: var(--accent-color);
+    transition: 0.5s;
+}
 
 .dashboardMainContainer {
     position: absolute;
@@ -21,13 +29,14 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 15%;
+    justify-content: space-between;
     height: 100vh;
     background-color: #FFF0F3;
 }
 .dashboardTextContainer {
     display: flex;
     flex-direction: column;
+    padding: 2em;
 
 }
 .dashboardMainContainer h1 {
@@ -36,6 +45,10 @@ html, body {
 
 .dashboardMainContainer h2 {
     font-weight: 500;
+}
+
+.logout {
+    justify-self: end;
 }
 
 .taskWrapper {
@@ -52,6 +65,16 @@ html, body {
     max-height: 100vh;
     overflow-y: scroll;
     gap: 4em;
+    transform: scale(85%);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.taskListContainer::-webkit-scrollbar {
+    display: none;
+}
+.taskListContainer h1 {
+    font-size: 3em;
+    font-weight: 800;
 }
 
 .taskContentMainContainer {
@@ -71,42 +94,65 @@ html, body {
     align-items: center;
     margin-top: 1em;
 }
+.taskelementEnd {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-top: 1em;
+    text-align: end;
+}
+.taskelementStart {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 1em;
+}
 .taskelement h5 {
+    font-weight: 200;
+}
+.taskelementStart h5 {
+    font-weight: 200;
+}
+.taskelementEnd h5 {
     font-weight: 200;
 }
 .taskelement h4 {
     font-size: .75em;
+    font-weight: 500;
+}
+.taskelementStart h4 {
+    font-size: .75em;
+    font-weight: 500;
+}
+.taskelementEnd h4 {
+    font-size: .75em;
+    font-weight: 500;
 }
 .taskelement h2 {
+    font-size: 1.5em;
+}
+.taskelementStart h2, i {
+    font-size: 1.5em;
+}
+.taskelementStart i {
+    margin-bottom: 1em;
+}
+.trashcan {
+    color: var(--accent-color);
+    margin-bottom: 1em;
+}
+
+.taskelementEnd h2 {
     font-size: 1.5em;
 }
 .taskelement h5, .taskelement h2, .taskelement h4 {
     margin: 0;
 }
-
-.line {
-    font-weight: 600;
-    color: var(--accent-color);
-    font-size: 1em;
-
+.taskelementEnd h5, .taskelementEnd h2, .taskelementEnd h4 {
+    margin: 0;
 }
-.lineBig {
-    font-weight: 400;
-    color: var(--accent-color);
-    font-size: 2.5em;
-}
-.lineelement {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.lineContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1em;
+.taskelementStart h5, .taskelementStart h2, .taskelementStart h4 {
+    margin: 0;
 }
 
 .dot {
@@ -130,6 +176,57 @@ html, body {
     gap: 2em;
 
 }
+
+.h-separator {
+    width: 90%;
+    height: 2px;
+    margin: 40px auto;
+    background: linear-gradient(to right, white, #FF325A, white);
+}
+
+.v-separator {
+    width: 2px;
+    height: 2em;
+    margin: auto;
+    background: linear-gradient(to bottom, white, #FF325A, white);
+}
+
+.avatargrid {
+    display: flex;
+    gap: 1em;
+    padding: .5em;
+}
+
+.avatar {
+    width: 2em;
+    height: 2em;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-bottom: .5em;
+
+}
+.avatar--small {
+    font-size: .75em;
+
+
+}
+.avatar--green {
+    background-color: #32A852;
+}
+
+.assignee {
+    display: flex;
+    align-items: center;
+}
+
+
+
 
 
 

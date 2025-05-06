@@ -1,6 +1,7 @@
 package apiassignment.alphasolutions.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SubTask {
@@ -13,11 +14,12 @@ public class SubTask {
     private String subtaskPriority;
     private String subtaskDescription;
     private String subtaskStatus;
+    private List<Employee> assignees;
 
     public SubTask() {
     }
 
-    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, Date subtaskStartDate, Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus) {
+    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, Date subtaskStartDate, Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees) {
         this.subtaskID = subtaskID;
         this.subtaskName = subtaskName;
         this.taskID = taskID;
@@ -27,6 +29,7 @@ public class SubTask {
         this.subtaskPriority = subtaskPriority;
         this.subtaskDescription = subtaskDescription;
         this.subtaskStatus = subtaskStatus;
+        this.assignees = assignees;
     }
 
     public int getSubtaskID() {
@@ -100,6 +103,15 @@ public class SubTask {
     public void setSubtaskStatus(String subtaskStatus) {
         this.subtaskStatus = subtaskStatus;
     }
+
+    public List<Employee> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(List<Employee> assignees) {
+        this.assignees = assignees;
+    }
+
     public String remainingDays () {
         if (subtaskStartDate == null || subtaskEndDate == null) {
             return "0";
