@@ -19,6 +19,10 @@ public class G1SService {
         return g1SRepository.getAllSubProjects();
     }
 
+    public List<SubProject> getSubProjectByProjectId (int id) {
+        return g1SRepository.getSubprojectByProjectId(id);
+    }
+
     public SubProject addSubproject(SubProject subProject) {
         return g1SRepository.addSubProject(subProject);
     }

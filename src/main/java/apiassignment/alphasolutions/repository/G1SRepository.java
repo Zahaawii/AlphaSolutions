@@ -28,6 +28,7 @@ public class G1SRepository {
     }
 
     public SubProject addSubProject(SubProject subProject) {
+
         String sql = "INSERT INTO subproject (subprojectID, subproject_name, subproject_start_date, subproject_end_date, projectID) VALUES(?, ?, ?, ?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -54,6 +55,13 @@ public class G1SRepository {
 
 
         return subProject;
+    }
+
+    public List<SubProject> getSubprojectByProjectId(int id) {
+        String sql = "SELECT * FROM subproject WHERE projectID = ?";
+        List<SubProject> subProjects = jdbcTemplate.query(sql, new SubprojectRowMapper(), id);
+
+        return  subProjects;
     }
 
     public List<Task> getTasksBySubprojectId(int id) {

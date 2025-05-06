@@ -55,7 +55,6 @@ public class SubProject {
         this.subprojectStartDate = subprojectStartDate;
     }
 
-
     public int getProjectID() {
         return projectID;
     }
