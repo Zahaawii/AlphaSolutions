@@ -1,6 +1,5 @@
 package apiassignment.alphasolutions.model;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class SubProject {
@@ -35,12 +34,21 @@ public class SubProject {
         return subprojectName;
     }
 
+    public java.sql.Date getSubprojectStartDate() {
+        return (java.sql.Date) subprojectStartDate;
+    }
+
+    public void subprojectEndDate(Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
+    }
+
+    public java.sql.Date getSubprojectEndDate() {
+        return (java.sql.Date) subprojectEndDate;
+
     public void setSubprojectName(String subprojectName) {
         this.subprojectName = subprojectName;
     }
 
-    public Date getSubprojectStartDate() {
-        return subprojectStartDate;
     }
 
     public void setSubprojectStartDate(Date subprojectStartDate) {
@@ -61,6 +69,10 @@ public class SubProject {
 
     public void setProjectID(int projectID) {
         this.projectID = projectID;
+    }
+
+    public void setSubprojectEndDate(Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
     }
 
     @Override
