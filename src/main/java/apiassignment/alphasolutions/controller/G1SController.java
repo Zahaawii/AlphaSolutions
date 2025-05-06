@@ -1,6 +1,5 @@
 package apiassignment.alphasolutions.controller;
 
-
 import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.service.G1SService;
@@ -13,20 +12,43 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @Controller
 public class G1SController {
+  
     private final G1SService g1SService;
 
     public G1SController (G1SService g1SService){
         this.g1SService = g1SService;
     }
 
+  
+    @GetMapping("")
+    public String homepage() {
+        return "homepage";
+    }
 
+    @GetMapping("/subprojects")
+    public String subProjects(Model model) {
+        List<SubProject> getAllSubProjects = g1SService.getAllSubProjects();
+        model.addAttribute("AllSubProjects", getAllSubProjects);
+        return "subprojects";
+    }
 
+    @GetMapping("/create/subproject")
+    public String createSubproject(Model model) {
+        SubProject subProject = new SubProject();
+        model.addAttribute("subproject", subProject);
+        return "createSubproject";
+    }
 
+     @PostMapping("/create/subproject")
+     public String addSubproject(@ModelAttribute SubProject subProject) {
+         System.out.println(subProject);
+        g1SService.addSubproject(subProject);
+        return "redirect:/home";
+     }
 
 
     @GetMapping("/login")
@@ -60,6 +82,20 @@ public class G1SController {
         return "home";
     }
 
+    @GetMapping("/{id}/subproject")
+    public String subProjectByProjectId(@PathVariable("id") int projectId, Model model) {
+        List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(projectId);
+
+        model.addAttribute("subprojectById", subProjectByProjectId);
+
+        return "subprojectByProjectId";
+    }
+
+    @PostMapping("/subproject/delete/{id}")
+    public String deleteSubprojectBySubprojectId(@PathVariable("id") int id) {
+        g1SService.deleteSubprojectBysubProjectId(id);
+        return "redirect:/subprojects";
+    }
 
 
     @GetMapping("/subproject/{id}")
@@ -78,9 +114,6 @@ public class G1SController {
         model.addAttribute("tasks", tasks);
         SubProject subproject = g1SService.getSubProjectById(subprojectId);
         model.addAttribute("subproject", subproject);
-
-
-
 
         return "subprojectview";
     }
@@ -198,9 +231,6 @@ public class G1SController {
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminPanel";
     }
-
-
-
 
 
 
