@@ -81,7 +81,7 @@ public class G1SController {
         Project project = g1SService.getProjectById(id);
 
         if (project == null || project.getEmployeeId() != loggedInId) {
-            return "redirect:/access-denied"; // adgangscheck
+            return "redirect:/access-denied";
         }
 
         model.addAttribute("project", project);
@@ -97,7 +97,7 @@ public class G1SController {
         Integer loggedInId = (Integer) session.getAttribute("employeeID");
 
         if (project.getEmployeeId() != loggedInId) {
-            return "redirect:/home";
+            return "redirect:/projects";
         }
 
         if (assigneeIds == null) {
@@ -130,6 +130,6 @@ public class G1SController {
     public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
         List<Employee> selected = g1SService.getEmployeesByIds(ids);
         session.setAttribute("selectedCollaborators", selected);
-        return "redirect:/projects/new";
+        return "redirect:/projects";
     }
 }

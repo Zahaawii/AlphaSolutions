@@ -2,39 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Edit Project</title>
+  <link rel="stylesheet" th:href="@{/css/newProject.css}">
 </head>
 <body>
-<h1>Rediger projekt</h1>
 
 <form th:action="@{/projects/update}" th:object="${project}" method="post">
-  <input type="hidden" th:field="*{projectId}">
+  <input type="hidden" th:field="*{projectId}"/>
 
-  <label>Projekt Navn:</label>
-  <input type="text" th:field="*{projectName}" required><br><br>
-
-  <label>Status:</label>
-  <input type="text" th:field="*{projectStatus}"><br><br>
-
-  <label>Startdato:</label>
-  <input type="date" th:field="*{projectStartDate}"><br><br>
-
-  <label>Slutdato:</label>
-  <input type="date" th:field="*{projectEndDate}"><br><br>
-
-  <label>Medarbejdere tilknyttet:</label><br>
-  <div th:each="employee : ${employees}">
-    <label>
-      <input type="checkbox" name="assignees"
-             th:value="${employee.employeeID}"
-             th:checked="${assignees.contains(employee.employeeID)}">
-      <span th:text="${employee.employeeName}"></span>
-    </label><br>
+  <div class="input-group">
+    <input type="text" placeholder="PROJECT NAME" th:field="*{projectName}" required>
   </div>
-  <br>
 
-  <button type="submit">Gem ændringer</button>
+  <label class="description-label">DESCRIPTION</label>
+  <div class="description-box">
+    <textarea th:field="*{projectDescription}" id="description" maxlength="256"></textarea>
+    <div class="char-counter">Max. 256 characters</div>
+  </div>
+
+  <div class="date-container">
+    <div class="date-group">
+      <label for="startDate">START DATE</label>
+      <input type="date" id="startDate" th:field="*{projectStartDate}">
+    </div>
+    <div class="date-group">
+      <label for="endDate">END DATE</label>
+      <input type="date" id="endDate" th:field="*{projectEndDate}">
+    </div>
+  </div>
+
+  <div class="create-project-header">
+    <h2>UPDATE PROJECT</h2>
+    <button type="submit" class="submit-btn">+</button>
+  </div>
 </form>
 
-<a th:href="@{/projects}">Tilbage til mine projekter</a>
+<a th:href="@{/projects}">Back to My Projects</a>
 </body>
 </html>
