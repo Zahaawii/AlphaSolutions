@@ -64,6 +64,11 @@ public class G1SRepository {
         return  subProjects;
     }
 
+    public void deleteSubProject(int id) {
+        String sql = "DELETE FROM subproject WHERE subprojectID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     public List<Task> getTasksBySubprojectId(int id) {
         String sql = "SELECT * FROM task WHERE subProjectId = ?";
         List<Task> tasks = jdbcTemplate.query(sql, new TaskRowMapper(), id);

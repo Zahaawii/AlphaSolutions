@@ -81,6 +81,10 @@ public class G1SService {
         return g1SRepository.getEmployeesBySubtaskId(id);
     }
 
+    public void deleteSubprojectBysubProjectId(int id) {
+        g1SRepository.deleteEmployee(id);
+    }
+
 }
 
 

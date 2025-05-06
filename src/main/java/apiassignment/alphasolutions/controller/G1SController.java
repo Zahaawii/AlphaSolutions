@@ -91,6 +91,12 @@ public class G1SController {
         return "subprojectByProjectId";
     }
 
+    @PostMapping("/subproject/delete/{id}")
+    public String deleteSubprojectBySubprojectId(@PathVariable("id") int id) {
+        g1SService.deleteSubprojectBysubProjectId(id);
+        return "redirect:/subprojects";
+    }
+
 
     @GetMapping("/subproject/{id}")
     public String subProjectView (@PathVariable("id") int subprojectId, Model model) {

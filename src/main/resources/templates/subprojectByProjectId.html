@@ -18,6 +18,8 @@
     <h3 th:text="${i.subprojectStartDate}"></h3>
     <h3 th:text="${i.subprojectEndDate}"></h3>
 
+    <form th:action="@{/subproject/delete/{id}(id=${i.subprojectID})}" method="post" onsubmit="return confirm('Are you sure you want to delete this subpoject?')">
+    <button type="submit"> Delete subproject
 </div>
 </body>
 </html>
