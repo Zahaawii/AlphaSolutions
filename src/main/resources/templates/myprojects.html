@@ -19,7 +19,7 @@
             <div class="taskelementEnd">
                 <h5>Name</h5>
                 <h2>
-                    <a th:href="@{'/' + ${project.projectId} + '/subproject'}" th:text="${project.projectName}"></a>
+                    <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
                 </h2>
             </div>
 

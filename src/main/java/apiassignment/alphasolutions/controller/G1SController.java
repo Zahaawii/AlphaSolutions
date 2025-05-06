@@ -10,9 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 
-import java.util.ArrayList;
-
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -37,10 +34,10 @@ public class G1SController {
 
         if (employee != null) {
             int roleId = employee.getRoleId();
-            model.addAttribute("isProjectManager", roleId == 1);
-            model.addAttribute("isAdmin", roleId == 2);
-            model.addAttribute("canManageProjects", roleId == 1 || roleId == 2);
-            model.addAttribute("isEmployee", roleId == 3);
+            model.addAttribute("isProjectManager", roleId == 2);
+            model.addAttribute("isAdmin", roleId == 3);
+            model.addAttribute("canManageProjects", roleId == 2|| roleId == 3);
+            model.addAttribute("isEmployee", roleId == 1);
         }
     }
 
@@ -53,14 +50,14 @@ public class G1SController {
         }
 
         model.addAttribute("projects", g1SService.getAllProjects(employee.getEmployeeId()));
-        return "projects";
+        return "myprojects";
     }
 
     @GetMapping("/projects/new")
     public String newProject(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        if (employee == null || employee.getRoleId() != 1) {
-            return "redirect:/home";
+        if (employee == null) {
+            return "redirect:/login";
         }
         model.addAttribute("project", new Project());
         return "newProject";
@@ -80,8 +77,8 @@ public class G1SController {
     @GetMapping("/projects/edit/{id}")
     public String editProject(@PathVariable int id, Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        if (employee == null || employee.getRoleId() != 1) {
-            return "redirect:/home";
+        if (employee == null) {
+            return "redirect:/login";
         }
 
         Project project = g1SService.getProjectById(id);
@@ -98,12 +95,19 @@ public class G1SController {
     @GetMapping("/projects/delete/{id}")
     public String deleteProject(@PathVariable int id, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        if (employee == null || employee.getRoleId() != 1) {
-            return "redirect:/home";
+        if (employee == null) {
+            return "redirect:/login";
         }
 
         g1SService.deleteProject(id);
         return "redirect:/projects";
+    }
+
+    @GetMapping("/project/{id}")
+    public String projectView (@PathVariable int id, Model model, HttpSession session) {
+
+
+        return "myprojects";
     }
 
     @GetMapping("/select-collaborators")
