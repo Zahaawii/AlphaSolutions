@@ -1,4 +1,4 @@
-package apiassignment.alphasolutions.rowmappers;
+package apiassignment.alphasolutions.rowmapper;
 
 import apiassignment.alphasolutions.model.Project;
 import org.springframework.jdbc.core.RowMapper;

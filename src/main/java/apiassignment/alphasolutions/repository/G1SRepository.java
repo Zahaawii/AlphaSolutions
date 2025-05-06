@@ -5,6 +5,8 @@ import apiassignment.alphasolutions.model.*;
 import apiassignment.alphasolutions.rowmapper.*;
 
 
+import apiassignment.alphasolutions.rowmapper.ProjectRowmapper;
+import apiassignment.alphasolutions.rowmapper.SkillRowmapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -74,8 +75,8 @@ public class G1SRepository {
     }
 
     public void deleteProject(int projectID) {
-        String deleteAssignees = "DELETE FROM projectassignees WHERE project.projectID = ?";
-        String deleteProject = "DELETE FROM project WHERE project.projectID = ?";
+        String deleteAssignees = "DELETE FROM projectassignees WHERE projectID = ?";
+        String deleteProject = "DELETE FROM project WHERE projectID = ?";
         jdbcTemplate.update(deleteAssignees,projectID);
         jdbcTemplate.update(deleteProject,projectID);
     }
@@ -91,12 +92,6 @@ public class G1SRepository {
         );
     }
 
-    public void assignEmployeesToProject(int projectId, List<Integer> employeeIds) {
-        String sql = "INSERT INTO projectassignees (projectID, employeeID) VALUES (?, ?)";
-        for (Integer empId : employeeIds) {
-            jdbcTemplate.update(sql,projectId,employeeIds);
-        }
-    }
 
     public void clearProjectAssignees(int projectId) {
         String sql = "DELETE FROM projectassignees WHERE projectID = ?";
@@ -206,11 +201,11 @@ public class G1SRepository {
     }
 
     public List<Employee> getEmployeesByIds(List<Integer> ids) {
-        List<Employee> all = getAllEmployees();
+        List<Employee> all = getAllEmployee();
         List<Employee> selected = new ArrayList<>();
 
         for (Employee emp : all) {
-            if (ids.contains(emp.getEmployeeID())) {
+            if (ids.contains(emp.getEmployeeId())) {
                 selected.add(emp);
             }
         }

@@ -31,103 +31,78 @@ public class G1SController {
         this.g1SService = g1SService;
     }
 
-    // Husk at slette når der skal pushes
-    @GetMapping("/testlogin")
-    public String testLogin(HttpSession session) {
-        session.setAttribute("employeeID", 1);
-        session.setAttribute("roleID",1);
-        return "redirect:/projects";
+    @ModelAttribute
+    public void addRoleAttributesToModel(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        if (employee != null) {
+            int roleId = employee.getRoleId();
+            model.addAttribute("isProjectManager", roleId == 1);
+            model.addAttribute("isAdmin", roleId == 2);
+            model.addAttribute("canManageProjects", roleId == 1 || roleId == 2);
+            model.addAttribute("isEmployee", roleId == 3);
+        }
     }
 
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
-        Integer employeeID = (Integer) session.getAttribute("employeeID");
-        Integer roleID = (Integer) session.getAttribute("roleID");
+        Employee employee = (Employee) session.getAttribute("employee");
 
-        if (employeeID == null || roleID == null) {
+        if (employee == null) {
             return "redirect:/login";
         }
 
-        if (roleID == 1) {
-            boolean isProjectManager = true;
-            model.addAttribute("isProjectManager",isProjectManager);
-        }
-
-        model.addAttribute("projects", g1SService.getAllProjects(employeeID));
+        model.addAttribute("projects", g1SService.getAllProjects(employee.getEmployeeId()));
         return "projects";
     }
 
     @GetMapping("/projects/new")
     public String newProject(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
+        }
         model.addAttribute("project", new Project());
-
-        List<Employee> selected = (List<Employee>) session.getAttribute("selectedCollaborators");
-        if (selected == null) selected = new ArrayList<>();
-
-        model.addAttribute("selectedEmployees", selected);
         return "newProject";
     }
 
     @PostMapping("/projects")
-    public String createProject(@ModelAttribute Project project,
-                                @RequestParam(value = "assignees", required = false) List<Integer> assigneeIds,
-                                HttpSession session) {
-        Integer loggedInId = (Integer) session.getAttribute("employeeID");
-        if (loggedInId == null) {
-            return "redirect:/login";
-        }
-        // Her sættes projektlederen som ejer af projektet.
-        project.setEmployeeId(loggedInId);
-        if (assigneeIds == null) {
-            assigneeIds = List.of();
-        }
+    public String createProject(@ModelAttribute Project project, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
 
-        g1SService.createProjectWithAssignees(project, assigneeIds);
+        // Her sættes projektlederen som ejer af projektet.
+        project.setEmployeeId(employee.getEmployeeId());
+
+        g1SService.createProject(project);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/edit/{id}")
     public String editProject(@PathVariable int id, Model model, HttpSession session) {
-        Integer loggedInId = (Integer) session.getAttribute("employeeID");
-        Project project = g1SService.getProjectById(id);
-
-        if (project == null || project.getEmployeeId() != loggedInId) {
-            return "redirect:/access-denied";
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
         }
 
+        Project project = g1SService.getProjectById(id);
         model.addAttribute("project", project);
-        model.addAttribute("employees", g1SService.getAllEmployees());
-        model.addAttribute("assignees", g1SService.getProjectAssignees(id));
         return "editProject";
     }
 
     @PostMapping("/projects/update")
-    public String updateProject(@ModelAttribute Project project,
-                                @RequestParam(value = "assignees", required = false) List<Integer> assigneeIds,
-                                HttpSession session) {
-        Integer loggedInId = (Integer) session.getAttribute("employeeID");
-
-        if (project.getEmployeeId() != loggedInId) {
-            return "redirect:/projects";
-        }
-
-        if (assigneeIds == null) {
-            assigneeIds = List.of();
-        }
-
-        g1SService.updateProjectWithAssignees(project, assigneeIds);
+    public String updateProject(@ModelAttribute Project project) {
+        g1SService.updateProject(project);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/delete/{id}")
     public String deleteProject(@PathVariable int id, HttpSession session) {
-        Integer loggedInId = (Integer) session.getAttribute("employeeID");
-        Project project = g1SService.getProjectById(id);
-
-        if (project != null && project.getEmployeeId() == loggedInId) {
-            g1SService.deleteProject(id);
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null || employee.getRoleId() != 1) {
+            return "redirect:/home";
         }
 
+        g1SService.deleteProject(id);
         return "redirect:/projects";
     }
 
@@ -188,7 +163,11 @@ public class G1SController {
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home(HttpSession session, Model model){
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
         return "home";
     }
 
@@ -228,16 +207,16 @@ public class G1SController {
     @GetMapping("/adminpanel")
     public String adminPanel(HttpSession session, Model model){
         Employee checkEmployee = (Employee) session.getAttribute("employee");
-        if(checkEmployee.getRoleID() != 2 && checkEmployee.getRoleID() != 3){
+        if(checkEmployee.getRoleId() != 2 && checkEmployee.getRoleId() != 3){
             return "redirect:/home";
         }
         //projekleder(role 2) kan kun se medarbejdere
-        if(checkEmployee.getRoleID() == 2){
+        if(checkEmployee.getRoleId() == 2){
             List<Employee>getAllCommonWorkers = g1SService.getAllCommonWorkers();
             model.addAttribute("getAllEmployee", getAllCommonWorkers);
         }
         //admins(role 3) kan se alle, medarbejdere, projektledere og admins
-        if(checkEmployee.getRoleID() == 3) {
+        if(checkEmployee.getRoleId() == 3) {
             List<Employee> getAllEmployee = g1SService.getAllEmployee();
             model.addAttribute("getAllEmployee", getAllEmployee);
         }
@@ -248,17 +227,17 @@ public class G1SController {
     public String adminPanelAddEmployee(HttpSession session, Model model){
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
-        if(checkEmployee.getRoleID() != 3 && checkEmployee.getRoleID() != 2){
+        if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
             return "redirect:/home";
         }
         //tilføjer et nyt employee objekt
         Employee employee = new Employee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
-        if(checkEmployee.getRoleID() == 2) {
-            employee.setRoleID(1);
+        if(checkEmployee.getRoleId() == 2) {
+            employee.setRoleId(1);
         }
-        if(checkEmployee.getRoleID() == 3) {
+        if(checkEmployee.getRoleId() == 3) {
             //Hvis den givne employee er role 3(admin), så tilgår de siden og har mulighed for at ændre roleID
             model.addAttribute("admin", true);
             List<Role> listOfRoles = g1SService.getAllRoles();
@@ -290,7 +269,7 @@ public class G1SController {
     public String adminUpdateEmployeeGet(@PathVariable int id, HttpSession session, Model model){
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
-        if(checkEmployee.getRoleID() != 3 && checkEmployee.getRoleID() != 2){
+        if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
             return "redirect:/home";
         }
         //laver et employee objekt ud fra det id vi får med i URL'en
@@ -300,11 +279,11 @@ public class G1SController {
         Employee newEmployee = new Employee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
-        if(checkEmployee.getRoleID() == 2) {
-            newEmployee.setRoleID(1);
+        if(checkEmployee.getRoleId() == 2) {
+            newEmployee.setRoleId(1);
         }
         //Hvis den givne employee er role 3(admin), så tilgår de siden og har mulighed for at ændre roleID
-        if(checkEmployee.getRoleID() == 3) {
+        if(checkEmployee.getRoleId() == 3) {
             model.addAttribute("admin", true);
             List<Role> listOfRoles = g1SService.getAllRoles();
             model.addAttribute("roles", listOfRoles);
@@ -315,7 +294,7 @@ public class G1SController {
 
     @PostMapping("/admin/update")
     public String adminUpdateEmployeePost(@ModelAttribute Employee newEmployee, HttpSession session, Model model){
-        int employeeID = newEmployee.getEmployeeID();
+        int employeeID = newEmployee.getEmployeeId();
         if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + employeeID; //hvis det ikke er frit, bliver man smidt tilbage til update siden

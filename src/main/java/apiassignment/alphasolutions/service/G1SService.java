@@ -26,15 +26,12 @@ public class G1SService {
         return g1SRepository.getProjectById(projectId);
     }
 
-    public void createProjectWithAssignees(Project project, List<Integer> assigneeIds) {
+    public void createProject(Project project) {
         g1SRepository.createProject(project);
-        g1SRepository.assignEmployeesToProject(project.getProjectId(), assigneeIds);
     }
 
-    public void updateProjectWithAssignees(Project project, List<Integer> assigneeIds) {
+    public void updateProject(Project project) {
         g1SRepository.updateProject(project);
-        g1SRepository.clearProjectAssignees(project.getProjectId());
-        g1SRepository.assignEmployeesToProject(project.getProjectId(), assigneeIds);
     }
 
     public void deleteProject(int projectID) {
@@ -42,7 +39,7 @@ public class G1SService {
     }
 
     public List<Employee> getAllEmployees() {
-        return g1SRepository.getAllEmployees();
+        return g1SRepository.getAllEmployee();
     }
 
     public List<Integer> getProjectAssignees(int projectId) {
@@ -50,10 +47,10 @@ public class G1SService {
     }
 
     public List<Employee> getAllEmployeeWithSkills() {
-        List<Employee> employees = g1SRepository.getAllEmployees();
+        List<Employee> employees = g1SRepository.getAllEmployee();
 
         for(Employee emp : employees) {
-            List<Skill> skills = g1SRepository.getSkillsByEmployeeId(emp.getEmployeeID());
+            List<Skill> skills = g1SRepository.getSkillsByEmployeeId(emp.getEmployeeId());
             emp.setSkills(skills);
         }
 

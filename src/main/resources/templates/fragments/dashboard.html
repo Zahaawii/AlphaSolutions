@@ -19,16 +19,16 @@
       <a href="/home">
         <h2>Home</h2>
       </a>
-      <a href="/home">
+      <a th:if="${canManageProjects}" th:href="@{/projects/new}">
         <h2>New Project</h2>
       </a>
-      <a href="/home">
+      <a th:href="@{/projects}">
         <h2>My Projects</h2>
       </a>
       <a href="/home">
         <h2>My Tasks</h2>
       </a>
-      <a href="/adminpanel">
+      <a th:if="${isAdmin}" href="/adminpanel">
         <h2>Admin Panel</h2>
       </a>
 

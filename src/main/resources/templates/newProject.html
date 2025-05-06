@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New Project</title>
-    <link rel="stylesheet" th:href="@{/css/newProject.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+<div th:replace="fragments/dashboard :: dashboard"></div>
 
 <form th:action="@{/projects}" th:object="${project}" method="post">
     <div class="input-group">

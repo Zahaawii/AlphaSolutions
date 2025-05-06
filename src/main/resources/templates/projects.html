@@ -1,37 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Mine Projekter</title>
+    <meta charset="UTF-8">
+    <title>My Projects</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<h1>My Projects</h1>
 
-<a th:if="${isProjectManager}" th:href="@{/projects/new}">New Project</a>
-<br><br>
+<div th:replace="fragments/dashboard :: dashboard"></div>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th th:if="${isProjectManager}"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="project : ${projects}">
-        <td th:text="${project.projectName}"></td>
-        <td th:text="${project.projectStatus}"></td>
-        <td th:text="${project.projectStartDate}"></td>
-        <td th:text="${project.projectEndDate}"></td>
-        <td th:if="${isProjectManager}">
-            <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">Edit</a> |
-            <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
-               onclick="return confirm('Are you sure you want to delete this project?');">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="taskListContainer">
+    <h1>My Projects</h1>
+
+    <div th:each="project : ${projects}">
+        <div class="taskContentContainer">
+
+            <div class="taskelementEnd">
+                <h5>Name</h5>
+                <h2>
+                    <a th:href="@{'/' + ${project.projectId} + '/subproject'}" th:text="${project.projectName}"></a>
+                </h2>
+            </div>
+
+            <div class="v-separator" style="height: 60px;"></div>
+
+            <div class="taskelement">
+                <h5>Status</h5>
+                <h2 th:text="${project.projectStatus}"></h2>
+            </div>
+
+            <div class="v-separator" style="height: 60px;"></div>
+
+            <div class="taskelement">
+                <h5>Start Date</h5>
+                <h2 th:text="${project.projectStartDate}"></h2>
+            </div>
+
+            <div class="v-separator" style="height: 60px;"></div>
+
+            <div class="taskelement">
+                <h5>End Date</h5>
+                <h2 th:text="${project.projectEndDate}"></h2>
+            </div>
+
+            <div class="v-separator" style="height: 60px;" th:if="${isProjectManager}"></div>
+
+            <div class="taskelementStart" th:if="${isProjectManager}">
+                <h5>Actions</h5>
+                <div>
+                    <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
+                       onclick="return confirm('Are you sure you want to delete this project?');">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-separator"></div>
+    </div>
+</div>
+
 </body>
 </html>

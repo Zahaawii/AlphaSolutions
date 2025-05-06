@@ -10,24 +10,23 @@ import jdk.jfr.DataAmount;
 
 
 public class Employee {
-    private int employeeID;
+    private int employeeId;
     private String employeeName;
     private String employeeEmail;
     private String employeeUsername;
     private String employeePassword;
-
     private List<Skill> skills = new ArrayList<>();
-    private int roleID;
+    private int roleId;
 
     public Employee() {}
 
-    public Employee(int employeeID, String employeeName) {
-        this.employeeID = employeeID;
+    public Employee(int employeeId, String employeeName) {
+        this.employeeId = employeeId;
         this.employeeName = employeeName;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
     public String getEmployeeName() {
@@ -50,16 +49,20 @@ public class Employee {
         return skills;
     }
 
-    public int getRoleID() {
-        return roleID;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
     }
 
     public void setEmployeeUsername(String employeeUsername) {
@@ -74,19 +77,19 @@ public class Employee {
         this.skills = skills;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-                "employeeId=" + employeeID +
+                "employeeId=" + employeeId +
                 ", employeeName='" + employeeName + '\'' +
                 ", employeeEmail='" + employeeEmail + '\'' +
                 ", employeeUsername='" + employeeUsername + '\'' +
                 ", employeePassword='" + employeePassword + '\'' +
-                ", roleId=" + roleID +
+                ", roleId=" + roleId +
                 '}';
     }
 
