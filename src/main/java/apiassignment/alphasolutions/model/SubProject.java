@@ -22,16 +22,16 @@ public class SubProject {
 
     }
 
-    public int getProjectID() {
-        return projectID;
+    public int getSubprojectID() {
+        return subprojectID;
     }
 
-    public void setProjectID(int projectID) {
-        this.projectID = projectID;
+    public void setSubprojectID(int subprojectID) {
+        this.subprojectID = subprojectID;
     }
 
-    public Date subprojectEndDate() {
-        return subprojectEndDate;
+    public String getSubprojectName() {
+        return subprojectName;
     }
 
     public java.sql.Date getSubprojectStartDate() {
@@ -44,26 +44,31 @@ public class SubProject {
 
     public java.sql.Date getSubprojectEndDate() {
         return (java.sql.Date) subprojectEndDate;
+
+    public void setSubprojectName(String subprojectName) {
+        this.subprojectName = subprojectName;
+    }
+
     }
 
     public void setSubprojectStartDate(Date subprojectStartDate) {
         this.subprojectStartDate = subprojectStartDate;
     }
 
-    public String getSubprojectName() {
-        return subprojectName;
+    public Date getSubprojectEndDate() {
+        return subprojectEndDate;
     }
 
-    public void setSubprojectName(String subprojectName) {
-        this.subprojectName = subprojectName;
+    public void setSubprojectEndDate(Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
     }
 
-    public int getSubprojectID() {
-        return subprojectID;
+    public int getProjectID() {
+        return projectID;
     }
 
-    public void setSubprojectID(int subprojectID) {
-        this.subprojectID = subprojectID;
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 
     public void setSubprojectEndDate(Date subprojectEndDate) {

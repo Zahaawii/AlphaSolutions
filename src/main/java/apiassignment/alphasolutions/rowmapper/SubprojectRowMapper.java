@@ -18,6 +18,7 @@ public class SubprojectRowMapper implements RowMapper<SubProject> {
         subProject.setSubprojectName(rs.getString("subproject_Name"));
         subProject.setSubprojectStartDate(rs.getDate("subproject_start_date"));
         subProject.subprojectEndDate(rs.getDate("subproject_end_date"));
+        subProject.setSubprojectEndDate(rs.getDate("subproject_end_date"));
         subProject.setProjectID(rs.getInt("projectID"));
 
         return subProject;

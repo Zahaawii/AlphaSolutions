@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update employee</title>
+</head>
+<body>
+<div>
+    <h1>Update employee</h1>
+    <p th:if="${notFree}">There is already an employee with this username</p>
+
+    <form th:action="@{admin/update}" th:object="${newEmployee}" method="post">
+        <input type="hidden" id="employeeId" name="employeeId" th:value="${oldEmployee.getEmployeeId()}">
+
+        <div>
+            <label for="employeeName"></label>
+            <input type="text" id="employeeName" name="employeeName" placeholder="Name" th:value="${oldEmployee.getEmployeeName()}" required>
+        </div>
+        <div>
+            <label for="employeeEmail"></label>
+            <input type="text" id="employeeEmail" name="employeeEmail" placeholder="Email" th:value="${oldEmployee.getEmployeeEmail()}" required>
+        </div>
+        <div>
+            <label for="employeeUsername"></label>
+            <input type="text" id="employeeUsername" name="employeeUsername" placeholder="Username" th:value="${oldEmployee.getEmployeeUsername()}" required>
+        </div>
+        <div>
+            <label for="employeePassword"></label>
+            <input type="text" id="employeePassword" name="employeePassword" placeholder="Password" th:value="${oldEmployee.getEmployeePassword()}" required>
+        </div>
+        <div th:if="${admin}">
+            <label for="roleId"></label>
+            <select id="roleId" name="roleId">
+                <option th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
+            </select>
+        </div>
+
+        <button type="submit">Update</button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>
