@@ -301,6 +301,25 @@ public class G1SController {
         return "redirect:/subproject/" + subprojectIdString;
     }
 
+    @PostMapping("/subproject/{subprojectid}/delete/task/{taskid}")
+    public String deleteTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
+        String subprojectIdString = String.valueOf(subprojectid);
+        g1SService.deleteTask(taskid);
+        return "redirect:/subproject/" + subprojectIdString;
+    }
+
+    @GetMapping("/subproject/{subprojectid}/edit/task/{taskid}")
+    public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
+
+        return "editTask";
+    }
+
+    @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
+    public String editSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
+
+        return "editSubtask";
+    }
+
     @GetMapping("/admin/update/{id}")
     public String adminUpdateEmployeeGet(@PathVariable int id, HttpSession session, Model model){
         Employee checkEmployee = (Employee)session.getAttribute("employee");
