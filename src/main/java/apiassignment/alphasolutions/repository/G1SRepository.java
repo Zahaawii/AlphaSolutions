@@ -29,6 +29,7 @@ public class G1SRepository {
         String sql = "SELECT * FROM task WHERE subProjectId = ?";
         List<Task> tasks = jdbcTemplate.query(sql, new TaskRowMapper(), id);
 
+        //populate list of subtasks inside each task
         for (Task task : tasks) {
             task.setSubtasks(getSubtasksByTaskId(task.getTaskId()));
         }
@@ -132,6 +133,16 @@ public class G1SRepository {
 
     public void deleteEmployee(int id){
         String sql ="DELETE FROM employee WHERE employeeID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void deleteTask(int id) {
+        String sql = "DELETE FROM task WHERE taskID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void deleteSubtask(int id) {
+        String sql = "DELETE FROM subtask WHERE subtaskID = ?";
         jdbcTemplate.update(sql, id);
     }
 

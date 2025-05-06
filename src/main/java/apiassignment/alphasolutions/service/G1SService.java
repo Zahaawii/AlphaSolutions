@@ -41,6 +41,14 @@ public class G1SService {
         g1SRepository.deleteEmployee(id);
     }
 
+    public void deleteTask (int id) {
+        g1SRepository.deleteTask(id);
+    }
+
+    public void deleteSubtask (int id) {
+        g1SRepository.deleteSubtask(id);
+    }
+
     public Employee getEmployeeById(int id) {
         return g1SRepository.getEmployeeById(id);
     }
