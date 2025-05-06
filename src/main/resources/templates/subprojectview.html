@@ -110,20 +110,24 @@
 
                     <div class="taskelementStart">
                         <h5>Actions</h5>
-                        <div>
-                            <button type="submit" class="iconbutton">
+                        <div class="buttoncontainer">
+                            <a th:href="@{/subproject/{subprojectid}/edit/task/{taskid}(subprojectid=${subproject.subprojectID}, taskid=${task.taskId})}">
                                 <i class="fas fa-edit fa-2x"></i>
-                            </button>
+                            </a>
+                            <form th:action="@{/subproject/{subprojectid}/delete/task/{taskid}(subprojectid=${subproject.subprojectID}, taskid=${task.taskId})}"
+                            method="post" onsubmit="return confirm('Are you sure you want to delete this subtask?')">
                             <button type="submit" class="iconbutton">
                                 <i class="fa-solid fa-trash fa-2x"></i>
                             </button>
+                            </form>
                         </div>
 
                         <div th:each="subtask : ${task.getSubtasks()}">
                             <div class="buttoncontainer">
-                                <button type="submit" class="iconbutton">
+                                <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}">
                                     <i class="far fa-edit fa-lg"></i>
-                                </button>
+                                </a>
+
                                 <form th:action="@{/subproject/{subprojectid}/delete/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}"
                                       method="post"
                                       onsubmit="return confirm('Are you sure you want to delete this subtask?')">
