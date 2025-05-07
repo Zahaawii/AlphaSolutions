@@ -109,6 +109,7 @@ public class G1SController {
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
 
         model.addAttribute("subprojects", subProjectByProjectId);
+        model.addAttribute("projectid", id);
         return "myprojectSubproject";
     }
 
