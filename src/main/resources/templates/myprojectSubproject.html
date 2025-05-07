@@ -15,7 +15,9 @@
 
   <div th:each="subproject : ${subprojects}">
     <div class="taskContentContainer">
-
+      <a th:href="@{'/create/subproject/' + ${subproject.projectID}}"> <span> Add sub project </span>
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </a>
       <div class="taskelementEnd">
         <h5>Name</h5>
         <a th:href="@{'/subproject/' + ${subproject.subprojectID}}" th:text="${subproject.subprojectName}"></a>
@@ -49,6 +51,7 @@
       <div class="taskelementStart" th:if="${isProjectManager or isAdmin}">
         <h5>Actions</h5>
         <div>
+
           <a th:href="@{/subproject/edit/{id}(id=${subproject.subprojectID})}">
             <i class="fas fa-edit"></i>
           </a>

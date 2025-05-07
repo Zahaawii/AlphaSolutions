@@ -126,7 +126,7 @@ public class G1SRepository {
                 ps.setString(2, subProject.getSubprojectName());
                 ps.setDate(3, subProject.getSubprojectStartDate());
                 ps.setDate(4, subProject.getSubprojectEndDate());
-                ps.setInt(5, 1);
+                ps.setInt(5, subProject.getProjectID());
                 return ps;
             }, keyHolder);
 
