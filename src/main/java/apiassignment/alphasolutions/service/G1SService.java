@@ -43,7 +43,7 @@ public class G1SService {
         return g1SRepository.getAllEmployee();
     }
 
-    public List<Integer> getProjectAssignees(int projectId) {
+    public List<Employee> getProjectAssignees(int projectId) {
         return g1SRepository.getProjectAssignees(projectId);
     }
 
@@ -100,6 +100,14 @@ public class G1SService {
 
     public void deleteTask(int id) {
         g1SRepository.deleteTask(id);
+    }
+
+    public Task updateTask(Task task) {
+        return g1SRepository.updateTask(task);
+    }
+
+    public Task getTaskById (int id) {
+        return g1SRepository.getTaskById(id);
     }
 
     public void deleteSubtask(int id) {

@@ -302,6 +302,10 @@ public class G1SController {
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
     public String deleteSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+
+
         String subprojectIdString = String.valueOf(subprojectid);
         g1SService.deleteSubtask(subtaskid);
         return "redirect:/subproject/" + subprojectIdString;
@@ -315,9 +319,18 @@ public class G1SController {
     }
 
     @GetMapping("/subproject/{subprojectid}/edit/task/{taskid}")
-    public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
-
+    public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, Model model, HttpSession session) {
+        model.addAttribute("task", g1SService.getTaskById(taskid));
+        model.addAttribute("subprojectid", subprojectid);
+        model.addAttribute("taskid", taskid);
         return "editTask";
+    }
+
+    @PostMapping("/subproject/{subprojectid}/edit/task/{taskid}")
+    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task) {
+        g1SService.updateTask(task);
+
+        return "redirect:/subproject/" + subprojectid;
     }
 
     @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")

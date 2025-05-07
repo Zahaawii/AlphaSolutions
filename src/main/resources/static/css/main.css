@@ -16,10 +16,11 @@ html, body {
 a {
     text-decoration: none;
     color: black;
+    transition: 0.5s;
+
 }
 a:hover {
     color: var(--accent-color);
-    transition: 0.5s;
 }
 
 .dashboardMainContainer {
@@ -71,6 +72,12 @@ a:hover {
     transform: scale(85%);
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
+.taskListContainer.big {
+    align-self: center;
+    justify-self: center;
+    margin-top: 3em;
+    transform: scale(100%);
 }
 .taskListContainer::-webkit-scrollbar {
     display: none;
@@ -314,8 +321,7 @@ a:hover {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+
 }
 
 .date-group {
@@ -370,6 +376,95 @@ h2, .description-label, .date-group label {
     cursor: pointer;
 
 }
+
+.inputWrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2em;
+}
+
+.inputWrapperTwo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+}
+
+.inputName {
+    font-size: 3em;
+    font-weight: 800;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: center;
+    z-index: 2;
+
+}
+
+.inputDescriptionBox {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 400px;
+    min-height: 100px;
+    background: white;
+    padding: 2em;
+    box-shadow: 0 20px 80px #ffb5c4;
+    transition: 1.5s ease;
+
+}
+.inputDescriptionBox:hover {
+    box-shadow: 0 10px 40px var(--accent-color);
+}
+.gradientBorder {
+    background: linear-gradient(to right, white, #FF325A, white);
+    padding: 0em;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.inputDescriptionText {
+    font-size: 1em;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.inputDropdown {
+    font-size: 1.5em;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.5s;
+
+}
+.inputDropdown:hover {
+    color: var(--accent-color);
+}
+.dropdownWrapper {
+    display: flex;
+    gap: 4em;
+}
+
+
+
 
 
 
