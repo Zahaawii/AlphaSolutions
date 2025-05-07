@@ -28,6 +28,16 @@ public class Employee {
         this.employeeName = employeeName;
     }
 
+    public Employee(int employeeId, String employeeName, String employeeEmail, String employeeUsername, String employeePassword, List<Skill> skills, int roleId) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.employeeEmail = employeeEmail;
+        this.employeeUsername = employeeUsername;
+        this.employeePassword = employeePassword;
+        this.skills = skills;
+        this.roleId = roleId;
+    }
+
     public int getEmployeeId() {
         return employeeId;
     }
