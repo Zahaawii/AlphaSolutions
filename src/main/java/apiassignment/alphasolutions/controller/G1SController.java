@@ -41,6 +41,16 @@ public class G1SController {
         }
     }
 
+    @GetMapping("")
+    public String index (Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        } else {
+            return "redirect:/home";
+        }
+    }
+
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
@@ -126,10 +136,6 @@ public class G1SController {
         return "redirect:/projects";
     }
 
-    @GetMapping("")
-    public String homepage() {
-        return "homepage";
-    }
 
     @GetMapping("/subprojects")
     public String subProjects(Model model) {
