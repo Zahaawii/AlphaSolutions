@@ -12,12 +12,13 @@
 
 <div class="taskListContainer">
   <h1>My Projects sub projects</h1>
+  <a th:href="@{'/create/subproject/' + ${projectid}}"> <span> Add sub project </span>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
 
   <div th:each="subproject : ${subprojects}">
     <div class="taskContentContainer">
-      <a th:href="@{'/create/subproject/' + ${subproject.projectID}}"> <span> Add sub project </span>
-        <i class="fa fa-plus" aria-hidden="true"></i>
-      </a>
+
       <div class="taskelementEnd">
         <h5>Name</h5>
         <a th:href="@{'/subproject/' + ${subproject.subprojectID}}" th:text="${subproject.subprojectName}"></a>
