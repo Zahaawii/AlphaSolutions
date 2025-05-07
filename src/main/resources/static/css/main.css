@@ -364,6 +364,11 @@ h2, .description-label, .date-group label {
     text-align: center;
 }
 
+.deleteknap {
+     border: none;
+     background-color: white;
+}
+
 
 
 
