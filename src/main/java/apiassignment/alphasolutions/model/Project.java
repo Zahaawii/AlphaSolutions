@@ -18,6 +18,17 @@ public class Project {
         this.projectName = projectName;
     }
 
+    //adding full args constructor for testing purpose
+    public Project(int projectId, String projectName, int employeeId, Date projectStartDate, Date projectEndDate, String projectDescription, String projectStatus) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.employeeId = employeeId;
+        this.projectStartDate = projectStartDate;
+        this.projectEndDate = projectEndDate;
+        this.projectDescription = projectDescription;
+        this.projectStatus = projectStatus;
+    }
+
     public int getProjectId() {
         return projectId;
     }
