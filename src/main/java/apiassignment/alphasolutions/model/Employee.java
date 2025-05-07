@@ -48,9 +48,6 @@ public class Employee {
         return employeePassword;
     }
 
-    public List<Skill> getSkills() {
-        return skills;
-    }
 
     public int getRoleId() {
         return roleId;
@@ -76,9 +73,7 @@ public class Employee {
         this.employeePassword = employeePassword;
     }
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
+
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;

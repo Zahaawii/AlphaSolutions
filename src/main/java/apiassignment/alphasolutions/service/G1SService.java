@@ -153,7 +153,7 @@ public class G1SService {
         return g1SRepository.getSkillsForEmployee(employeeId);
     }
 
-        public List<Employee> getEmployeeBySkillNotPartOfProject(String skill, int projectId) {
+    public List<Employee> getEmployeeBySkillNotPartOfProject(String skill, int projectId) {
         List<Employee> notPartOfProject = g1SRepository.getEmployeeNotPartOfProject(projectId);
         if(notPartOfProject == null || notPartOfProject.isEmpty()){
             return null;
