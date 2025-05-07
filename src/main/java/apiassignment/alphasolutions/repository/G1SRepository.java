@@ -318,6 +318,50 @@ public class G1SRepository {
         String sql = "SELECT * from roles";
         return jdbcTemplate.query(sql, new RoleRowmapper());
     }
+    public List<Skill>getAllSkills(){
+        String sql = "SELECT * FROM skill";
+        return jdbcTemplate.query(sql, new SkillRowmapper());
+    }
+
+    public List<Employee>getEmployeeBySkills(String skills){
+        String sql = "SELECT employee.* from employee " +
+                "join skillrelation on employee.employeeID = skillrelation.employeeID " +
+                "join skill on skill.skillID = skillrelation.skillID " +
+                "where skill_name = ?";
+        List<Employee> listOfEmployees = jdbcTemplate.query(sql, new EmployeeRowmapper(), skills);
+        if(listOfEmployees.isEmpty()){
+            return null;
+        }
+        return listOfEmployees;
+    }
+    public List<Employee>getEmployeeNotPartOfProject(int projectId){
+        String sql ="SELECT * FROM employee " +
+                "WHERE employeeID NOT IN (" +
+                "    SELECT employeeID " +
+                "    FROM projectassignees " +
+                "    WHERE projectID = ? )";
+        return jdbcTemplate.query(sql, new EmployeeRowmapper(), projectId);
+    }
+
+    public void addEmployeeToProject(int projectId, int employeeId){
+        String sql = "INSERT INTO projectassignees (projectId, employeeId) VALUES (?, ?)";
+        jdbcTemplate.update(sql, projectId, employeeId);
+    }
+    public List<Skill>getSkillsForEmployee(int employeeId){
+        String sql = "SELECT skill.* FROM skill " +
+                "JOIN skillrelation ON skillrelation.skillID = skill.skillID " +
+                "JOIN employee ON employee.employeeID = skillrelation.employeeID " +
+                "WHERE employee.employeeID = ?";
+        return jdbcTemplate.query(sql, new SkillRowmapper(), employeeId);
+    }
+    public List<Project>getProjectsForOneEmployee(int employeeId){
+        String sql = "SELECT project.* from project " +
+                "join projectassginees on projectassginees.projectID = project.projectID " +
+                "join employee on employee.employeeID = projectassginees.employeeID " +
+                "where employee.employeeID = ?";
+        return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeId);
+    }
+
 
     public void updateSubproject(SubProject subProject) {
         String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";

@@ -74,6 +74,7 @@ public class Project {
         this.projectStatus = projectStatus;
     }
 
+
     @Override
     public String toString() {
         return "Project{" +
@@ -87,3 +88,4 @@ public class Project {
                 '}';
     }
 }
+

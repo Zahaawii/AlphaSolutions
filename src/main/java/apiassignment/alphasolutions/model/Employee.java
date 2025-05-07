@@ -8,6 +8,9 @@ import java.util.List;
 
 import jdk.jfr.DataAmount;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Employee {
     private int employeeId;
@@ -79,6 +82,14 @@ public class Employee {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     @Override
