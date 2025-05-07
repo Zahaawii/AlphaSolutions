@@ -1,17 +1,16 @@
 package apiassignment.alphasolutions.model;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class SubProject {
 
     private int subprojectID;
     private String subprojectName;
-    private Date subprojectStartDate;
-    private Date subprojectEndDate;
+    private java.sql.Date subprojectStartDate;
+    private java.sql.Date subprojectEndDate;
     private int projectID;
 
-    public SubProject(int subprojectID, String subprojectName, Date subprojectStartDate, Date subprojectEndDate, int projectID) {
+    public SubProject(int subprojectID, String subprojectName, java.sql.Date subprojectStartDate, java.sql.Date subprojectEndDate, int projectID) {
         this.subprojectID = subprojectID;
         this.subprojectName = subprojectName;
         this.subprojectStartDate = subprojectStartDate;
@@ -35,24 +34,25 @@ public class SubProject {
         return subprojectName;
     }
 
+    public java.sql.Date getSubprojectStartDate() {
+        return (java.sql.Date) subprojectStartDate;
+    }
+
+    public void subprojectEndDate(java.sql.Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
+    }
+
+    public java.sql.Date getSubprojectEndDate() {
+        return (java.sql.Date) subprojectEndDate;
+    }
+
     public void setSubprojectName(String subprojectName) {
         this.subprojectName = subprojectName;
+
     }
 
-    public Date getSubprojectStartDate() {
-        return subprojectStartDate;
-    }
-
-    public void setSubprojectStartDate(Date subprojectStartDate) {
+    public void setSubprojectStartDate(java.sql.Date subprojectStartDate) {
         this.subprojectStartDate = subprojectStartDate;
-    }
-
-    public Date getSubprojectEndDate() {
-        return subprojectEndDate;
-    }
-
-    public void setSubprojectEndDate(Date subprojectEndDate) {
-        this.subprojectEndDate = subprojectEndDate;
     }
 
     public int getProjectID() {
@@ -61,6 +61,10 @@ public class SubProject {
 
     public void setProjectID(int projectID) {
         this.projectID = projectID;
+    }
+
+    public void setSubprojectEndDate(java.sql.Date subprojectEndDate) {
+        this.subprojectEndDate = subprojectEndDate;
     }
 
     @Override

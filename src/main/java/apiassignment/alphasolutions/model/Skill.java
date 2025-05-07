@@ -27,4 +27,6 @@ public class Skill {
     public void setSkillName(String skillName) {
         this.skillName = skillName;
     }
+
 }
+

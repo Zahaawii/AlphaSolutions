@@ -3,10 +3,12 @@ package apiassignment.alphasolutions.controller;
 
 import apiassignment.alphasolutions.model.*;
 
+
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +20,138 @@ import java.util.List;
 
 @Controller
 public class G1SController {
+
+
     private final G1SService g1SService;
 
-    public G1SController (G1SService g1SService){
+    public G1SController(G1SService g1SService) {
         this.g1SService = g1SService;
     }
 
+    @ModelAttribute
+    public void addRoleAttributesToModel(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("employee");
 
+        if (employee != null) {
+            int roleId = employee.getRoleId();
+            model.addAttribute("isProjectManager", roleId == 2);
+            model.addAttribute("isAdmin", roleId == 3);
+            model.addAttribute("canManageProjects", roleId == 2|| roleId == 3);
+            model.addAttribute("isEmployee", roleId == 1);
+        }
+    }
 
+    @GetMapping("/projects")
+    public String getMyProjects(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
 
+        if (employee == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("projects", g1SService.getAllProjects(employee.getEmployeeId()));
+        return "myprojects";
+    }
+
+    @GetMapping("/projects/new")
+    public String newProject(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("project", new Project());
+        return "newProject";
+    }
+
+    @PostMapping("/projects")
+    public String createProject(@ModelAttribute Project project, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        // Her sættes projektlederen som ejer af projektet.
+        project.setEmployeeId(employee.getEmployeeId());
+
+        g1SService.createProject(project);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/projects/edit/{id}")
+    public String editProject(@PathVariable int id, Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+
+        Project project = g1SService.getProjectById(id);
+        model.addAttribute("project", project);
+        return "editProject";
+    }
+
+    @PostMapping("/projects/update")
+    public String updateProject(@ModelAttribute Project project) {
+        System.out.println(project);
+        g1SService.updateProject(project);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/projects/delete/{id}")
+    public String deleteProject(@PathVariable int id, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+
+        g1SService.deleteProject(id);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("/project/{id}")
+    public String projectView (@PathVariable int id, Model model, HttpSession session) {
+        List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
+
+        model.addAttribute("subprojects", subProjectByProjectId);
+        model.addAttribute("projectid", id);
+        return "myprojectSubproject";
+    }
+
+    @GetMapping("/select-collaborators")
+    public String selectCollaborators(Model model) {
+        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
+        return "selectCollaborators";
+    }
+
+    @PostMapping("/save-collaborators")
+    public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
+        List<Employee> selected = g1SService.getEmployeesByIds(ids);
+        session.setAttribute("selectedCollaborators", selected);
+        return "redirect:/projects";
+    }
+
+    @GetMapping("")
+    public String homepage() {
+        return "homepage";
+    }
+
+    @GetMapping("/subprojects")
+    public String subProjects(Model model) {
+        List<SubProject> getAllSubProjects = g1SService.getAllSubProjects();
+        model.addAttribute("AllSubProjects", getAllSubProjects);
+        return "subprojects";
+    }
+
+    @GetMapping("/create/subproject/{id}")
+    public String createSubproject(Model model, @PathVariable int id) {
+        SubProject subProject = new SubProject();
+        subProject.setProjectID(id);
+        model.addAttribute("subproject", subProject);
+        return "createSubproject";
+    }
+
+     @PostMapping("/create/subproject")
+     public String addSubproject(@ModelAttribute SubProject subProject) {
+         System.out.println(subProject);
+        g1SService.addSubproject(subProject);
+        return "redirect:/home";
+     }
 
 
     @GetMapping("/login")
@@ -55,10 +180,31 @@ public class G1SController {
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home(HttpSession session, Model model){
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
         return "home";
     }
 
+   /* Ikke relevant længere tror jeg
+    @GetMapping("/{id}/subproject")
+    public String subProjectByProjectId(@PathVariable("id") int projectId, Model model) {
+        List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(projectId);
+
+        model.addAttribute("subprojectById", subProjectByProjectId);
+
+        return "subprojectByProjectId";
+    }
+    */
+
+    @PostMapping("/subproject/delete/{id}")
+    public String deleteSubprojectBySubprojectId(@PathVariable int id) {
+        System.out.println(g1SService.getSubProjectById(id));
+        g1SService.deleteSubprojectBysubProjectId(id);
+        return "redirect:/projects";
+    }
 
 
     @GetMapping("/subproject/{id}")
@@ -77,9 +223,6 @@ public class G1SController {
         model.addAttribute("tasks", tasks);
         SubProject subproject = g1SService.getSubProjectById(subprojectId);
         model.addAttribute("subproject", subproject);
-
-
-
 
         return "subprojectview";
     }
@@ -147,16 +290,34 @@ public class G1SController {
 
     @PostMapping("/admin/delete/{id}")
     public String adminDeleteEmployee(@PathVariable int id, HttpSession session){
-
         g1SService.deleteEmployee(id);
         return "redirect:/adminPanel";
     }
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
     public String deleteSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
-
+        String subprojectIdString = String.valueOf(subprojectid);
         g1SService.deleteSubtask(subtaskid);
-        return "redirect:/subproject/" + subprojectid;
+        return "redirect:/subproject/" + subprojectIdString;
+    }
+
+    @PostMapping("/subproject/{subprojectid}/delete/task/{taskid}")
+    public String deleteTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
+        String subprojectIdString = String.valueOf(subprojectid);
+        g1SService.deleteTask(taskid);
+        return "redirect:/subproject/" + subprojectIdString;
+    }
+
+    @GetMapping("/subproject/{subprojectid}/edit/task/{taskid}")
+    public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
+
+        return "editTask";
+    }
+
+    @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
+    public String editSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
+
+        return "editSubtask";
     }
 
     @GetMapping("/admin/update/{id}")
@@ -196,6 +357,7 @@ public class G1SController {
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminPanel";
     }
+
 
     @GetMapping("/project/{projectId}/assignees/select-skill")
     public String redirectToSkill(
@@ -259,9 +421,25 @@ public class G1SController {
     }
 
 
+    @GetMapping("/subproject/edit/{id}")
+    public String editSubProject(@PathVariable int id, Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
 
 
+        SubProject subProject = g1SService.getSubProjectById(id);
+        model.addAttribute("subprojects", subProject);
+        return "editSubprojects";
+    }
 
+    @PostMapping("/subprojects/update")
+    public String updateSubProject(@ModelAttribute SubProject subProject) {
+        System.out.println(subProject);
+        g1SService.updateSubproject(subProject);
+        return "redirect:/projects";
+    }
 
 
 }

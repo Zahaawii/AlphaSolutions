@@ -16,4 +16,6 @@ public class SkillRowmapper implements RowMapper<Skill> {
 
         return skill;
     }
+
 }
+
