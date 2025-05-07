@@ -356,8 +356,8 @@ public class G1SRepository {
     }
     public List<Project>getProjectsForOneEmployee(int employeeId){
         String sql = "SELECT project.* from project " +
-                "join projectassginees on projectassginees.projectID = project.projectID " +
-                "join employee on employee.employeeID = projectassginees.employeeID " +
+                "join projectassignees on projectassignees.projectID = project.projectID " +
+                "join employee on employee.employeeID = projectassignees.employeeID " +
                 "where employee.employeeID = ?";
         return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeId);
     }

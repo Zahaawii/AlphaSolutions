@@ -414,7 +414,6 @@ public class G1SController {
         Employee employee = g1SService.getEmployeeById(employeeId);
         employee.setSkills(g1SService.getSkillsForEmployee(employeeId));
         List<Project>projectList = g1SService.getProjectsForOneEmployee(employeeId);
-        model.addAttribute("name", employee.getEmployeeName());
         model.addAttribute("employee", employee);
         model.addAttribute("projects", projectList);
         return "profile";

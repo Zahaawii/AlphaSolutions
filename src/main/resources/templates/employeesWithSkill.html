@@ -43,7 +43,7 @@
 
         <td>
             <div>
-                <button><a th:href="@{profile/${i.getEmployeeId()}}" >
+                <button><a th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}" >
                     See employee profile</a></button>
                 <form th:action="@{/project/{projectId}/add/{employeeId}(projectId=${projectId}, employeeId = ${i.getEmployeeId})}" method="post">
                     <button type="submit">Add to project</button>
