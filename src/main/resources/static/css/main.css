@@ -364,6 +364,8 @@ h2, .description-label, .date-group label {
 .deleteknap {
      border: none;
      background-color: white;
+    cursor: pointer;
+
 }
 
 

@@ -137,9 +137,10 @@ public class G1SController {
         return "subprojects";
     }
 
-    @GetMapping("/create/subproject")
-    public String createSubproject(Model model) {
+    @GetMapping("/create/subproject/{id}")
+    public String createSubproject(Model model, @PathVariable int id) {
         SubProject subProject = new SubProject();
+        subProject.setProjectID(id);
         model.addAttribute("subproject", subProject);
         return "createSubproject";
     }
