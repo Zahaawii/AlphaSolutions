@@ -39,7 +39,6 @@ public class G1SController {
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
         Employee employee = g1SService.login(username, password);
-        System.out.println(employee);
         if(employee == null){
             model.addAttribute("wrongLogin", true);
             return "login";
@@ -142,7 +141,6 @@ public class G1SController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
-        System.out.println(employee);
         g1SService.adminRegisterEmployee(employee);
         return "redirect:/adminPanel";
     }
@@ -197,6 +195,67 @@ public class G1SController {
         }
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminPanel";
+    }
+
+    @GetMapping("/project/{projectId}/assignees/select-skill")
+    public String redirectToSkill(
+            @PathVariable Long projectId,
+            @RequestParam String skill) {
+        return "redirect:/project/" + projectId + "/assignees/" + skill;
+    }
+
+    @GetMapping("/project/{projectId}/assignees/")
+    public String getEmployeesNoSkill(@PathVariable int projectId, HttpSession session, Model model){
+        List<Skill> skillList = g1SService.getAllSkills();
+        model.addAttribute("skills", skillList);
+        model.addAttribute("projectId", projectId);
+        List<Employee>employees = g1SService.getEmployeeNotPartOfProject(projectId);
+        if(employees == null){
+            model.addAttribute("notPartOfProject", true);
+            model.addAttribute("foundEmployee", false);
+            return "employeesWithSkill";
+        } else {
+            model.addAttribute("foundEmployee", true);
+            model.addAttribute("listOfEmployee", employees);
+        }
+        return "employeesWithSkill";
+    }
+
+    @GetMapping("/project/{projectId}/assignees/{skill}")
+    public String getEmployeesWithCertainSkill(@PathVariable int projectId, @PathVariable String skill, HttpSession session, Model model){
+        List<Skill> skillList = g1SService.getAllSkills();
+        model.addAttribute("skills", skillList);
+        model.addAttribute("projectId", projectId);
+        List<Employee>listOfEmployee = g1SService.getEmployeeBySkillNotPartOfProject(skill, projectId);
+        if(listOfEmployee == null){
+            model.addAttribute("noEmployee", true);
+            model.addAttribute("foundEmployee", false);
+            return "employeesWithSkill";
+        }
+        model.addAttribute("foundEmployee", true);
+        model.addAttribute("listOfEmployee", listOfEmployee);
+        return "employeesWithSkill";
+    }
+
+
+    @PostMapping("/project/{projectId}/add/{employeeId}")
+    public String addEmployeeToProject( @PathVariable int projectId, @PathVariable int employeeId, HttpSession session, Model model){
+        if(projectId == 0 || employeeId == 0){
+            return "redirect:/project/" + projectId;
+        }
+        g1SService.addEmployeeToProject(projectId, employeeId);
+        return "redirect:/project/" + projectId;
+    }
+
+    @GetMapping("/profile/{employeeId}")
+    public String seeProfile(@PathVariable int employeeId, HttpSession session, Model model){
+        Employee employee = g1SService.getEmployeeById(employeeId);
+        employee.setSkills(g1SService.getSkillsForEmployee(employeeId));
+        List<Project>projectList = g1SService.getProjectsForOneEmployee(employeeId);
+        model.addAttribute("name", employee.getEmployeeName());
+        model.addAttribute("employee", employee);
+        model.addAttribute("projects", projectList);
+        return "profile";
     }
 
 

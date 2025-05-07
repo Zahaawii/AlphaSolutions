@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <div>
+    <h1>Profile of,&nbsp<span th:text="${name}"></span>
+    </h1>
+        <h2>Email:</h2>
+        <h3 th:text="${employee.getEmployeeEmail()}"></h3>
+    </div>
+    <div th:each="i : ${employee.getSkills()}">
+    <h2>SKILLS:</h2>
+        <h3 th:text="${i.getSkillName()}"></h3>
+    </div>
+
+    <div th:each="b : ${projects}">
+        <h2>Ongoing projects:</h2>
+        <h3 th:text="${b.getProjectName()}"></h3>
+        <h3 th:text="${b.getProjectStartDate()}"></h3>
+        <h3 th:text="${b.getProjectEndDate()}"></h3>
+    </div>
+
+
+
+
+</body>
+</html>

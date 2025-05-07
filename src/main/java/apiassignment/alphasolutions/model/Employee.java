@@ -2,6 +2,9 @@ package apiassignment.alphasolutions.model;
 
 import jdk.jfr.DataAmount;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Employee {
     private int employeeId;
@@ -9,6 +12,7 @@ public class Employee {
     private String employeeEmail;
     private String employeeUsername;
     private String employeePassword;
+    private List<Skill> skills = new ArrayList<>();
     private int roleId;
 
     public Employee(int employeeId, String employeeName, String employeeEmail, String employeeUsername, String employeePassword, int roleId) {
@@ -69,6 +73,14 @@ public class Employee {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     @Override
