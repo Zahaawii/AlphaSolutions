@@ -98,9 +98,14 @@ public class G1SRepository {
         jdbcTemplate.update(sql, projectId);
     }
 
-    public List<Integer> getProjectAssignees(int projectId) {
-        String sql = "SELECT employeeID FROM projectassignees WHERE projectID = ?";
-        return jdbcTemplate.queryForList(sql, Integer.class, projectId);
+    public List<Employee> getProjectAssignees(int projectId) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN projectassignees ON employee.employeeID = projectassignees.employeeID
+        WHERE projectassignees.projectID = ?
+    """;
+        return jdbcTemplate.query(sql, new EmployeeRowmapper(), projectId);
     }
 
    
@@ -289,9 +294,24 @@ public class G1SRepository {
         jdbcTemplate.update(sql, id);
     }
 
+    public Task getTaskById(int id) {
+        String sql = "SELECT * FROM task WHERE taskID = ?";
+        Task task = jdbcTemplate.query(sql, new TaskRowMapper(), id).getFirst();
+
+        //populate task with assignees
+        task.setAssignees(getEmployeesByTaskId(id));
+        return task;
+    }
+
     public void deleteTask(int id) {
         String sql = "DELETE FROM task WHERE taskID = ?";
         jdbcTemplate.update(sql, id);
+    }
+
+    public Task updateTask(Task task) {
+        String sql = "UPDATE task SET task_Name = ?, task_estimate = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ?, task_status = ?";
+        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskEstimate(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskDescription(), task.getTaskStatus());
+        return task;
     }
 
     public void deleteSubtask(int id) {
@@ -372,6 +392,7 @@ public class G1SRepository {
                 subProject.getSubprojectID()
         );
     }
+
 
 
 }
