@@ -325,6 +325,7 @@ public class G1SController {
         return "redirect:/subproject/" + subprojectIdString;
     }
 
+
     @GetMapping("/subproject/{subprojectid}/edit/task/{taskid}")
     public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, Model model, HttpSession session) {
         model.addAttribute("task", g1SService.getTaskById(taskid));
@@ -340,6 +341,23 @@ public class G1SController {
         g1SService.updateTask(task);
 
         return "redirect:/subproject/" + subprojectid;
+    }
+
+    @GetMapping("/subproject/{subprojectid}/create/task")
+    public String createTask(@PathVariable int subprojectid, Model model, HttpSession session) {
+        model.addAttribute("subprojectid", subprojectid);
+        model.addAttribute("task", new Task());
+
+        return "createTask";
+    }
+
+    @PostMapping("/subproject/{subprojectid}/create/task")
+    public String createTask(@PathVariable int subprojectid, Task task) {
+        g1SService.createTask(task);
+        System.out.println(task);
+
+        return "redirect:/subproject/" + subprojectid;
+
     }
 
     @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")

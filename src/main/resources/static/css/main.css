@@ -459,6 +459,7 @@ h2, .description-label, .date-group label {
     padding: 0em;
     display: inline-block;
     border-radius: 5px;
+    height: 100%;
 }
 
 .inputDescriptionText {

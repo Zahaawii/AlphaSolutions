@@ -65,7 +65,7 @@ public class Task {
         this.taskEstimate = taskEstimate;
     }
 
-    public Date getTaskStartDate() {
+    public java.sql.Date getTaskStartDate() {
         return taskStartDate;
     }
 
@@ -73,7 +73,7 @@ public class Task {
         this.taskStartDate = taskStartDate;
     }
 
-    public Date getTaskEndDate() {
+    public java.sql.Date getTaskEndDate() {
         return taskEndDate;
     }
 

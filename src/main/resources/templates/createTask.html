@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/dashboard :: dashboard"></div>
+
+<div class="taskListContainer big">
+    <form class="inputWrapper"
+          th:object="${task}"
+          th:action="@{/subproject/{subprojectid}/create/task/(subprojectid=${subprojectid})}"
+          method="post">
+        <!--<input type="hidden" th:field="${task.taskId}">-->
+        <input type="hidden" th:field="${task.subprojectId}">
+
+        <textarea placeholder="Task Name" th:field="*{taskName}" class="inputName" rows="4" maxlength="256"></textarea>
+
+
+
+        <div class="gradientBorder">
+            <div class="inputDescriptionBox">
+                <textarea placeholder="Type a description here" th:field="*{taskDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+            </div>
+        </div>
+
+        <div class="inputWrapperTwo">
+            <div class="date-container">
+                <div class="date-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" th:field="*{taskStartDate}">
+                </div>
+                <div class="date-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" th:field="*{taskEndDate}">
+                </div>
+            </div>
+
+
+            <div class="">
+                <div class="taskelement">
+                    <h5>Priority</h5>
+                    <select th:field="*{taskPriority}" class="inputDropdown">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="taskelement">
+                    <h5>Estimate</h5>
+                    <input th:field="*{taskEstimate}" class="inputDropdown">
+                </div>
+            </div>
+            <div class="taskelement">
+                <h5>Status</h5>
+                <select placeholder="Not Started" th:field="*{taskStatus}" class="inputDropdown">
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="saveButton">Create</button>
+
+
+    </form>
+</div>
+
+
+</body>
+</html>
