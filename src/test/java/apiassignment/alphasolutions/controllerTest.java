@@ -293,13 +293,47 @@ public class controllerTest {
     void testUrl() throws Exception {}
 
     @Test
-    void adminPanel() throws Exception {}
+    void adminPanel() throws Exception {
+        mockMvc.perform(get("/adminpanel").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminPanel"));
+    }
 
     @Test
-    void adminPanelAddEmployee() throws Exception {}
+    void adminPanelRoleIdNotAllowed() throws Exception{
+        employee.setRoleId(1);
+        mockMvc.perform(get("/adminpanel").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
+    }
 
     @Test
-    void adminRegisterEmployee() throws Exception {}
+    void adminPanelAddEmployee() throws Exception {
+        mockMvc.perform(get("/admin/addEmployee").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminAddEmployee"));
+    }
+    @Test
+    void adminPanelAddEmployeeIdNotAllowed() throws Exception {
+        employee.setRoleId(1);
+        mockMvc.perform(get("/admin/addEmployee").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
+    }
+
+    @Test
+    void adminRegisterEmployee() throws Exception {
+        when(g1SService.isUsernameFree("huw02")).thenReturn(true);
+        mockMvc.perform(post("/admin/register").session(session)
+                        .param("employeeId", "2")
+                        .param("employeeName", "hannibal")
+                        .param("employeeEmail", "hannibal@ussing.com")
+                        .param("employeeUsername", "huw02")
+                        .param("employeePassword", "1234")
+                        .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/adminpanel"));
+    }
 
     @Test
     void adminDeleteEmployee () throws Exception {}
@@ -321,6 +355,7 @@ public class controllerTest {
 
     @Test
     void adminUpdateEmployeePost () throws Exception {}
+
 
 
 
