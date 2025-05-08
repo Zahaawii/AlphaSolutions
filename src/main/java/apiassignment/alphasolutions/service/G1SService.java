@@ -106,6 +106,10 @@ public class G1SService {
         g1SRepository.updateTask(task);
     }
 
+    public Task createTask (Task task) {
+        return g1SRepository.createTask(task);
+    }
+
     public Task getTaskById (int id) {
         return g1SRepository.getTaskById(id);
     }

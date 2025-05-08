@@ -317,6 +317,41 @@ public class G1SRepository {
 
     }
 
+    public Task createTask (Task task) {
+        String sql = "INSERT INTO task (task_Name, subProjectId, task_estimate, task_start_date, task_end_date, task_priority, task_description, task_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, task.getTaskName());
+                ps.setInt(2, task.getSubprojectId());
+                ps.setInt(3, task.getTaskEstimate());
+                ps.setDate(4, new java.sql.Date(task.getTaskStartDate().getTime()));
+                ps.setDate(5, new java.sql.Date(task.getTaskEndDate().getTime()));
+                ps.setString(6, task.getTaskPriority());
+                ps.setString(7, task.getTaskDescription());
+                ps.setString(8, task.getTaskStatus());
+                return ps;
+            }, keyHolder);
+
+            int taskID = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+
+            if (taskID != -1) {
+                task.setTaskId(taskID);
+            }
+
+
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to create the subproject in the database: ", e);
+        }
+
+        return task;
+    }
+
     public void updateSubtask(SubTask subtask) {
         String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ? WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskID());

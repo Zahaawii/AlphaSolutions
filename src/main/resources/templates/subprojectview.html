@@ -15,7 +15,7 @@
 
         <div class="taskListContainer">
             <h1 th:text="${subproject.getSubprojectName()}"></h1>
-            <a class="addSubproject" th:href="@{'/create/subproject/' + ${projectid}}">
+            <a class="addSubproject" th:href="@{/subproject/{subprojectid}/create/task(subprojectid=${subproject.subprojectID})}">
                 <span>Create new task</span>
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
