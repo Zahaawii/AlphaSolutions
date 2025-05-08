@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
-    <div>
-    <h1>Profile of,&nbsp<span th:text="${employee.getEmployeeName()}"></span>
+<div class="profile-container">
+    <h1 class="profile-title">
+        Profile of <span class="employee-name" th:text="${employee.getEmployeeName()}"></span>
     </h1>
-        <h2>Email:</h2>
-        <h3 th:text="${employee.getEmployeeEmail()}"></h3>
-    </div>
-    <h2>SKILLS:</h2>
-    <div th:each="i : ${employee.getSkills()}">
-        <h3 th:text="${i.getSkillName()}"></h3>
+
+    <div class="section">
+        <h2 class="section-title">Email:</h2>
+        <h3 class="email" th:text="${employee.getEmployeeEmail()}"></h3>
     </div>
 
-    <h2>Ongoing projects:</h2>
-    <div th:each="b : ${projects}">
-        <h3 th:text="${b.getProjectName()}"></h3>
-        <h3 th:text="${b.getProjectStartDate()}"></h3>
-        <h3 th:text="${b.getProjectEndDate()}"></h3>
+    <div class="section">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-list" th:each="i : ${employee.getSkills()}">
+            <h3 class="skill-badge" th:text="${i.getSkillName()}"></h3>
+        </div>
     </div>
 
-
-
-
+    <div class="section">
+        <h2 class="section-title">Ongoing Projects</h2>
+        <div class="project-card" th:each="b : ${projects}">
+            <h3 class="project-name" th:text="${b.getProjectName()}"></h3>
+            <h3 class="project-date" th:text="${b.getProjectStartDate()}"></h3>
+            <h3 class="project-date" th:text="${b.getProjectEndDate()}"></h3>
+        </div>
+    </div>
+</div>
 </body>
 </html>
