@@ -15,7 +15,10 @@
 
         <div class="taskListContainer">
             <h1 th:text="${subproject.getSubprojectName()}"></h1>
-
+            <a class="addSubproject" th:href="@{'/create/subproject/' + ${projectid}}">
+                <span>Create new task</span>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
 
             <div th:each="task : ${tasks}">
                 <div class="taskContentContainer">
@@ -27,6 +30,13 @@
                                     <h4 th:text="${subtask.getSubtaskName()}"></h4>
                                 </div>
                         </div>
+                        <div class="taskelement">
+                            <a class="addSubtask" th:href="@{'/create/subproject/' + ${projectid}}">
+                                <span> Add subtask </span>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
                     </div>
 
                             <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
@@ -38,6 +48,9 @@
                             <div class="taskelement">
                                 <h4 th:text="${subtask.getSubtaskPriority()}"></h4>
                             </div>
+                        </div>
+                        <div class="taskelement">
+                                <span class="hidden"> Add subtask </span>
                         </div>
                     </div>
 
@@ -52,6 +65,9 @@
                                 <h4 th:text="${subtask.getSubtaskStartDate()}"></h4>
                             </div>
                         </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
+                        </div>
                     </div>
 
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
@@ -65,6 +81,9 @@
                                 <h4 th:text="${subtask.remainingDays()}"></h4>
                             </div>
                         </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
+                        </div>
                     </div>
 
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
@@ -77,6 +96,9 @@
                                 <h4 th:text="${subtask.getSubtaskStatus()}"></h4>
                             </div>
                         </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
+                        </div>
                     </div>
 
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
@@ -85,22 +107,35 @@
                         <h5>Assignees</h5>
                         <div class="avatargrid">
                             <div th:each="assignee : ${task.getAssignees()}">
+                                <a th:href="@{/profile/{assigneeid}(assigneeid=${assignee.getEmployeeId()})}">
                                 <div class="avatar"
-                                     th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
-                             #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
+                                th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
+                                #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
                                 </div>
+                                </a>
+
                             </div>
+
+
+
                         </div>
+
 
                         <div class="avatargrid">
                             <div th:each="subtask : ${task.getSubtasks()}">
                                 <div th:each="assignee : ${subtask.getAssignees()}">
+                                    <a th:href="@{/profile/{assigneeid}(assigneeid=${assignee.getEmployeeId()})}">
+
                                     <div class="avatar avatar--small"
                                          th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
                              #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
                                     </div>
+                                    </a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
                         </div>
 
 
@@ -122,6 +157,7 @@
                             </form>
                         </div>
 
+
                         <div th:each="subtask : ${task.getSubtasks()}">
                             <div class="buttoncontainer">
                                 <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}">
@@ -138,6 +174,9 @@
 
                             </div>
                         </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
+                        </div>
                     </div>
 
 
@@ -146,7 +185,10 @@
 
 
 
+
                 </div>
+
+
                 <div class="h-separator"></div>
 
 

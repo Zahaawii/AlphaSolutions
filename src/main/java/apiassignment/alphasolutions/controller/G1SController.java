@@ -6,6 +6,7 @@ import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.server.ResponseStatusException;
+
 import org.springframework.web.util.UriUtils;
+
 
 
 import java.nio.charset.StandardCharsets;
@@ -330,15 +335,27 @@ public class G1SController {
 
     @PostMapping("/subproject/{subprojectid}/edit/task/{taskid}")
     public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task) {
+
+        System.out.println(task);
         g1SService.updateTask(task);
 
         return "redirect:/subproject/" + subprojectid;
     }
 
     @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
-    public String editSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
+    public String editSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, Model model, HttpSession session) {
+        model.addAttribute("subtask", g1SService.getSubtaskById(subtaskid));
+        model.addAttribute("subprojectid", subprojectid);
+        model.addAttribute("subtaskid", subtaskid);
 
         return "editSubtask";
+    }
+
+    @PostMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
+    public String editSubtask(@PathVariable int subprojectid, @PathVariable int subtaskid, @ModelAttribute SubTask subtask) {
+        g1SService.updateSubtask(subtask);
+
+        return "redirect:/subproject/" + subprojectid;
     }
 
     @GetMapping("/admin/update/{id}")

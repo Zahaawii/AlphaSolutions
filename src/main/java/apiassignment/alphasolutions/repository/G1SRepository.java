@@ -308,10 +308,15 @@ public class G1SRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    public Task updateTask(Task task) {
-        String sql = "UPDATE task SET task_Name = ?, task_estimate = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ?, task_status = ?";
-        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskEstimate(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskDescription(), task.getTaskStatus());
-        return task;
+    public void updateTask(Task task) {
+        String sql = "UPDATE task SET task_Name = ?, task_estimate = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ?, task_status = ? WHERE taskID = ?";
+        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskEstimate(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskPriority(), task.getTaskDescription(), task.getTaskStatus(), task.getTaskId());
+
+    }
+
+    public void updateSubtask(SubTask subtask) {
+        String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ? WHERE subtaskID = ?";
+        jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskID());
     }
 
     public void deleteSubtask(int id) {
@@ -326,6 +331,11 @@ public class G1SRepository {
             return null;
         }
         return employees.getFirst();
+    }
+
+    public SubTask getSubtaskById(int id) {
+        String sql = "SELECT * FROM subtask WHERE subtaskID = ?";
+        return jdbcTemplate.query(sql, new SubTaskRowMapper(), id).getFirst();
     }
 
     public Employee updateEmployee(Employee employee){

@@ -12,9 +12,95 @@
 <body>
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<div class="taskListContainer">
-    <h1>Edit Subtask</h1>
+<div class="taskListContainer big">
+    <form class="inputWrapper"
+          th:object="${subtask}"
+          th:action="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subprojectid}, subtaskid=${subtaskid})}"
+          method="post">
+        <input type="hidden" th:field="${subtask.subtaskID}">
 
+        <textarea th:field="*{subtaskName}" class="inputName" rows="4" maxlength="256"></textarea>
+
+        <!--<input type="text" th:field="*{subtaskName}" class="inputName" >-->
+        <!--<div contenteditable="true" class="inputName" th:text="*{subtaskName}"></div>-->
+
+        <div class="gradientBorder">
+            <div class="inputDescriptionBox">
+                <!--<input type="text" th:field="*{subtaskDescription}" class="inputName" >-->
+                <textarea th:field="*{subtaskDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+                <!--<div contenteditable="true" class="inputDescriptionText" th:text="*{taskDescription}"></div>-->
+            </div>
+        </div>
+
+        <div class="inputWrapperTwo">
+            <div class="date-container">
+                <div class="date-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" th:field="*{subtaskStartDate}">
+                </div>
+                <div class="date-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" th:field="*{subtaskEndDate}">
+                </div>
+            </div>
+
+
+            <div class="">
+                <div class="taskelement">
+                    <h5>Priority</h5>
+                    <select th:field="*{subtaskPriority}" class="inputDropdown">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="taskelement">
+                    <h5>Estimate</h5>
+                    <input th:field="*{subtaskEstimate}" class="inputDropdown">
+                </div>
+            </div>
+            <div class="taskelement">
+                <h5>Status</h5>
+                <select th:field="*{subtaskStatus}" class="inputDropdown">
+                    <option value="Completed">Completed</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Not Started">Not Started</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="taskelement">
+            <h5>Assignees</h5>
+
+            <div class="avatargrid">
+
+                <div th:each="assignee : *{assignees}">
+                    <a th:href="@{/profile/{employeeId}(employeeId=${assignee.getEmployeeId()})}">
+                        <div class="avatar"
+                             th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
+                             #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
+
+                        </div>
+                    </a>
+
+                </div>
+                <a th:href="@{select-collaborators}">
+                    <div class="avatar">+</div>
+                </a>
+
+            </div>
+
+            <button type="submit" class="saveButton">Save</button>
+
+        </div>
+
+    </form>
 </div>
 
 

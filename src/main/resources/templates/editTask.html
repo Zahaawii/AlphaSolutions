@@ -15,29 +15,38 @@
 <div class="taskListContainer big">
         <form class="inputWrapper"
               th:object="${task}"
-              th:action="@{/subproject/{subprojectid}/edit/task/{taskid}(subprojectid=${subprojectid}, taskid=${taskid})}" method="post">
-            <div contenteditable="true" class="inputName" th:text="*{taskName}"></div>
+              th:action="@{/subproject/{subprojectid}/edit/task/{taskid}(subprojectid=${subprojectid}, taskid=${taskid})}"
+              method="post">
+            <input type="hidden" th:field="${task.taskId}">
+            <input type="hidden" th:field="${task.subprojectId}">
+
+            <textarea th:field="*{taskName}" class="inputName" rows="4" maxlength="256"></textarea>
+
+            <!--<input type="text" th:field="*{taskName}" class="inputName" >-->
+            <!--<div contenteditable="true" class="inputName" th:text="*{taskName}"></div>-->
 
             <div class="gradientBorder">
                 <div class="inputDescriptionBox">
-                    <div contenteditable="true" class="inputDescriptionText" th:text="*{taskDescription}"></div>
+                    <!--<input type="text" th:field="*{taskDescription}" class="inputName" >-->
+                    <textarea th:field="*{taskDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+                    <!--<div contenteditable="true" class="inputDescriptionText" th:text="*{taskDescription}"></div>-->
                 </div>
             </div>
 
         <div class="inputWrapperTwo">
             <div class="date-container">
-                <div class="date-group" onclick="document.getElementById('startDate').showPicker()">
+                <div class="date-group">
                     <label for="startDate">Start Date</label>
                     <input type="date" id="startDate" th:field="*{taskStartDate}">
                 </div>
-                <div class="date-group" onclick="document.getElementById('endDate').showPicker()">
+                <div class="date-group">
                     <label for="endDate">End Date</label>
                     <input type="date" id="endDate" th:field="*{taskEndDate}">
                 </div>
             </div>
 
 
-            <div class="dropdownWrapper">
+            <div class="">
                 <div class="taskelement">
                     <h5>Priority</h5>
                     <select th:field="*{taskPriority}" class="inputDropdown">
@@ -48,14 +57,20 @@
 
                 </div>
 
+
+
                 <div class="taskelement">
-                    <h5>Status</h5>
-                    <select th:field="*{taskStatus}" class="inputDropdown">
-                        <option value="High">Completed</option>
-                        <option value="Medium">In Progress</option>
-                        <option value="Low">Not Started</option>
-                    </select>
+                    <h5>Estimate</h5>
+                    <input th:field="*{taskEstimate}" class="inputDropdown">
                 </div>
+            </div>
+            <div class="taskelement">
+                <h5>Status</h5>
+                <select th:field="*{taskStatus}" class="inputDropdown">
+                    <option value="Completed">Completed</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Not Started">Not Started</option>
+                </select>
             </div>
         </div>
 
@@ -82,8 +97,10 @@
 
                 </div>
 
-                <button type="submit">Save</button>
+                <button type="submit" class="saveButton">Save</button>
 
+
+            </div>
 
         </form>
 </div>
