@@ -8,6 +8,7 @@ import apiassignment.alphasolutions.rowmapper.*;
 import apiassignment.alphasolutions.rowmapper.ProjectRowmapper;
 import apiassignment.alphasolutions.rowmapper.SkillRowmapper;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -43,8 +44,12 @@ public class G1SRepository {
     }
 
     public Project getProjectById(int projectId) {
-        String sql = "SELECT * FROM project WHERE projectID = ?";
-        return jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
+        try {
+            String sql = "SELECT * FROM project WHERE projectID = ?";
+            return jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void createProject(Project project) {
@@ -75,9 +80,7 @@ public class G1SRepository {
     }
 
     public void deleteProject(int projectID) {
-        String deleteAssignees = "DELETE FROM projectassignees WHERE projectID = ?";
         String deleteProject = "DELETE FROM project WHERE projectID = ?";
-        jdbcTemplate.update(deleteAssignees,projectID);
         jdbcTemplate.update(deleteProject,projectID);
     }
 
