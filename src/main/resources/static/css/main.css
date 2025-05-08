@@ -114,6 +114,9 @@ a:hover {
     margin-top: 1em;
     text-align: end;
 }
+.taskelementEnd h2 {
+    text-align: end;
+}
 .taskelementStart {
     display: flex;
     flex-direction: column;
