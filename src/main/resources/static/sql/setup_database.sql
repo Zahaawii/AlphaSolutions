@@ -128,3 +128,5 @@ CREATE TABLE skillRelation
     FOREIGN KEY (skillID) REFERENCES skill (skillID) ON DELETE CASCADE,
     FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
 );
+
+
