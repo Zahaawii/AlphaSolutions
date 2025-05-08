@@ -102,12 +102,20 @@ public class G1SService {
         g1SRepository.deleteTask(id);
     }
 
-    public Task updateTask(Task task) {
-        return g1SRepository.updateTask(task);
+    public void updateTask(Task task) {
+        g1SRepository.updateTask(task);
     }
 
     public Task getTaskById (int id) {
         return g1SRepository.getTaskById(id);
+    }
+
+    public SubTask getSubtaskById (int id) {
+        return g1SRepository.getSubtaskById(id);
+    }
+
+    public void updateSubtask (SubTask subtask) {
+        g1SRepository.updateSubtask(subtask);
     }
 
     public void deleteSubtask(int id) {

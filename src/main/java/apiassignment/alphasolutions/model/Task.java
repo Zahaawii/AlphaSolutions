@@ -9,8 +9,8 @@ public class Task {
     private String taskName;
     private int subprojectId;
     private int taskEstimate;
-    private Date taskStartDate;
-    private Date taskEndDate;
+    private java.sql.Date taskStartDate;
+    private java.sql.Date taskEndDate;
     private String taskPriority;
     private String taskDescription;
     private String taskStatus;
@@ -20,7 +20,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(int taskId, String taskName, int subprojectId, int taskEstimate, Date taskStartDate, Date taskEndDate, String taskPriority, String taskDescription, String taskStatus, List<SubTask> subtasks) {
+    public Task(int taskId, String taskName, int subprojectId, int taskEstimate, java.sql.Date taskStartDate, java.sql.Date taskEndDate, String taskPriority, String taskDescription, String taskStatus, List<SubTask> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.subprojectId = subprojectId;
@@ -69,7 +69,7 @@ public class Task {
         return taskStartDate;
     }
 
-    public void setTaskStartDate(Date taskStartDate) {
+    public void setTaskStartDate(java.sql.Date taskStartDate) {
         this.taskStartDate = taskStartDate;
     }
 
@@ -77,7 +77,7 @@ public class Task {
         return taskEndDate;
     }
 
-    public void setTaskEndDate(Date taskEndDate) {
+    public void setTaskEndDate(java.sql.Date taskEndDate) {
         this.taskEndDate = taskEndDate;
     }
 

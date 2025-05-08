@@ -86,6 +86,9 @@ a:hover {
     font-size: 3em;
     font-weight: 800;
 }
+.hidden {
+    visibility: hidden;
+}
 
 .taskContentMainContainer {
     display: flex;
@@ -186,8 +189,21 @@ a:hover {
     flex-direction: column;
     align-items: center;
     gap: 2em;
-
 }
+
+.addSubproject {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 1em;
+}
+.addSubtask {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
 
 .h-separator {
     width: 90%;
@@ -404,7 +420,15 @@ h2, .description-label, .date-group label {
     background: transparent;
     text-align: center;
     z-index: 2;
-
+    font-family: Montserrat;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    resize: none;
+    height: 150px;
+}
+.inputName::-webkit-scrollbar {
+    display: none;
 }
 
 .inputDescriptionBox {
@@ -417,7 +441,12 @@ h2, .description-label, .date-group label {
     padding: 2em;
     box-shadow: 0 20px 80px #ffb5c4;
     transition: 1.5s ease;
-
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.inputDescriptionText::-webkit-scrollbar {
+    display: none;
 }
 .inputDescriptionBox:hover {
     box-shadow: 0 10px 40px var(--accent-color);
@@ -430,13 +459,16 @@ h2, .description-label, .date-group label {
 }
 
 .inputDescriptionText {
+    font-family: Montserrat;
     font-size: 1em;
-    font-weight: 400;
+    font-weight: 500;
     border: none;
     outline: none;
     background: transparent;
     width: 100%;
     flex-wrap: wrap;
+    resize: none;
+    text-align: center;
 }
 
 .inputDropdown {
@@ -461,6 +493,23 @@ h2, .description-label, .date-group label {
 .dropdownWrapper {
     display: flex;
     gap: 4em;
+}
+
+.saveButton {
+    font-family: Montserrat;
+    font-weight: 700;
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    padding: 1em 3em;
+    cursor: pointer;
+    margin-top: 2em;
+    transition: 1.5s ease;
+}
+
+.saveButton:hover {
+    box-shadow: 0 20px 60px #ffb5c4;
+    background-color: #ff5274;
 }
 
 

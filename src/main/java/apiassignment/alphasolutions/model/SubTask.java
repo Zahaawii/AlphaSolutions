@@ -9,8 +9,8 @@ public class SubTask {
     private String subtaskName;
     private int taskID;
     private int subtaskEstimate;
-    private Date subtaskStartDate;
-    private Date subtaskEndDate;
+    private java.sql.Date subtaskStartDate;
+    private java.sql.Date subtaskEndDate;
     private String subtaskPriority;
     private String subtaskDescription;
     private String subtaskStatus;
@@ -19,7 +19,7 @@ public class SubTask {
     public SubTask() {
     }
 
-    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, Date subtaskStartDate, Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees) {
+    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, java.sql.Date subtaskStartDate, java.sql.Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees) {
         this.subtaskID = subtaskID;
         this.subtaskName = subtaskName;
         this.taskID = taskID;
@@ -68,7 +68,7 @@ public class SubTask {
         return subtaskStartDate;
     }
 
-    public void setSubtaskStartDate(Date subtaskStartDate) {
+    public void setSubtaskStartDate(java.sql.Date subtaskStartDate) {
         this.subtaskStartDate = subtaskStartDate;
     }
 
@@ -76,7 +76,7 @@ public class SubTask {
         return subtaskEndDate;
     }
 
-    public void setSubtaskEndDate(Date subtaskEndDate) {
+    public void setSubtaskEndDate(java.sql.Date subtaskEndDate) {
         this.subtaskEndDate = subtaskEndDate;
     }
 
