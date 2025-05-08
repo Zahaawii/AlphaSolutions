@@ -293,13 +293,13 @@ public class G1SController {
             return "redirect:/admin/addEmployee";
         }
         g1SService.adminRegisterEmployee(employee);
-        return "redirect:/adminPanel";
+        return "redirect:/adminpanel";
     }
 
     @PostMapping("/admin/delete/{id}")
     public String adminDeleteEmployee(@PathVariable int id, HttpSession session){
         g1SService.deleteEmployee(id);
-        return "redirect:/adminPanel";
+        return "redirect:/adminpanel";
     }
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
