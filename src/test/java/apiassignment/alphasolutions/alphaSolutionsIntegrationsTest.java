@@ -1,6 +1,7 @@
 package apiassignment.alphasolutions;
 
 
+import apiassignment.alphasolutions.model.Project;
 import apiassignment.alphasolutions.model.SubProject;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
@@ -16,6 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +50,29 @@ public class alphaSolutionsIntegrationsTest {
         assertNotNull(allSubprojects);
         assertTrue(!allSubprojects.isEmpty());
 
+    }
+
+    @Test
+    void testGetAllProjectsForEmployee() {
+        int employeeId = 1;
+        List<Project> projects = g1SRepository.getAllProjects(employeeId);
+
+        // Kontrollerer at listen ikke er null eller tom
+        assertNotNull(projects);
+        assertFalse(projects.isEmpty());
+
+        List<String> expectedProjectNames = List.of(
+                "Customer Portal Redesign",
+                "Security Compliance Project",
+                "Internal HR System"
+        );
+
+        List<String> actualProjectNames = new ArrayList<>();
+        for(Project p : projects) {
+            actualProjectNames.add(p.getProjectName());
+        }
+
+        assertTrue(actualProjectNames.containsAll(expectedProjectNames));
     }
 
 
