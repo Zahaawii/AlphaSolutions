@@ -163,8 +163,17 @@ public class G1SService {
     }
 
     public List<Employee> getEmployeeNotPartOfProject(int projectId) {
-        return g1SRepository.getEmployeeNotPartOfProject(projectId);
+        List<Employee> employeeList = g1SRepository.getEmployeeNotPartOfProject(projectId);
+        if(employeeList == null || employeeList.isEmpty()){
+            return null;
+        } // først henter vi en liste over dem som ikke er i projektet
+        for(Employee i: employeeList){ //Så finder vi alle skills hver employee har
+            List<Skill>skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
+            i.setSkills(skillList); //Så tilføjer vi den givne employees skills til dem
+        }
+        return employeeList;
     }
+
     public List<Skill>getSkillsForEmployee(int employeeId){
         return g1SRepository.getSkillsForEmployee(employeeId);
     }

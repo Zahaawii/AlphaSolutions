@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    color: #111;
+    padding: 2rem;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    padding: 2rem;
+}
+
+.profile-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 2rem;
+}
+
+.section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #e91e63;
+    margin-bottom: 1rem;
+}
+
+.email {
+    font-size: 1.1rem;
+    margin-left: 1rem;
+    color: #333;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-badge {
+    background-color: #ffe6ef;
+    color: #e91e63;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.project-card {
+    padding: 1rem;
+    border-left: 4px solid #e91e63;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.project-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.project-date {
+    font-size: 1rem;
+    color: #555;
+}

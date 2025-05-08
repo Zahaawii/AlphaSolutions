@@ -15,9 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.web.util.UriUtils;
 
+
+
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -293,13 +298,13 @@ public class G1SController {
             return "redirect:/admin/addEmployee";
         }
         g1SService.adminRegisterEmployee(employee);
-        return "redirect:/adminPanel";
+        return "redirect:/adminpanel";
     }
 
     @PostMapping("/admin/delete/{id}")
     public String adminDeleteEmployee(@PathVariable int id, HttpSession session){
         g1SService.deleteEmployee(id);
-        return "redirect:/adminPanel";
+        return "redirect:/adminpanel";
     }
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
@@ -396,50 +401,65 @@ public class G1SController {
     public String redirectToSkill(
             @PathVariable Long projectId,
             @RequestParam String skill) {
-        return "redirect:/project/" + projectId + "/assignees/" + skill;
+
+        return "redirect:/project/" + projectId + "/assignees?skill=" + UriUtils.encode(skill, StandardCharsets.UTF_8);
     }
 
-    @GetMapping("/project/{projectId}/assignees/")
-    public String getEmployeesNoSkill(@PathVariable int projectId, HttpSession session, Model model){
+    @GetMapping("/project/{projectId}/assignees")
+    public String getEmployees(
+            @PathVariable int projectId,
+            @RequestParam(required = false) String skill,
+            Model model) {
+        //henter en liste med all skills og tilføjer dem til model
         List<Skill> skillList = g1SService.getAllSkills();
         model.addAttribute("skills", skillList);
         model.addAttribute("projectId", projectId);
-        List<Employee>employees = g1SService.getEmployeeNotPartOfProject(projectId);
-        if(employees == null){
-            model.addAttribute("notPartOfProject", true);
-            model.addAttribute("foundEmployee", false);
-            return "employeesWithSkill";
+        //henter projectId, altså det projekt vi er i gang med og hvor vi vil tilføje employees
+        List<Employee> employees; // laver en tom liste af employee
+        if (skill != null && !skill.isEmpty()) { // hvis skill ikke er null eller empty,
+            // så finder vi alle dem der ikke er en del af projektet og som har en given skill
+            employees = g1SService.getEmployeeBySkillNotPartOfProject(skill, projectId);
+            if (employees == null || employees.isEmpty()) {
+                //hvis den liste vi får tilbage ikke indeholder nogle empployee,
+                // så kom der en tekst om der siger, at den ikke kunne finde nogen med denne skill
+                //derudover kommer vores tabel med employees heller ikke op
+                model.addAttribute("noEmployee", true);
+                model.addAttribute("foundEmployee", false);
+                return "employeesWithSkill";
+            }
         } else {
-            model.addAttribute("foundEmployee", true);
-            model.addAttribute("listOfEmployee", employees);
+            //hvis vi ikke angav en given skill, fx vi trykkede "all employee"
+            //Så får vi en liste af alle dem der ikke er en del af projektet i forvejen
+            employees = g1SService.getEmployeeNotPartOfProject(projectId);
+            //så tjekker vi om denne liste er tom for employees
+            if (employees == null || employees.isEmpty()) {
+                //hvis vi ikke finde nogen, så kommer der en tekst, der siger, at den ikke kunne finde nogen
+                //måske er de allerede en del af projektet
+                model.addAttribute("notPartOfProject", true);
+                model.addAttribute("foundEmployee", false);
+                return "employeesWithSkill";
+            }
         }
+        //vi er nu kommet forbi de to foregående if statemens, og vi ved nu, at vi har en liste af employee som ikke er tom
+        //derfor gør vi at vi kan se vores tabel og dets employees
+        model.addAttribute("foundEmployee", true);
+        //nu tilføjer vi så listen af employees, den indeholder så enten kun dem der ikke er en del af projektet
+        //Eller dem som ikke er en del af projektet og har en specifik skill såsom java
+        model.addAttribute("listOfEmployee", employees);
         return "employeesWithSkill";
     }
 
-    @GetMapping("/project/{projectId}/assignees/{skill}")
-    public String getEmployeesWithCertainSkill(@PathVariable int projectId, @PathVariable String skill, HttpSession session, Model model){
-        List<Skill> skillList = g1SService.getAllSkills();
-        model.addAttribute("skills", skillList);
-        model.addAttribute("projectId", projectId);
-        List<Employee>listOfEmployee = g1SService.getEmployeeBySkillNotPartOfProject(skill, projectId);
-        if(listOfEmployee == null){
-            model.addAttribute("noEmployee", true);
-            model.addAttribute("foundEmployee", false);
-            return "employeesWithSkill";
-        }
-        model.addAttribute("foundEmployee", true);
-        model.addAttribute("listOfEmployee", listOfEmployee);
-        return "employeesWithSkill";
-    }
 
 
     @PostMapping("/project/{projectId}/add/{employeeId}")
     public String addEmployeeToProject( @PathVariable int projectId, @PathVariable int employeeId, HttpSession session, Model model){
         if(projectId == 0 || employeeId == 0){
+            //der mangler lige en "model.addAttribute("notAdded", true),
+            // som retunere en til projekt siden og siger man ikke kunne tilføje den givne empployee
             return "redirect:/project/" + projectId;
         }
         g1SService.addEmployeeToProject(projectId, employeeId);
-        return "redirect:/project/" + projectId;
+        return "redirect:/project/" + projectId + "/assignees";
     }
 
     @GetMapping("/profile/{employeeId}")
