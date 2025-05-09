@@ -267,26 +267,26 @@ public class G1SRepository {
 
 
     public Employee adminRegisterEmployee(Employee employee){
-        if(employee == null){
-            return null;
-        }
+        try {
+            String sql = "INSERT INTO employee (employee_name, employee_email, employee_username, employee_password, roleID) VALUES (?, ?, ?, ?, ?)";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO employee (employee_name, employee_email, employee_username, employee_password, roleID) VALUES (?, ?, ?, ?, ?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, employee.getEmployeeName());
+                ps.setString(2, employee.getEmployeeEmail());
+                ps.setString(3, employee.getEmployeeUsername());
+                ps.setString(4, employee.getEmployeePassword());
+                ps.setInt(5, employee.getRoleId());
+                return ps;
+            }, keyHolder);
 
-        jdbcTemplate.update(connection->{
-            PreparedStatement ps =connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, employee.getEmployeeName());
-            ps.setString(2, employee.getEmployeeEmail());
-            ps.setString(3, employee.getEmployeeUsername());
-            ps.setString(4, employee.getEmployeePassword());
-            ps.setInt(5, employee.getRoleId());
-            return ps;
-        }, keyHolder);
-
-        int employeeId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
-        if(employeeId != -1){
-            employee.setEmployeeId(employeeId);
+            int employeeId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+            if (employeeId != -1) {
+                employee.setEmployeeId(employeeId);
+            }
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to register employee ", e);
         }
 
         return employee;
