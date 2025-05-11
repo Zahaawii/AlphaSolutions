@@ -57,7 +57,7 @@ public class Task {
         this.subprojectId = subprojectId;
     }
 
-    public int getTaskEstimate() {
+    public Integer getTaskEstimate() {
         return taskEstimate;
     }
 

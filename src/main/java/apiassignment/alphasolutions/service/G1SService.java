@@ -234,7 +234,53 @@ public class G1SService {
         g1SRepository.updateSubproject(subProject);
     }
 
+    public Integer getSumOfTaskAndSubTask(int subprojectID) {
+        List<Task> tasks = getTasksBySubprojectId(subprojectID);
+        Integer sum = 0;
 
+        for(Task task : tasks) {
+            if(task.getTaskEstimate() != null) {
+                sum += task.getTaskEstimate();
+            }
+
+            for(SubTask subTask : task.getSubtasks()) {
+                if(subTask.getSubtaskEstimate() != null) {
+                    sum += subTask.getSubtaskEstimate();
+                }
+            }
+        }
+        return sum;
+    }
+
+    public Integer getTotalSumOfProject(int projectID) {
+        List<SubProject> subProjects = g1SRepository.getSubprojectByProjectId(projectID);
+        Integer sum = 0;
+
+        for(SubProject subProject : subProjects) {
+            List<Task> tasks = getTasksBySubprojectId(subProject.getSubprojectID());
+            for(Task task : tasks) {
+                if(task.getTaskEstimate() != null) {
+                    sum += task.getTaskEstimate();
+                }
+
+                for(SubTask subTask : task.getSubtasks()) {
+                    if(subTask.getSubtaskEstimate() != null) {
+                        sum += subTask.getSubtaskEstimate();
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+    public List<Project> getAllProjectsWithSum(int employeeID) {
+    List<Project> projects = g1SRepository.getAllProjects(employeeID);
+    for(Project project : projects) {
+        Integer sum = getTotalSumOfProject(project.getProjectId());
+        project.setSum(sum);
+    }
+     return projects;
+    }
 }
 
 

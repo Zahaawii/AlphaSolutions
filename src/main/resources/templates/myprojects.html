@@ -44,6 +44,11 @@
                 <h2 th:text="${project.projectEndDate}"></h2>
             </div>
 
+            <div class="taskelement">
+                <h2> Estimated Hours </h2>
+                <h2 th:text="${project.sum}"></h2>
+            </div>
+
             <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>
 
             <div class="taskelementStart" th:if="${isProjectManager or isAdmin}">

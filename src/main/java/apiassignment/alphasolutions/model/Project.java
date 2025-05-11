@@ -10,6 +10,7 @@ public class Project {
     private Date projectEndDate;
     private String projectDescription;
     private String projectStatus;
+    private Integer sum;
 
     public Project() {}
 
@@ -83,6 +84,14 @@ public class Project {
 
     public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
+    }
+
+    public Integer getSum() {
+        return sum;
     }
 
 

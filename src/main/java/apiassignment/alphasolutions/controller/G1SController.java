@@ -61,12 +61,14 @@ public class G1SController {
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
+        List <Project> getAllProjects = g1SService.getAllProjectsWithSum(employee.getEmployeeId());
 
         if (employee == null) {
             return "redirect:/login";
         }
 
-        model.addAttribute("projects", g1SService.getAllProjects(employee.getEmployeeId()));
+        model.addAttribute("projects", getAllProjects);
+
         return "myprojects";
     }
 
@@ -124,7 +126,8 @@ public class G1SController {
     @GetMapping("/project/{id}")
     public String projectView (@PathVariable int id, Model model, HttpSession session) {
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
-
+        Integer sum = g1SService.getTotalSumOfProject(id);
+        model.addAttribute("sum", sum);
         model.addAttribute("subprojects", subProjectByProjectId);
         model.addAttribute("projectid", id);
         return "myprojectSubproject";
@@ -223,6 +226,7 @@ public class G1SController {
     @GetMapping("/subproject/{id}")
     public String subProjectView (@PathVariable("id") int subprojectId, Model model) {
         List<Task> tasks = g1SService.getTasksBySubprojectId(subprojectId);
+        Integer sum = g1SService.getSumOfTaskAndSubTask(subprojectId);
 
         //loop igennem alle tasks og sæt assignees til deres respektive task. Samme sker med subtasks.
         for (Task task : tasks) {
@@ -235,6 +239,7 @@ public class G1SController {
 
         model.addAttribute("tasks", tasks);
         SubProject subproject = g1SService.getSubProjectById(subprojectId);
+        model.addAttribute("sum", sum);
         model.addAttribute("subproject", subproject);
 
         return "subprojectview";
