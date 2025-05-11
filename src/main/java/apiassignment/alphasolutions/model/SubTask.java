@@ -56,7 +56,7 @@ public class SubTask {
         this.taskID = taskID;
     }
 
-    public int getSubtaskEstimate() {
+    public Integer getSubtaskEstimate() {
         return subtaskEstimate;
     }
 

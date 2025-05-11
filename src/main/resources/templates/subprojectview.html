@@ -19,6 +19,10 @@
                 <span>Create new task</span>
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
+            <div class="" th:if="${sum > 0}">
+                <span> Estimated hours</span>
+                <span th:text="${sum}"></span>
+            </div>
 
             <div th:each="task : ${tasks}">
                 <div class="taskContentContainer">
