@@ -14,19 +14,19 @@
 
 <div class="taskListContainer big">
     <form class="inputWrapper"
-          th:object="${task}"
-          th:action="@{/subproject/{subprojectid}/create/task(subprojectid=${subprojectid})}"
+          th:object="${subtask}"
+          th:action="@{/subproject/{subprojectid}/task/{taskid}/create/subtask(subprojectid=${subprojectid}, taskid=${taskid})}"
           method="post">
         <!--<input type="hidden" th:field="${task.taskId}">-->
-        <input type="hidden" th:field="${task.subprojectId}">
+        <input type="hidden" th:field="${subtask.taskID}">
 
-        <textarea placeholder="Task Name" th:field="*{taskName}" class="inputName" rows="4" maxlength="256"></textarea>
+        <textarea placeholder="Sub-task Name" th:field="*{subtaskName}" class="inputName" rows="4" maxlength="256"></textarea>
 
 
 
         <div class="gradientBorder">
             <div class="inputDescriptionBox">
-                <textarea placeholder="Type a description here" th:field="*{taskDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+                <textarea placeholder="Type a description here" th:field="*{subtaskDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
             </div>
         </div>
 
@@ -34,11 +34,11 @@
             <div class="date-container">
                 <div class="date-group">
                     <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" th:field="*{taskStartDate}">
+                    <input type="date" id="startDate" th:field="*{subtaskStartDate}">
                 </div>
                 <div class="date-group">
                     <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" th:field="*{taskEndDate}">
+                    <input type="date" id="endDate" th:field="*{subtaskEndDate}">
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
             <div class="">
                 <div class="taskelement">
                     <h5>Priority</h5>
-                    <select th:field="*{taskPriority}" class="inputDropdown">
+                    <select th:field="*{subtaskPriority}" class="inputDropdown">
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
@@ -58,12 +58,12 @@
 
                 <div class="taskelement">
                     <h5>Estimate</h5>
-                    <input th:field="*{taskEstimate}" class="inputDropdown">
+                    <input th:field="*{subtaskEstimate}" class="inputDropdown">
                 </div>
             </div>
             <div class="taskelement">
                 <h5>Status</h5>
-                <select placeholder="Not Started" th:field="*{taskStatus}" class="inputDropdown">
+                <select placeholder="Not Started" th:field="*{subtaskStatus}" class="inputDropdown">
                     <option value="Not Started">Not Started</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Completed">Completed</option>

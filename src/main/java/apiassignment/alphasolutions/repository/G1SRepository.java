@@ -317,7 +317,7 @@ public class G1SRepository {
 
     }
 
-    public Task createTask (Task task) {
+    public void createTask (Task task) {
         String sql = "INSERT INTO task (task_Name, subProjectId, task_estimate, task_start_date, task_end_date, task_priority, task_description, task_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -330,8 +330,8 @@ public class G1SRepository {
                 ps.setString(1, task.getTaskName());
                 ps.setInt(2, task.getSubprojectId());
                 ps.setInt(3, task.getTaskEstimate());
-                ps.setDate(4, new java.sql.Date(task.getTaskStartDate().getTime()));
-                ps.setDate(5, new java.sql.Date(task.getTaskEndDate().getTime()));
+                ps.setDate(4, task.getTaskStartDate());
+                ps.setDate(5, task.getTaskEndDate());
                 ps.setString(6, task.getTaskPriority());
                 ps.setString(7, task.getTaskDescription());
                 ps.setString(8, task.getTaskStatus());
@@ -346,10 +346,9 @@ public class G1SRepository {
 
 
         } catch (DataAccessException e) {
-            throw new RuntimeException("Failed to create the subproject in the database: ", e);
+            throw new RuntimeException("Failed to create the task in the database: ", e);
         }
 
-        return task;
     }
 
     public void updateSubtask(SubTask subtask) {
@@ -360,6 +359,39 @@ public class G1SRepository {
     public void deleteSubtask(int id) {
         String sql = "DELETE FROM subtask WHERE subtaskID = ?";
         jdbcTemplate.update(sql, id);
+    }
+
+    public void createSubTask (SubTask subtask) {
+        String sql = "INSERT INTO subtask (subtask_Name, taskID, subtask_estimate, subtask_start_date, subtask_end_date, subtask_priority, subtask_description, subtask_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, subtask.getSubtaskName());
+                ps.setInt(2, subtask.getTaskID());
+                ps.setInt(3, subtask.getSubtaskEstimate());
+                ps.setDate(4, subtask.getSubtaskStartDate());
+                ps.setDate(5, subtask.getSubtaskEndDate());
+                ps.setString(6, subtask.getSubtaskPriority());
+                ps.setString(7, subtask.getSubtaskDescription());
+                ps.setString(8, subtask.getSubtaskStatus());
+                return ps;
+            }, keyHolder);
+
+            int subtaskID = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+
+            if (subtaskID != -1) {
+                subtask.setSubtaskID(subtaskID);
+            }
+
+
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to create the subtask in the database: ", e);
+        }
+
     }
 
     public Employee getEmployeeById(int id){
