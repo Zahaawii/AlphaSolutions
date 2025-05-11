@@ -111,11 +111,6 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new EmployeeRowmapper(), projectId);
     }
 
-   
-
-
-        
-
     public List<SubProject> getAllSubProjects() {
         String sql = "SELECT * FROM subproject";
         return jdbcTemplate.query(sql, new SubprojectRowMapper());

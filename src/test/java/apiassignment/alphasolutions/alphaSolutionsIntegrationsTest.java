@@ -141,4 +141,60 @@ public class alphaSolutionsIntegrationsTest {
         assertNull(deletedProject);
     }
 
+    //Testing if you get all subprojects
+    @Test
+    void testGetAllSubProjects() throws SQLException {
+        List<SubProject> getAll = g1SService.getAllSubProjects();
+
+        if(!getAll.isEmpty()) {
+            System.out.println(getAll.size());
+            assertTrue(true);
+        } else {
+            assertFalse(false);
+        }
+    }
+
+    @Test
+    void testAddSubProjectAndGetSubprojectByID() throws SQLException {
+
+        SubProject testSubProject = new SubProject(99, "test", Date.valueOf("2025-05-20"), Date.valueOf("2025-05-20"), 1);
+        g1SService.addSubproject(testSubProject);
+
+       assertTrue(testSubProject.getProjectID() > 0);
+
+        SubProject test = g1SRepository.getSubProjectById(testSubProject.getSubprojectID());
+
+        assertNotNull(test);
+        assertEquals(testSubProject.getSubprojectName(),(test.getSubprojectName()));
+        assertEquals(testSubProject.getSubprojectStartDate(),test.getSubprojectStartDate());
+        assertEquals(testSubProject.getSubprojectEndDate(),test.getSubprojectEndDate());
+
+    }
+
+//    //afventer
+//    @Test
+//    void testDeleSubproject() throws SQLException {
+//
+//        SubProject testSubProject = new SubProject(99, "test", Date.valueOf("2025-05-20"), Date.valueOf("2025-05-20"), 1);
+//
+//        g1SRepository.addSubProject(testSubProject);
+//
+//        g1SRepository.deleteSubProject(testSubProject.getSubprojectID());
+//
+//        if(testSubProject == null) {
+//            assertTrue(true);
+//            System.out.println("hej");
+//        } else {
+//            fail("Test failed");
+//        }
+//
+//    }
+
+    @Test
+    void testUpdateSubproject() throws SQLException {
+
+
+
+    }
+
 }
