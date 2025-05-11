@@ -64,7 +64,7 @@ public class SubTask {
         this.subtaskEstimate = subtaskEstimate;
     }
 
-    public Date getSubtaskStartDate() {
+    public java.sql.Date getSubtaskStartDate() {
         return subtaskStartDate;
     }
 
@@ -72,7 +72,7 @@ public class SubTask {
         this.subtaskStartDate = subtaskStartDate;
     }
 
-    public Date getSubtaskEndDate() {
+    public java.sql.Date getSubtaskEndDate() {
         return subtaskEndDate;
     }
 

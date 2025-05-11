@@ -31,7 +31,7 @@
                                 </div>
                         </div>
                         <div class="taskelement">
-                            <a class="addSubtask" th:href="@{'/create/subproject/' + ${projectid}}">
+                            <a class="addSubtask" th:href="@{/subproject/{subprojectid}/task/{taskid}/create/subtask(subprojectid=${task.subprojectId}, taskid=${task.taskId})}">
                                 <span> Add subtask </span>
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </a>
