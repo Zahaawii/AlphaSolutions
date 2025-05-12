@@ -281,6 +281,26 @@ public class G1SService {
     }
      return projects;
     }
+
+    public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToTask(taskId, employeeIds);
+    }
+
+    public int getSubprojectIdFromTaskId(int taskId) {
+        return g1SRepository.getSubprojectIdFromTaskId(taskId);
+    }
+
+    public int getProjectIdFromSubprojectId(int subprojectId) {
+        return g1SRepository.getProjectIdFromSubprojectId(subprojectId);
+    }
+
+    public List<Integer> getTaskAssignees(int taskId) {
+        return g1SRepository.getTaskAssignees(taskId);
+    }
+
+    public void clearTaskAssignees(int taskId) {
+        g1SRepository.clearTaskAssignees(taskId);
+    }
 }
 
 

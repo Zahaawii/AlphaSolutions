@@ -336,14 +336,22 @@ public class G1SController {
         model.addAttribute("task", g1SService.getTaskById(taskid));
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
+        model.addAttribute("assigned",g1SService.getTaskAssignees(taskid));
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
         return "editTask";
     }
 
     @PostMapping("/subproject/{subprojectid}/edit/task/{taskid}")
-    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task) {
+    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task, @RequestParam(required = false) List<Integer> employeeIds) {
 
-        System.out.println(task);
         g1SService.updateTask(task);
+
+        g1SService.clearTaskAssignees(taskid);
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToTask(taskid, employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -352,6 +360,10 @@ public class G1SController {
     public String createTask(@PathVariable int subprojectid, Model model, HttpSession session) {
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("task", new Task());
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
+
 
         return "createTask";
     }
@@ -532,5 +544,14 @@ public class G1SController {
         return "redirect:/projects";
     }
 
+    @PostMapping("/task/{taskId}/assign")
+    public String assignProjectAssigneesToTask(
+            @PathVariable int taskId,
+            @RequestParam("employeeIds") List<Integer> employeeIds
+    ) {
+        g1SService.addAssigneeToTask(taskId, employeeIds);
+        int subprojectId = g1SService.getSubprojectIdFromTaskId(taskId);
+        return "redirect:/subproject/" + subprojectId;
+    }
 
 }
