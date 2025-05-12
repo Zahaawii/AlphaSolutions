@@ -161,6 +161,14 @@ public class Task {
         return allComplete ? "Completed" : allNotstarted ? "Not Started" : "In Progress";
     }
 
+    public int calculateHoursSpent() {
+        int sum = 0;
+        for (SubTask subtask : subtasks) {
+            sum += subtask.getSubtaskHoursSpent();
+        }
+        return sum;
+    }
+
     @Override
     public String toString() {
         return "Task{" +

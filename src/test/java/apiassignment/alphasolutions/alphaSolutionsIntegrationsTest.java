@@ -305,12 +305,10 @@ public class alphaSolutionsIntegrationsTest {
 
         newTask.setTaskName("Test Task");
         newTask.setSubprojectId(1);
-        newTask.setTaskEstimate(40);
         newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
         newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
         newTask.setTaskPriority("High");
         newTask.setTaskDescription("Test description");
-        newTask.setTaskStatus("In Progress");
 
         g1SRepository.createTask(newTask);
 
@@ -321,12 +319,10 @@ public class alphaSolutionsIntegrationsTest {
         assertNotNull(dbTask);
         assertEquals(newTask.getTaskName(),(dbTask.getTaskName()));
         assertEquals(newTask.getSubprojectId(), dbTask.getSubprojectId());
-        assertEquals(newTask.getTaskEstimate(), dbTask.getTaskEstimate());
         assertEquals(newTask.getTaskStartDate(), dbTask.getTaskStartDate());
         assertEquals(newTask.getTaskEndDate(), dbTask.getTaskEndDate());
         assertEquals(newTask.getTaskPriority(), dbTask.getTaskPriority());
         assertEquals(newTask.getTaskDescription(), dbTask.getTaskDescription());
-        assertEquals(newTask.getTaskStatus(), dbTask.getTaskStatus());
 
     }
 
@@ -337,12 +333,10 @@ public class alphaSolutionsIntegrationsTest {
 
         newTask.setTaskName("Test Task");
         newTask.setSubprojectId(1);
-        newTask.setTaskEstimate(40);
         newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
         newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
         newTask.setTaskPriority("High");
         newTask.setTaskDescription("Test description");
-        newTask.setTaskStatus("In Progress");
 
         g1SRepository.createTask(newTask);
 
@@ -406,6 +400,7 @@ public class alphaSolutionsIntegrationsTest {
         subtask.setSubtaskPriority("High");
         subtask.setSubtaskDescription("Test Description");
         subtask.setSubtaskStatus("Not Started");
+        subtask.setHoursSpent(0);
 
 
         g1SRepository.createSubTask(subtask);
@@ -424,6 +419,7 @@ public class alphaSolutionsIntegrationsTest {
         assertEquals(subtask.getSubtaskPriority(), dbSubtask.getSubtaskPriority());
         assertEquals(subtask.getSubtaskDescription(), dbSubtask.getSubtaskDescription());
         assertEquals(subtask.getSubtaskStatus(), dbSubtask.getSubtaskStatus());
+        assertEquals(subtask.getSubtaskHoursSpent(), dbSubtask.getSubtaskHoursSpent());
 
     }
 

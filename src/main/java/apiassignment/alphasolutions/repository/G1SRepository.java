@@ -328,13 +328,13 @@ public class G1SRepository {
     }
 
     public void updateTask(Task task) {
-        String sql = "UPDATE task SET task_Name = ?, task_estimate = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ?, task_status = ? WHERE taskID = ?";
-        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskEstimate(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskPriority(), task.getTaskDescription(), task.getTaskStatus(), task.getTaskId());
+        String sql = "UPDATE task SET task_Name = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ? WHERE taskID = ?";
+        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskPriority(), task.getTaskDescription(), task.getTaskId());
 
     }
 
     public void createTask (Task task) {
-        String sql = "INSERT INTO task (task_Name, subProjectId, task_estimate, task_start_date, task_end_date, task_priority, task_description, task_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO task (task_Name, subProjectId, task_start_date, task_end_date, task_priority, task_description) VALUES(?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -345,12 +345,10 @@ public class G1SRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, task.getTaskName());
                 ps.setInt(2, task.getSubprojectId());
-                ps.setInt(3, task.getTaskEstimate());
-                ps.setDate(4, task.getTaskStartDate());
-                ps.setDate(5, task.getTaskEndDate());
-                ps.setString(6, task.getTaskPriority());
-                ps.setString(7, task.getTaskDescription());
-                ps.setString(8, task.getTaskStatus());
+                ps.setDate(3, task.getTaskStartDate());
+                ps.setDate(4, task.getTaskEndDate());
+                ps.setString(5, task.getTaskPriority());
+                ps.setString(6, task.getTaskDescription());
                 return ps;
             }, keyHolder);
 
@@ -368,8 +366,8 @@ public class G1SRepository {
     }
 
     public void updateSubtask(SubTask subtask) {
-        String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ? WHERE subtaskID = ?";
-        jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskID());
+        String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ?, subtask_hours_spent = ? WHERE subtaskID = ?";
+        jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskHoursSpent(), subtask.getSubtaskID());
     }
 
     public void deleteSubtask(int id) {

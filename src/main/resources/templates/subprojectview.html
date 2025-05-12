@@ -123,6 +123,21 @@
                         </div>
                     </div>
 
+                    <div class="taskelement">
+                        <h5>Hours Spent</h5>
+                        <h2 th:text="${task.calculateHoursSpent()}"></h2>
+                        <div th:each="subtask : ${task.getSubtasks()}">
+                            <div class="taskelement">
+                                <h4 th:text="${subtask.getSubtaskHoursSpent()}"></h4>
+                            </div>
+                        </div>
+                        <div class="taskelement">
+                            <span class="hidden"> Add subtask </span>
+                        </div>
+                    </div>
+
+
+
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
 
                     <div class="taskelement">

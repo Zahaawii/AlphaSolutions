@@ -65,12 +65,10 @@ CREATE TABLE task
                             task_Name        VARCHAR(100)        NOT NULL,
                             subProjectId     INTEGER,
                             FOREIGN KEY (subProjectId) REFERENCES subproject (subprojectID) ON DELETE CASCADE,
-                            task_estimate    INTEGER             NOT NULL,
                             task_start_date  DATE,
                             task_end_date    DATE,
                             task_priority    VARCHAR(50),
                             task_description VARCHAR(256),
-                            task_status      VARCHAR(50),
                             task_hours_spent INTEGER
 );
 
