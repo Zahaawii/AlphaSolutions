@@ -54,21 +54,21 @@
             <div class="v-separator" style="height: 60px;"></div>
 
             <div class="taskelement">
-                <h5> Assignees </h5>
+                <h5> add assignees </h5>
                 <div class="avatargrid">
-                    <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">+
-                    </a>
-                </div>
-                <div th:each="assignee : ${}">
-                    <a th:href="@{/profile/{assigneeid}(assigneeid=${assignee.getEmployeeId()})}">
-                        <div class="avatar"
-                             th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
-                                #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
-                        </div>
+
+                    <div>
+                        <a href="">
+                            <div class="avatar avatar--extra"
+                                 th:text="${project.assignees.size()}">
+                            </div>
+                        </a>
+                    </div>
+                    <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
+                        <div class="avatar">+</div>
                     </a>
 
                 </div>
-
             </div>
 
             <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>

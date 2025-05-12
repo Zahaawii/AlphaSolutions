@@ -40,7 +40,13 @@ public class G1SRepository {
                 "FROM project\n" +
                 "LEFT JOIN projectassignees ON project.projectID = projectassignees.projectID\n" +
                 "WHERE project.employeeID = ? OR projectassignees.employeeID = ?";
-        return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
+        List<Project> projects = jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
+
+        for (Project p : projects) {
+            p.setAssignees(getProjectAssignees(p.getProjectId()));
+        }
+
+        return projects;
     }
 
     public Project getProjectById(int projectId) {

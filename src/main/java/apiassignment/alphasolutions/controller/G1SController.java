@@ -6,7 +6,6 @@ import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.server.ResponseStatusException;
 
 import org.springframework.web.util.UriUtils;
 
@@ -62,10 +59,6 @@ public class G1SController {
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
         List <Project> getAllProjects = g1SService.getAllProjectsWithSum(employee.getEmployeeId());
-        for (Project p : getAllProjects) {
-            List<Employee> assignees = g1SService.getProjectAssignees(p.getProjectId());
-            model.addAttribute("assignees",assignees);
-        }
 
         if (employee == null) {
             return "redirect:/login";
@@ -73,7 +66,7 @@ public class G1SController {
 
         model.addAttribute("projects", getAllProjects);
 
-        return "myprojects";
+        return "myProjects";
     }
 
     @GetMapping("/projects/new")
@@ -135,7 +128,9 @@ public class G1SController {
         model.addAttribute("sum", sum);
         model.addAttribute("subprojects", subProjectByProjectId);
         model.addAttribute("projectid", id);
-        return "myprojectSubproject";
+        model.addAttribute("assignees",g1SService.getProjectAssignees(id));
+        model.addAttribute("project",g1SService.getProjectById(id));
+        return "myProjectSubproject";
     }
 
     @GetMapping("/select-collaborators")
