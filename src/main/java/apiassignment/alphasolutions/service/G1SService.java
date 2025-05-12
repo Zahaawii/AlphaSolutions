@@ -340,7 +340,7 @@ public class G1SService {
 
     public void clearSubtaskAssignees(int subtaskId) {
         g1SRepository.clearSubtaskAssignees(subtaskId);
-
+    }
     public String encryptTest(String password) {
         String salt = BCrypt.gensalt(10);
         return BCrypt.hashpw(password, salt);
