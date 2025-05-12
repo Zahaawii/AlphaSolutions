@@ -39,6 +39,8 @@ public class Skill {
     }
 
 
+    //følgende to metoder overrider måden den sammenligner objekter på
+    //dette skulle gøres, så man kunne se en liste over skills, så var brugerens skills allerede tjekket af
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

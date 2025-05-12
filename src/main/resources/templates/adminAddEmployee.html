@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Register Employee</title>
+    <link rel="stylesheet" th:href="@{/css/adminPanel.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-    <div>
+    <div class="layout">
+        <div th:replace="fragments/dashboard :: dashboard"></div>
+
+        <div class="taskListContainer">
+
         <h1>Register Employee</h1>
         <p th:if="${notFree}">There is already an employee with this username</p>
 
-            <form th:action="@{/admin/register}" th:object="${employee}" method="post">
+            <form th:action="@{/admin/register}" th:object="${employee}" method="post" >
                 <div>
                     <label for="employeeName"></label>
                     <input type="text" id="employeeName" name="employeeName" placeholder="Name" required>
@@ -47,7 +53,7 @@
                     <button type="submit">Register</button>
 
             </form>
-
+        </div>
     </div>
 
 
