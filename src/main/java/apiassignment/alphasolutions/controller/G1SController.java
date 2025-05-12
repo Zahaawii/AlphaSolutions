@@ -99,6 +99,7 @@ public class G1SController {
 
     @PostMapping("/projects/update")
     public String updateProject(@ModelAttribute Project project) {
+        System.out.println(project);
         g1SService.updateProject(project);
         return "redirect:/projects";
     }
@@ -117,10 +118,14 @@ public class G1SController {
     @GetMapping("/project/{id}")
     public String projectView (@PathVariable int id, Model model, HttpSession session) {
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
-        Integer sum = g1SService.getTotalSumOfProject(id);
-        model.addAttribute("sum", sum);
+
+        model.addAttribute("project", g1SService.getProjectById(id));
+        model.addAttribute("estimate", g1SService.getTotalEstimateOfProject(id));
+        model.addAttribute("actual", g1SService.getTotalActualOfProject(id));
+        model.addAttribute("predictionRatio", g1SService.getPredictionRatioOfProject(id));
         model.addAttribute("subprojects", subProjectByProjectId);
         model.addAttribute("projectid", id);
+        model.addAttribute("completion", g1SService.getProjectCompletion(id));
         model.addAttribute("assignees",g1SService.getProjectAssignees(id));
         model.addAttribute("project",g1SService.getProjectById(id));
         return "myProjectSubproject";

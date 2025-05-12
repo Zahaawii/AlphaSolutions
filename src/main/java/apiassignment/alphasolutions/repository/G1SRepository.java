@@ -37,17 +37,13 @@ public class G1SRepository {
 
     // Returnerer alle projekterne en medarbejder er tilknyttet samt de projekter en projektleder har oprettet.
     public List<Project> getAllProjects(int employeeID) {
-        String sql = "SELECT DISTINCT project.* \n" +
-                "FROM project\n" +
-                "LEFT JOIN projectassignees ON project.projectID = projectassignees.projectID\n" +
-                "WHERE project.employeeID = ? OR projectassignees.employeeID = ?";
-        List<Project> projects = jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
-
-        for (Project p : projects) {
-            p.setAssignees(getProjectAssignees(p.getProjectId()));
-        }
-
-        return projects;
+        String sql = """
+        SELECT DISTINCT project.*
+        FROM project
+        LEFT JOIN projectassignees ON project.projectID = projectassignees.projectID
+        WHERE project.employeeID = ? OR projectassignees.employeeID = ?
+        """;
+        return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeID, employeeID);
     }
 
     public Project getProjectById(int projectId) {
@@ -243,6 +239,16 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new EmployeeRowmapper(), 1);
     }
 
+    public List<SubTask> getAllSubtasksByProjectId(int projectid) {
+        String sql = """
+                SELECT subtask.* FROM subtask
+                JOIN task ON subtask.taskID = task.taskID
+                JOIN subproject ON task.subProjectId = subproject.subprojectID
+                JOIN project ON subproject.projectID = project.projectID
+                WHERE project.projectID = ?;
+                """;
+        return jdbcTemplate.query(sql, new SubTaskRowMapper(), projectid);
+    }
 
 
     public Employee login(String username, String password) {
@@ -328,13 +334,13 @@ public class G1SRepository {
     }
 
     public void updateTask(Task task) {
-        String sql = "UPDATE task SET task_Name = ?, task_estimate = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ?, task_status = ? WHERE taskID = ?";
-        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskEstimate(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskPriority(), task.getTaskDescription(), task.getTaskStatus(), task.getTaskId());
+        String sql = "UPDATE task SET task_Name = ?, task_start_date = ?, task_end_date = ?, task_priority = ?, task_description = ? WHERE taskID = ?";
+        jdbcTemplate.update(sql, task.getTaskName(), task.getTaskStartDate(), task.getTaskEndDate(), task.getTaskPriority(), task.getTaskDescription(), task.getTaskId());
 
     }
 
     public void createTask (Task task) {
-        String sql = "INSERT INTO task (task_Name, subProjectId, task_estimate, task_start_date, task_end_date, task_priority, task_description, task_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO task (task_Name, subProjectId, task_start_date, task_end_date, task_priority, task_description) VALUES(?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -345,12 +351,10 @@ public class G1SRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, task.getTaskName());
                 ps.setInt(2, task.getSubprojectId());
-                ps.setInt(3, task.getTaskEstimate());
-                ps.setDate(4, task.getTaskStartDate());
-                ps.setDate(5, task.getTaskEndDate());
-                ps.setString(6, task.getTaskPriority());
-                ps.setString(7, task.getTaskDescription());
-                ps.setString(8, task.getTaskStatus());
+                ps.setDate(3, task.getTaskStartDate());
+                ps.setDate(4, task.getTaskEndDate());
+                ps.setString(5, task.getTaskPriority());
+                ps.setString(6, task.getTaskDescription());
                 return ps;
             }, keyHolder);
 
@@ -368,8 +372,8 @@ public class G1SRepository {
     }
 
     public void updateSubtask(SubTask subtask) {
-        String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ? WHERE subtaskID = ?";
-        jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskID());
+        String sql = "UPDATE subtask SET subtask_Name = ?, subtask_estimate = ?, subtask_start_date = ?, subtask_end_date = ?, subtask_priority = ?, subtask_description = ?, subtask_status = ?, subtask_hours_spent = ? WHERE subtaskID = ?";
+        jdbcTemplate.update(sql, subtask.getSubtaskName(), subtask.getSubtaskEstimate(), subtask.getSubtaskStartDate(), subtask.getSubtaskEndDate(), subtask.getSubtaskPriority(), subtask.getSubtaskDescription(), subtask.getSubtaskStatus(), subtask.getSubtaskHoursSpent(), subtask.getSubtaskID());
     }
 
     public void deleteSubtask(int id) {
@@ -496,7 +500,8 @@ public class G1SRepository {
                 subProject.getSubprojectEndDate(),
                 subProject.getSubprojectID()
         );
-      if (rowsAffected == 0) {
+
+        if (rowsAffected == 0) {
             throw new RuntimeException("Update failed: No subproject found with ID " + subProject.getSubprojectID());
         }
     }
@@ -579,4 +584,5 @@ public class G1SRepository {
         String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtaskId);
     }
+
 }

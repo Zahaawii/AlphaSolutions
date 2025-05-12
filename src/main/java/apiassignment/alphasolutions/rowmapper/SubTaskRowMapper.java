@@ -20,6 +20,7 @@ public class SubTaskRowMapper implements RowMapper<SubTask> {
         subtask.setSubtaskPriority(rs.getString("subtask_priority"));
         subtask.setSubtaskDescription(rs.getString("subtask_description"));
         subtask.setSubtaskStatus(rs.getString("subtask_status"));
+        subtask.setSubtaskHoursSpent(rs.getInt("subtask_hours_spent"));
 
         return subtask;
     }

@@ -9,6 +9,7 @@ public class SubTask {
     private String subtaskName;
     private int taskID;
     private int subtaskEstimate;
+    private int subtaskHoursSpent;
     private java.sql.Date subtaskStartDate;
     private java.sql.Date subtaskEndDate;
     private String subtaskPriority;
@@ -19,7 +20,7 @@ public class SubTask {
     public SubTask() {
     }
 
-    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, java.sql.Date subtaskStartDate, java.sql.Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees) {
+    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, java.sql.Date subtaskStartDate, java.sql.Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees, int SubtaskHoursSpent) {
         this.subtaskID = subtaskID;
         this.subtaskName = subtaskName;
         this.taskID = taskID;
@@ -30,6 +31,7 @@ public class SubTask {
         this.subtaskDescription = subtaskDescription;
         this.subtaskStatus = subtaskStatus;
         this.assignees = assignees;
+        this.subtaskHoursSpent = SubtaskHoursSpent;
     }
 
     public int getSubtaskID() {
@@ -110,6 +112,14 @@ public class SubTask {
 
     public void setAssignees(List<Employee> assignees) {
         this.assignees = assignees;
+    }
+
+    public int getSubtaskHoursSpent() {
+        return subtaskHoursSpent;
+    }
+
+    public void setSubtaskHoursSpent(int SubtaskHoursSpent) {
+        this.subtaskHoursSpent = SubtaskHoursSpent;
     }
 
     public String remainingDays () {

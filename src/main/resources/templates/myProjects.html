@@ -16,7 +16,13 @@
     <div th:each="project : ${projects}">
         <div class="taskContentContainer">
 
-            <div class="taskelementEnd">
+            <div class="projectCard">
+                <h1>
+                    <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
+                </h1>
+            </div>
+
+            <!--<div class="taskelementEnd">
                 <h5>Name</h5>
                 <h2>
                     <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
@@ -87,7 +93,7 @@
             </div>
         </div>
 
-        <div class="h-separator"></div>
+        <div class="h-separator"></div>-->
     </div>
 </div>
 

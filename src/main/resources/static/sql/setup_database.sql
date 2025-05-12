@@ -55,20 +55,21 @@ CREATE TABLE subproject (
                             subproject_end_date DATE,
                             subproject_description VARCHAR(256),
                             projectID INTEGER,
+                            subproject_hours_spent INTEGER,
                             FOREIGN KEY (projectID) REFERENCES project (projectID) ON DELETE CASCADE
 );
 
-CREATE TABLE task (
-                      taskID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
-                      task_Name VARCHAR(100) NOT NULL,
-                      subProjectId INTEGER,
-                      FOREIGN KEY (subProjectId) REFERENCES subproject(subprojectID) ON DELETE CASCADE,
-                      task_estimate INTEGER NOT NULL,
-                      task_start_date DATE,
-                      task_end_date DATE,
-                      task_priority VARCHAR(50),
-                      task_description VARCHAR(256),
-                      task_status VARCHAR(50)
+CREATE TABLE task
+(
+                            taskID           INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
+                            task_Name        VARCHAR(100)        NOT NULL,
+                            subProjectId     INTEGER,
+                            FOREIGN KEY (subProjectId) REFERENCES subproject (subprojectID) ON DELETE CASCADE,
+                            task_start_date  DATE,
+                            task_end_date    DATE,
+                            task_priority    VARCHAR(50),
+                            task_description VARCHAR(256),
+                            task_hours_spent INTEGER
 );
 
 CREATE TABLE subtask (
@@ -81,7 +82,8 @@ CREATE TABLE subtask (
                          subtask_end_date DATE,
                          subtask_priority VARCHAR(50),
                          subtask_description VARCHAR(256),
-                         subtask_status VARCHAR(50)
+                         subtask_status VARCHAR(50),
+                     subtask_hours_spent INTEGER
 );
 
 CREATE TABLE projectAssignees

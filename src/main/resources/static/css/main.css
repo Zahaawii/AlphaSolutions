@@ -5,6 +5,8 @@
 }
 
 
+
+
 html, body {
     margin: 0;
     padding: 0;
@@ -112,6 +114,45 @@ h1, h3 {
     align-items: center;
     gap: 2em;
 }
+
+.projectInfoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+}
+
+.projectInfoWrapper {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.projectInfoText {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    text-align: center;
+}
+.projectInfoText h4, h3 {
+    padding: 0;
+    margin: 0;
+}
+.projectInfoText h4 {
+    font-weight: 300;
+    font-size: 1.25em;
+}
+
+.projectInfoText h3 {
+    font-weight: 700;
+    font-size: 1.75em;
+}
+
 .taskelement {
     display: flex;
     flex-direction: column;
@@ -590,6 +631,47 @@ h2, .description-label, .date-group label {
     margin-top: 1em;
     font-weight: bold;
 }
+
+.progress-container {
+    width: 100%; /* Full width */
+    background-color: #FFF0F3;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+    color: white;
+    font-family: Montserrat
+}
+
+.progress-bar {
+    background-color: var(--accent-color);
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    position: absolute;
+    z-index: 2;
+    color: black;
+    font-weight: 800;
+    font-size: 1.5em;
+    font-family: Montserrat;
+    width: 100%;
+    text-align: center;
+}
+.text-danger {
+    color: var(--accent-color);
+}
+
+
+
+.text-success {
+    color: green;
+}
+
+
+
 
 
 
