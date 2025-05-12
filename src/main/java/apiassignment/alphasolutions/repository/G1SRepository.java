@@ -152,7 +152,9 @@ public class G1SRepository {
     public List<SubProject> getSubprojectByProjectId(int id) {
         String sql = "SELECT * FROM subproject WHERE projectID = ?";
         List<SubProject> subProjects = jdbcTemplate.query(sql, new SubprojectRowMapper(), id);
-
+        for (SubProject subproject : subProjects) {
+            subproject.setSubtasks(getAllSubtasksBySubprojectID(subproject.getSubprojectID()));
+        }
         return  subProjects;
     }
 
