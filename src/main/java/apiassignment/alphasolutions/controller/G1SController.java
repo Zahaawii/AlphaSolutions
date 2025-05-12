@@ -62,6 +62,10 @@ public class G1SController {
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
         List <Project> getAllProjects = g1SService.getAllProjectsWithSum(employee.getEmployeeId());
+        for (Project p : getAllProjects) {
+            List<Employee> assignees = g1SService.getProjectAssignees(p.getProjectId());
+            model.addAttribute("assignees",assignees);
+        }
 
         if (employee == null) {
             return "redirect:/login";
@@ -100,14 +104,15 @@ public class G1SController {
             return "redirect:/login";
         }
 
+        List<Employee> assignees = g1SService.getProjectAssignees(id);
         Project project = g1SService.getProjectById(id);
+        model.addAttribute("assignees",assignees);
         model.addAttribute("project", project);
         return "editProject";
     }
 
     @PostMapping("/projects/update")
     public String updateProject(@ModelAttribute Project project) {
-        System.out.println(project);
         g1SService.updateProject(project);
         return "redirect:/projects";
     }
