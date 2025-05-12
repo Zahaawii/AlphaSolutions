@@ -3,6 +3,8 @@ package apiassignment.alphasolutions;
 
 import apiassignment.alphasolutions.model.Project;
 import apiassignment.alphasolutions.model.SubProject;
+import apiassignment.alphasolutions.model.SubTask;
+import apiassignment.alphasolutions.model.Task;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
 import com.mysql.cj.xdevapi.Table;
@@ -196,5 +198,149 @@ public class alphaSolutionsIntegrationsTest {
 
 
     }
+
+
+    @Test
+    void testCreateTask() {
+        Task newTask = new Task();
+
+        newTask.setTaskName("Test Task");
+        newTask.setSubprojectId(1);
+        newTask.setTaskEstimate(40);
+        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
+        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
+        newTask.setTaskPriority("High");
+        newTask.setTaskDescription("Test description");
+        newTask.setTaskStatus("In Progress");
+
+        g1SRepository.createTask(newTask);
+
+        assertTrue(newTask.getTaskId() > 0);
+
+        Task dbTask = g1SRepository.getTaskById(newTask.getTaskId());
+
+        assertNotNull(dbTask);
+        assertEquals(newTask.getTaskName(),(dbTask.getTaskName()));
+        assertEquals(newTask.getSubprojectId(), dbTask.getSubprojectId());
+        assertEquals(newTask.getTaskEstimate(), dbTask.getTaskEstimate());
+        assertEquals(newTask.getTaskStartDate(), dbTask.getTaskStartDate());
+        assertEquals(newTask.getTaskEndDate(), dbTask.getTaskEndDate());
+        assertEquals(newTask.getTaskPriority(), dbTask.getTaskPriority());
+        assertEquals(newTask.getTaskDescription(), dbTask.getTaskDescription());
+        assertEquals(newTask.getTaskStatus(), dbTask.getTaskStatus());
+
+    }
+
+    @Test
+    void testDeleteTask() {
+        //opret task og tjek om den er oprettet i DB
+        Task newTask = new Task();
+
+        newTask.setTaskName("Test Task");
+        newTask.setSubprojectId(1);
+        newTask.setTaskEstimate(40);
+        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
+        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
+        newTask.setTaskPriority("High");
+        newTask.setTaskDescription("Test description");
+        newTask.setTaskStatus("In Progress");
+
+        g1SRepository.createTask(newTask);
+
+        assertTrue(newTask.getTaskId() > 0);
+
+
+        //tjek om task eksisterer i DB
+        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
+
+        //fjern task fra DB
+        g1SRepository.deleteTask(newTask.getTaskId());
+
+        //tjek om den er fjernet
+        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
+
+    }
+
+    /*@Test
+    void testUpdateTask() {
+        //create task
+        Task newTask = new Task();
+
+        newTask.setTaskName("Test Task");
+        newTask.setSubprojectId(1);
+        newTask.setTaskEstimate(40);
+        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
+        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
+        newTask.setTaskPriority("High");
+        newTask.setTaskDescription("Test description");
+        newTask.setTaskStatus("In Progress");
+
+        g1SRepository.createTask(newTask);
+
+        assertTrue(newTask.getTaskId() > 0);
+
+        g1SRepository.updateTask();
+    }*/
+
+    @Test
+    void testGetTasks() {
+        int taskID = 1;
+        Task task = g1SRepository.getTaskById(taskID);
+
+        assertNotNull(task);
+
+        String expected = "Design User Dashboard";
+        String actual = task.getTaskName();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void testCreateSubtask() {
+        SubTask subtask = new SubTask();
+        subtask.setSubtaskName("Test");
+        subtask.setTaskID(1);
+        subtask.setSubtaskEstimate(4);
+        subtask.setSubtaskStartDate(Date.valueOf("2025-05-12"));
+        subtask.setSubtaskEndDate(Date.valueOf("2025-05-14"));
+        subtask.setSubtaskPriority("High");
+        subtask.setSubtaskDescription("Test Description");
+        subtask.setSubtaskStatus("Not Started");
+
+
+        g1SRepository.createSubTask(subtask);
+
+        assertTrue(subtask.getSubtaskID() > 0);
+
+        //tjek om eksisterer i DB
+        SubTask dbSubtask = g1SRepository.getSubtaskById(subtask.getSubtaskID());
+        assertNotNull(dbSubtask);
+
+        assertEquals(subtask.getSubtaskName(), dbSubtask.getSubtaskName());
+        assertEquals(subtask.getTaskID(), dbSubtask.getTaskID());
+        assertEquals(subtask.getSubtaskEstimate(), dbSubtask.getSubtaskEstimate());
+        assertEquals(subtask.getSubtaskStartDate(), dbSubtask.getSubtaskStartDate());
+        assertEquals(subtask.getSubtaskEndDate(), dbSubtask.getSubtaskEndDate());
+        assertEquals(subtask.getSubtaskPriority(), dbSubtask.getSubtaskPriority());
+        assertEquals(subtask.getSubtaskDescription(), dbSubtask.getSubtaskDescription());
+        assertEquals(subtask.getSubtaskStatus(), dbSubtask.getSubtaskStatus());
+
+    }
+
+    @Test
+    void testGetSubtask() {
+        int subtaskID = 1;
+        SubTask subtask = g1SRepository.getSubtaskById(subtaskID);
+
+        assertNotNull(subtask);
+
+        String expected = "Create Dashboard Wireframes";
+        String actual = subtask.getSubtaskName();
+
+        assertEquals(expected, actual);
+    }
+
+
 
 }
