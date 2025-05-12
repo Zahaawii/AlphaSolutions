@@ -3,6 +3,8 @@ package apiassignment.alphasolutions;
 
 import apiassignment.alphasolutions.model.Project;
 import apiassignment.alphasolutions.model.SubProject;
+import apiassignment.alphasolutions.model.SubTask;
+import apiassignment.alphasolutions.model.Task;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
 import com.mysql.cj.xdevapi.Table;
@@ -22,6 +24,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -171,30 +174,127 @@ public class alphaSolutionsIntegrationsTest {
 
     }
 
-//    //afventer
-//    @Test
-//    void testDeleSubproject() throws SQLException {
-//
-//        SubProject testSubProject = new SubProject(99, "test", Date.valueOf("2025-05-20"), Date.valueOf("2025-05-20"), 1);
-//
-//        g1SRepository.addSubProject(testSubProject);
-//
-//        g1SRepository.deleteSubProject(testSubProject.getSubprojectID());
-//
-//        if(testSubProject == null) {
-//            assertTrue(true);
-//            System.out.println("hej");
-//        } else {
-//            fail("Test failed");
-//        }
-//
-//    }
-
+    //afventer
     @Test
-    void testUpdateSubproject() throws SQLException {
-
-
+    void testDeleSubproject() throws SQLException {
 
     }
+
+    @Test
+    void testUpdateSubProject() {
+        SubProject subProject = new SubProject(0, "Test name", Date.valueOf("2025-05-20"), Date.valueOf("2025-05-25"), 1);
+        g1SRepository.addSubProject(subProject);
+        int id = subProject.getSubprojectID();
+
+        SubProject createdSubProject = g1SRepository.getSubProjectById(id);
+        assertNotNull(createdSubProject);
+        assertEquals("Test name", createdSubProject.getSubprojectName());
+
+        createdSubProject.setSubprojectName("Test1 name");
+        createdSubProject.setSubprojectStartDate(Date.valueOf("2025-06-01"));
+        createdSubProject.setSubprojectEndDate(Date.valueOf("2025-06-15"));
+        g1SRepository.updateSubproject(createdSubProject);
+
+        SubProject updatedSubProject = g1SRepository.getSubProjectById(id);
+        assertNotNull(updatedSubProject);
+
+        assertEquals("Test1 name", updatedSubProject.getSubprojectName());
+        assertEquals(Date.valueOf("2025-06-01"), updatedSubProject.getSubprojectStartDate());
+        assertEquals(Date.valueOf("2025-06-15"), updatedSubProject.getSubprojectEndDate());
+    }
+
+    @Test
+    void testGetSumOfTaskAndSubTask() throws SQLException {
+        SubProject testSub = new SubProject
+                        (99, "test",
+                        Date.valueOf("2025-05-12"),
+                        Date.valueOf("2025-05-12"),
+                        1);
+        g1SRepository.addSubProject(testSub);
+        int subprojectId = testSub.getSubprojectID();
+
+        Task taskWithEstimate = new Task(1, "test task", 99, 10,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+                );
+        g1SRepository.createTask(taskWithEstimate);
+
+        Task taskWithOutEstimate = new Task(1, "test task", 99, 0,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createTask(taskWithOutEstimate);
+
+        SubTask subTaskWithEstimate = new SubTask(1, "test task", 1, 10,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createSubTask(subTaskWithEstimate);
+
+        SubTask subTaskWithoutEstimate = new SubTask(1, "test task", 1, 0,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createSubTask(subTaskWithoutEstimate);
+
+
+
+       Integer result = g1SService.getSumOfTaskAndSubTask(subprojectId);
+        assertNotNull(result);
+        assertEquals(10, result);
+
+    }
+
+    @Test
+    void testGetTotalSumOfProject() throws SQLException {
+        Project testProject = new Project(99, "test", 1, Date.valueOf("2025-05-12"), Date.valueOf("2025-05-12"),"testDB", "test");
+        g1SRepository.createProject(testProject);
+
+        SubProject testSub = new SubProject
+                (99, "test",
+                        Date.valueOf("2025-05-12"),
+                        Date.valueOf("2025-05-12"),
+                        testProject.getProjectId());
+        g1SRepository.addSubProject(testSub);
+        int subprojectId = testSub.getSubprojectID();
+
+        Task taskWithEstimate = new Task(1, "test task", subprojectId, 10,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createTask(taskWithEstimate);
+
+        Task taskWithOutEstimate = new Task(2, "test task", subprojectId, 0,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createTask(taskWithOutEstimate);
+
+        SubTask subTaskWithEstimate = new SubTask(1, "test task", 1, 10,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createSubTask(subTaskWithEstimate);
+
+        SubTask subTaskWithoutEstimate = new SubTask(2, "test task", 2, 0,
+                Date.valueOf("2025-05-12"),
+                Date.valueOf("2025-05-12"),
+                "high", "test", "in progress", null
+        );
+        g1SRepository.createSubTask(subTaskWithoutEstimate);
+
+
+        Integer result = g1SService.getTotalSumOfProject(testSub.getProjectID());
+        assertNotNull(result);
+        assertEquals(10, result);
+    }
+
 
 }

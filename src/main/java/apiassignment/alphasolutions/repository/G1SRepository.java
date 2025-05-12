@@ -460,13 +460,19 @@ public class G1SRepository {
 
     public void updateSubproject(SubProject subProject) {
         String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";
-        jdbcTemplate.update(sql,
+        int rowsAffected = jdbcTemplate.update(
+                sql,
                 subProject.getSubprojectName(),
                 subProject.getSubprojectStartDate(),
                 subProject.getSubprojectEndDate(),
                 subProject.getSubprojectID()
         );
+
+        if (rowsAffected == 0) {
+            throw new RuntimeException("Update failed: No subproject found with ID " + subProject.getSubprojectID());
+        }
     }
+
 
 
 }
