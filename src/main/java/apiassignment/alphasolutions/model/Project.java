@@ -1,6 +1,8 @@
 package apiassignment.alphasolutions.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Project {
     private int projectId;
@@ -11,6 +13,7 @@ public class Project {
     private String projectDescription;
     private String projectStatus;
     private Integer sum;
+    private List<Employee> assignees = new ArrayList<>();
 
     public Project() {}
 
@@ -58,6 +61,10 @@ public class Project {
         return projectStatus;
     }
 
+    public List<Employee> getAssignees() {
+        return assignees;
+    }
+
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -84,6 +91,10 @@ public class Project {
 
     public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus;
+    }
+
+    public void setAssignees(List<Employee> assignees) {
+        this.assignees = assignees;
     }
 
     public void setSum(Integer sum) {

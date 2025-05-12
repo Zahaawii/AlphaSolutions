@@ -309,6 +309,38 @@ public class G1SService {
      return projects;
     }
 
+
+    public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToTask(taskId, employeeIds);
+    }
+
+    public int getSubprojectIdFromTaskId(int taskId) {
+        return g1SRepository.getSubprojectIdFromTaskId(taskId);
+    }
+
+    public int getProjectIdFromSubprojectId(int subprojectId) {
+        return g1SRepository.getProjectIdFromSubprojectId(subprojectId);
+    }
+
+    public List<Integer> getTaskAssignees(int taskId) {
+        return g1SRepository.getTaskAssignees(taskId);
+    }
+
+    public void clearTaskAssignees(int taskId) {
+        g1SRepository.clearTaskAssignees(taskId);
+    }
+
+    public void addAssigneeToSubtask(int subtaskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToSubtask(subtaskId,employeeIds);
+    }
+
+    public List<Integer> getSubtaskAssignees(int subtaskId) {
+        return g1SRepository.getSubtaskAssignees(subtaskId);
+    }
+
+    public void clearSubtaskAssignees(int subtaskId) {
+        g1SRepository.clearSubtaskAssignees(subtaskId);
+
     public String encryptTest(String password) {
         String salt = BCrypt.gensalt(10);
         return BCrypt.hashpw(password, salt);
@@ -320,6 +352,7 @@ public class G1SService {
 
     public Employee findByUsername(String username) {
         return g1SRepository.findByUsername(username);
+
     }
 }
 

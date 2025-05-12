@@ -73,6 +73,17 @@ a:hover {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+.assigneeSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
+h1, h3 {
+    margin: 0;
+    padding: 0.2em 0;
+    text-align: center;
+}
 .taskListContainer.big {
     align-self: center;
     justify-self: center;
@@ -105,7 +116,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1em;
+    margin-top: 0.5em;
 }
 .taskelementEnd {
     display: flex;

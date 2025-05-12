@@ -77,23 +77,21 @@
 
 
             <div class="taskelement">
-                <h5>Assignees</h5>
-
+                <h5>Add assignees to task</h5>
                 <div class="avatargrid">
 
-                    <div th:each="assignee : *{assignees}">
-                        <a th:href="@{/profile/{employeeId}(employeeId=${assignee.getEmployeeId()})}">
-                            <div class="avatar"
-                                 th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
-                             #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
-
+                    <div class="taskelement">
+                        <div class="assignee-selection">
+                            <div th:each="assignee : ${projectAssignees}">
+                                <label>
+                                    <input type="checkbox" name="employeeIds"
+                                           th:value="${assignee.employeeId}"
+                                           th:checked="${assigned.contains(assignee.employeeId)}" />
+                                    <span th:text="${assignee.employeeName}"></span>
+                                </label>
                             </div>
-                        </a>
-
+                        </div>
                     </div>
-                    <a th:href="@{select-collaborators}">
-                        <div class="avatar">+</div>
-                    </a>
 
                 </div>
 
