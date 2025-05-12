@@ -4,6 +4,7 @@ package apiassignment.alphasolutions.service;
 import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.repository.G1SRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -277,6 +278,19 @@ public class G1SService {
         project.setSum(sum);
     }
      return projects;
+    }
+
+    public String encryptTest(String password) {
+        String salt = BCrypt.gensalt(10);
+        return BCrypt.hashpw(password, salt);
+    }
+
+    public boolean decryptTest(String password, String encrypted) {
+        return BCrypt.checkpw(password, encrypted);
+    }
+
+    public Employee findByUsername(String username) {
+        return g1SRepository.findByUsername(username);
     }
 }
 
