@@ -3,26 +3,15 @@ package apiassignment.alphasolutions.controller;
 
 import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
-
-
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.server.ResponseStatusException;
-
 import org.springframework.web.util.UriUtils;
-
-
-
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -180,8 +169,17 @@ public class G1SController {
     @PostMapping("/login")
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
+
+        //nedenstående metode skal fjernes når vi implementerer bcrypt
         Employee employee = g1SService.login(username, password);
-        if(employee == null){
+
+        /*
+        Nedenstående kode sættes i bero indtil vi er klar til at lancere. Ellers kan alle logge ind.
+        Employee employee = g1SService.findByUsername(username);
+         */
+
+        //metoden er sat i bero indtil vi får gjort det vi skal
+        if(employee == null /*||  !g1SService.decryptTest(password, employee.getEmployeePassword()) */ ){
             model.addAttribute("wrongLogin", true);
             return "login";
         }
@@ -307,6 +305,8 @@ public class G1SController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
+        String test = g1SService.encryptTest(employee.getEmployeePassword());
+        employee.setEmployeePassword(test);
         g1SService.adminRegisterEmployee(employee);
         return "redirect:/adminpanel";
     }
@@ -437,6 +437,7 @@ public class G1SController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
         }
+        newEmployee.setEmployeePassword(g1SService.encryptTest(newEmployee.getEmployeePassword()));
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminpanel";
     }

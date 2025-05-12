@@ -496,6 +496,13 @@ public class G1SRepository {
         }
     }
 
-
-
+    public Employee findByUsername(String username) {
+        try {
+            String sql = "SELECT * FROM employee WHERE employee_username = ?";
+            Employee emp = jdbcTemplate.queryForObject(sql, new EmployeeRowmapper(), username);
+            return emp;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }
