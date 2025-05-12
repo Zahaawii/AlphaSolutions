@@ -1,9 +1,11 @@
 package apiassignment.alphasolutions.service;
 
 
+import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.repository.G1SRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -81,16 +83,38 @@ public class G1SService {
     public List<Employee> getAllEmployee() {
         return g1SRepository.getAllEmployee();
     }
+    public List<Employee>getAllEmployeePlusSkills(){
+        List<Employee>employeeList = g1SRepository.getAllEmployee();
+        if(employeeList == null || employeeList.isEmpty()){
+            return null;
+        }
+        for(Employee i: employeeList){
+            List<Skill> skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
+            i.setSkills(skillList);
+        }
+        return employeeList;
+    }
 
     public List<Employee> getAllCommonWorkers() {
         return g1SRepository.getAllCommonWorkers();
     }
-
-    public boolean isUsernameFree(String username) {
-        return g1SRepository.isUsernameFree(username);
+    public List<Employee> getAllCommonWorkersPlusSkills(){
+        List<Employee>employeeList = g1SRepository.getAllCommonWorkers();
+        if(employeeList == null || employeeList.isEmpty()){
+            return null;
+        }
+        for(Employee i: employeeList){
+            List<Skill>skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
+            i.setSkills(skillList);
+        }
+        return employeeList;
     }
 
-    public Employee adminRegisterEmployee(Employee employee) {
+    public boolean isUsernameFree(DTOEmployee employee) {
+        return g1SRepository.isUsernameFree(employee);
+    }
+
+    public DTOEmployee adminRegisterEmployee(DTOEmployee employee) {
         return g1SRepository.adminRegisterEmployee(employee);
     }
 
@@ -133,8 +157,14 @@ public class G1SService {
     public Employee getEmployeeById(int id) {
         return g1SRepository.getEmployeeById(id);
     }
+    public Employee getEmployeeByIdPlusSkills(int id){
+        Employee employee = g1SRepository.getEmployeeById(id);
+        List<Skill> skillList = g1SRepository.getSkillsForEmployee(id);
+        employee.setSkills(skillList);
+        return employee;
+    }
 
-    public Employee updateEmployee(Employee employee) {
+    public DTOEmployee updateEmployee(DTOEmployee employee) {
         return g1SRepository.updateEmployee(employee);
     }
 
@@ -223,9 +253,6 @@ public class G1SService {
         return g1SRepository.getProjectsForOneEmployee(employeeId);
     }
 
-
-
-
     public void deleteSubprojectBysubProjectId(int id) {
         g1SRepository.deleteSubProject(id);
     }
@@ -282,6 +309,7 @@ public class G1SService {
      return projects;
     }
 
+
     public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
         g1SRepository.addAssigneeToTask(taskId, employeeIds);
     }
@@ -312,6 +340,19 @@ public class G1SService {
 
     public void clearSubtaskAssignees(int subtaskId) {
         g1SRepository.clearSubtaskAssignees(subtaskId);
+
+    public String encryptTest(String password) {
+        String salt = BCrypt.gensalt(10);
+        return BCrypt.hashpw(password, salt);
+    }
+
+    public boolean decryptTest(String password, String encrypted) {
+        return BCrypt.checkpw(password, encrypted);
+    }
+
+    public Employee findByUsername(String username) {
+        return g1SRepository.findByUsername(username);
+
     }
 }
 

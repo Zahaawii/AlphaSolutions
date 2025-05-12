@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Update employee</title>
+    <link rel="stylesheet" th:href="@{/css/adminPanel.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<div>
+<div class="layout">
+    <div th:replace="fragments/dashboard :: dashboard"></div>
+
+    <div class="taskListContainer">
+
     <h1>Update employee</h1>
     <p th:if="${notFree}">There is already an employee with this username</p>
 
-    <form th:action="@{admin/update}" th:object="${newEmployee}" method="post">
+    <form th:action="@{/admin/update}" th:object="${newEmployee}" method="post" >
         <input type="hidden" id="employeeId" name="employeeId" th:value="${oldEmployee.getEmployeeId()}">
 
         <div>
@@ -34,10 +40,22 @@
                 <option th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
             </select>
         </div>
+        <h3>Skills:</h3>
+        <div th:each="skill : ${skillList}">
+            <label>
+                <input type="checkbox"
+                       th:value="${skill.skillId}"
+                       name="skills"
+                       th:checked="${oldEmployee.getSkills().contains(skill)}" />
+                <span th:text="${skill.skillName}">Skill Name</span>
+            </label>
+            <br/>
+        </div>
 
         <button type="submit">Update</button>
 
     </form>
+    </div>
 
 </div>
 

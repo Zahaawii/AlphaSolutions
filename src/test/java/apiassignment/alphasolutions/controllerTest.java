@@ -1,9 +1,11 @@
 package apiassignment.alphasolutions;
 
 
+import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.controller.G1SController;
 import apiassignment.alphasolutions.model.Employee;
 import apiassignment.alphasolutions.model.Project;
+import apiassignment.alphasolutions.model.Skill;
 import apiassignment.alphasolutions.model.SubProject;
 import apiassignment.alphasolutions.service.G1SService;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +17,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -27,9 +30,11 @@ public class controllerTest {
 
     //Adding test objects to testing page, so we can test our controllers with sesison
     Employee employee;
+    DTOEmployee dtoEmployee;
     MockHttpSession session;
     Project project;
     SubProject subProject;
+    Skill skill;
 
     //Calling MockMvc method to test our controllers
     @Autowired
@@ -42,10 +47,13 @@ public class controllerTest {
     @BeforeEach
     void setup() {
         employee = new Employee(1, "test","test","test","test",null, 3);
+        dtoEmployee = new DTOEmployee(1, "test","test","test","test",null, 3);
         session = new MockHttpSession();
         session.setAttribute("employee", employee);
         project = new Project(1, "Project test", 1,null, null, "test", "igang");
         subProject = new SubProject(1, "subProject test", null,null,1);
+        skill = new Skill(1, "Frontend");
+
     }
 
     @AfterEach
@@ -323,7 +331,7 @@ public class controllerTest {
 
     @Test
     void adminRegisterEmployee() throws Exception {
-        when(g1SService.isUsernameFree("huw02")).thenReturn(true);
+        when(g1SService.isUsernameFree(dtoEmployee)).thenReturn(true);
         mockMvc.perform(post("/admin/register").session(session)
                         .param("employeeId", "2")
                         .param("employeeName", "hannibal")
@@ -336,7 +344,18 @@ public class controllerTest {
     }
 
     @Test
-    void adminDeleteEmployee () throws Exception {}
+    void adminDeleteEmployee () throws Exception {
+        mockMvc.perform(post("/admin/delete/2").session(session)
+                .param("employeeId", "2")
+                .param("employeeName", "hannibal")
+                .param("employeeEmail", "hannibal@ussing.com")
+                .param("employeeUsername", "huw02")
+                .param("employeePassword", "1234")
+                .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/adminpanel"));
+
+    }
 
     @Test
     void deleteSubTask() throws Exception {}
@@ -350,11 +369,97 @@ public class controllerTest {
     @Test
     void editSubTask() throws Exception {}
 
+    //tester at man bliver redirected til "/home", hvis man ikke har rollen 2 eller 3
     @Test
-    void adminUpdateEmployeeGet () throws Exception {}
+    void adminUpdateEmployeeGetRoleIdNotAllowed () throws Exception {
+        employee.setRoleId(1);
+        mockMvc.perform(get("/admin/update/1").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
+    }
+    //tester man bliver sendt til html siden "adminUpdateEmployee", hvis man har rollen 2 eller 3
+    @Test
+    void adminUpdateEmployeeGet() throws  Exception{
+        employee.setRoleId(3);
+        when(g1SService.getEmployeeById(1)).thenReturn(employee);
+        mockMvc.perform(get("/admin/update/1").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminUpdateEmployee"));
+
+    }
 
     @Test
-    void adminUpdateEmployeePost () throws Exception {}
+    void adminUpdateEmployeePostUsernameNotFree () throws Exception {
+        when(g1SService.isUsernameFree(dtoEmployee)).thenReturn(false);
+        mockMvc.perform(post("/admin/update")
+                        .param("employeeId", "2")
+                        .param("employeeName", "hannibal")
+                        .param("employeeEmail", "hannibal@ussing.com")
+                        .param("employeeUsername", "huw02")
+                        .param("employeePassword", "1234")
+                        .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/update/2"));
+    }
+
+    @Test
+    void adminUpdateEmployeePostUsernameIsFree () throws Exception {
+        when(g1SService.isUsernameFree(dtoEmployee)).thenReturn(true);
+        mockMvc.perform(post("/admin/update")
+                        .param("employeeId", "2")
+                        .param("employeeName", "hannibal")
+                        .param("employeeEmail", "hannibal@ussing.com")
+                        .param("employeeUsername", "huw02")
+                        .param("employeePassword", "1234")
+                        .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/adminpanel"));
+    }
+    @Test
+    void getEmployees() throws  Exception{
+        mockMvc.perform(get("/project/1/assignees"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("employeesWithSkill"));
+    }
+
+    @Test
+    void addEmployeeToProjectEmployeeIdIsZero() throws Exception{
+        mockMvc.perform(post("/project/1/add/0")
+                        .param("employeeId", "0")
+                        .param("employeeName", "hannibal")
+                        .param("employeeEmail", "hannibal@ussing.com")
+                        .param("employeeUsername", "huw02")
+                        .param("employeePassword", "1234")
+                        .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/1"));
+    }
+
+    @Test
+    void addEmployeeToProject() throws Exception{
+        mockMvc.perform(post("/project/1/add/1")
+                        .param("employeeId", "1")
+                        .param("employeeName", "hannibal")
+                        .param("employeeEmail", "hannibal@ussing.com")
+                        .param("employeeUsername", "huw02")
+                        .param("employeePassword", "1234")
+                        .param("roleId", "3"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/project/1/assignees"));
+    }
+
+    @Test
+    void seeProfile() throws Exception{
+        List<Skill> skillList = new ArrayList<>();
+        skillList.add(skill);
+        when(g1SService.getEmployeeById(1)).thenReturn(employee);
+        when(g1SService.getSkillsForEmployee(1)).thenReturn(skillList);
+        mockMvc.perform(get("/profile/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("profile"));
+    }
+
+
 
 
 
