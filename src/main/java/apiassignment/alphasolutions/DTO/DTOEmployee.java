@@ -1,34 +1,30 @@
-package apiassignment.alphasolutions.model;
+package apiassignment.alphasolutions.DTO;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-
-import jdk.jfr.DataAmount;
-
-import java.util.ArrayList;
-import java.util.List;
+import apiassignment.alphasolutions.model.Skill;
 
 
-public class Employee {
+public class DTOEmployee {
     private int employeeId;
     private String employeeName;
     private String employeeEmail;
     private String employeeUsername;
     private String employeePassword;
-    private List<Skill> skills = new ArrayList<>();
+    private List<Integer> skills = new ArrayList<>();
     private int roleId;
 
-    public Employee() {}
+    public DTOEmployee() {}
 
-    public Employee(int employeeId, String employeeName) {
+    public DTOEmployee(int employeeId, String employeeName) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
     }
 
-    public Employee(int employeeId, String employeeName, String employeeEmail, String employeeUsername, String employeePassword, List<Skill> skills, int roleId) {
+    public DTOEmployee(int employeeId, String employeeName, String employeeEmail, String employeeUsername, String employeePassword, List<Integer> skills, int roleId) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.employeeEmail = employeeEmail;
@@ -83,19 +79,18 @@ public class Employee {
         this.employeePassword = employeePassword;
     }
 
+    public List<Integer> getSkills() {
+        return skills;
+    }
 
+    public void setSkills(List<Integer> skills) {
+        this.skills = skills;
+    }
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 
-    public List<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
 
     @Override
     public String toString() {

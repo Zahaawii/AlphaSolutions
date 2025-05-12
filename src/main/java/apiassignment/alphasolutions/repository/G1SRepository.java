@@ -1,6 +1,7 @@
 package apiassignment.alphasolutions.repository;
 
 
+import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
 import apiassignment.alphasolutions.rowmapper.*;
 
@@ -251,17 +252,25 @@ public class G1SRepository {
         return employee;
     }
 
-    public boolean isUsernameFree(String username){
+    public boolean isUsernameFree(DTOEmployee employee){
         String sql = "SELECT * FROM employee WHERE employee_username = ?";
-        List<Employee>employees = jdbcTemplate.query(sql, new EmployeeRowmapper(), username);
-        if(employees.isEmpty()){
+        List<Employee>employeeList = jdbcTemplate.query(sql, new EmployeeRowmapper(), employee.getEmployeeUsername());
+        if(employeeList.isEmpty()){
             return true;
+        } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
+        //vores egen employee object kommer til at indgå i listen, hvis vi ikke har opdateret brugernavn
+        //men vi måske kun har opdateret vores email eller lignende
+        //derfor tjekker vi om employeeId matcher
+        for(Employee i: employeeList){
+            if(i.getEmployeeId() != employee.getEmployeeId()){
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
 
-    public Employee adminRegisterEmployee(Employee employee){
+    public DTOEmployee adminRegisterEmployee(DTOEmployee employee){
         try {
             String sql = "INSERT INTO employee (employee_name, employee_email, employee_username, employee_password, roleID) VALUES (?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -279,6 +288,12 @@ public class G1SRepository {
             int employeeId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
             if (employeeId != -1) {
                 employee.setEmployeeId(employeeId);
+            }
+            if(employee.getSkills() != null && !employee.getSkills().isEmpty()) {
+                for(Integer i : employee.getSkills()){
+                    String sqlInsertSkill = "INSERT INTO skillrelation (skillID, employeeID) VALUES (?, ?)";
+                    jdbcTemplate.update(sqlInsertSkill, i, employee.getEmployeeId());
+                }
             }
         } catch (DataAccessException e) {
             throw new RuntimeException("Failed to register employee ", e);
@@ -403,9 +418,17 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new SubTaskRowMapper(), id).getFirst();
     }
 
-    public Employee updateEmployee(Employee employee){
-        String sql = "UPDATE employee SET employee_name = ?, employee_email = ?, employee_username = ?, employee_password = ?, employee_password = ?, roleID = ? WHERE employeeID = ?";
-        jdbcTemplate.update(sql, employee.getEmployeeName(), employee.getEmployeeEmail(), employee.getEmployeeUsername(), employee.getEmployeePassword(), employee.getRoleId(), employee.getRoleId());
+    public DTOEmployee updateEmployee(DTOEmployee employee){
+        String sql = "UPDATE employee SET employee_name = ?, employee_email = ?, employee_username = ?, employee_password = ?, roleID = ? WHERE employeeID = ?";
+        jdbcTemplate.update(sql, employee.getEmployeeName(), employee.getEmployeeEmail(), employee.getEmployeeUsername(), employee.getEmployeePassword(), employee.getRoleId(), employee.getEmployeeId());
+        String sqlDeleteSkill = "DELETE FROM skillrelation WHERE employeeID = ?";
+        jdbcTemplate.update(sqlDeleteSkill, employee.getEmployeeId());
+        if(employee.getSkills() != null && !employee.getSkills().isEmpty()) {
+            for(Integer i : employee.getSkills()){
+                String sqlInsertSkill = "INSERT INTO skillrelation (skillID, employeeID) VALUES (?, ?)";
+                jdbcTemplate.update(sqlInsertSkill, i, employee.getEmployeeId());
+            }
+        }
         return employee;
     }
 
@@ -460,13 +483,19 @@ public class G1SRepository {
 
     public void updateSubproject(SubProject subProject) {
         String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";
-        jdbcTemplate.update(sql,
+        int rowsAffected = jdbcTemplate.update(
+                sql,
                 subProject.getSubprojectName(),
                 subProject.getSubprojectStartDate(),
                 subProject.getSubprojectEndDate(),
                 subProject.getSubprojectID()
         );
+
+        if (rowsAffected == 0) {
+            throw new RuntimeException("Update failed: No subproject found with ID " + subProject.getSubprojectID());
+        }
     }
+
 
 
 }
