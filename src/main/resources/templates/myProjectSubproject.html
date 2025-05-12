@@ -69,24 +69,24 @@
                         transform="rotate(-90 120 120)"
                         stroke-dasharray="628"
                         class="progress-ring"
-                        th:style="'stroke-dashoffset: ' + (628 - (628 * ${completion} / 100))" />
+                        th:style="'stroke-dashoffset: ' + (628 - (628 * ${subproject.calculateCompletion()} / 100))" />
               </svg>
 
-              <span class="progress-text-circle" th:text="${completion} + '%'"></span>
+              <span class="progress-text-circle" th:text="${subproject.calculateCompletion()} + '%'"></span>
             </div>
             <div class="projectInfoContainer">
               <div class="projectInfoText">
                 <h4>Estimated</h4>
-                <h3 th:text="${estimate}"></h3>
+                <h3 th:text="${subproject.calculateTotalEstimate()}"></h3>
               </div>
               <div class="projectInfoText">
                 <h4>Actual</h4>
-                <h3 th:text="${actual}"></h3>
+                <h3 th:text="${subproject.calculateTotalActual()}"></h3>
               </div>
               <div class="projectInfoText">
                 <h4>Prediction</h4>
-                <h3 th:text="${predictionRatio}"
-                    th:class="${predictionRatio > 1.5 || predictionRatio < 0.5 ? 'text-danger' : 'text-success'}"
+                <h3 th:text="${subproject.calculatePredictionRatio()}"
+                    th:class="${subproject.calculatePredictionRatio() > 1.5 || subproject.calculatePredictionRatio() < 0.5 ? 'text-danger' : 'text-success'}"
                 >
                 </h3>
               </div>
