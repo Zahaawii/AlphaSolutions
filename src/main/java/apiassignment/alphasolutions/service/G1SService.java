@@ -223,9 +223,6 @@ public class G1SService {
         return g1SRepository.getProjectsForOneEmployee(employeeId);
     }
 
-
-
-
     public void deleteSubprojectBysubProjectId(int id) {
         g1SRepository.deleteSubProject(id);
     }
