@@ -41,6 +41,23 @@ public class G1SService {
         g1SRepository.deleteProject(projectID);
     }
 
+    public String getProjectCompletion(int projectid) {
+
+        List<SubTask> subtasks = g1SRepository.getAllSubtasksByProjectId(projectid);
+
+        int subtaskcount = subtasks.size();
+        int subtaskscomplete = 0;
+
+        for (SubTask subtask : subtasks) {
+            if (subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
+                subtaskscomplete++;
+            }
+        }
+        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
+
+        return percentcomplete + "%";
+    }
+
     public List<Employee> getAllEmployees() {
         return g1SRepository.getAllEmployee();
     }

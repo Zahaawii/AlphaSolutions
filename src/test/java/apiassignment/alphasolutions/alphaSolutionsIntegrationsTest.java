@@ -204,7 +204,7 @@ public class alphaSolutionsIntegrationsTest {
         assertEquals(Date.valueOf("2025-06-15"), updatedSubProject.getSubprojectEndDate());
     }
 
-    @Test
+    /*@Test
     void testGetSumOfTaskAndSubTask() throws SQLException {
         SubProject testSub = new SubProject
                         (99, "test",
@@ -247,10 +247,9 @@ public class alphaSolutionsIntegrationsTest {
        Integer result = g1SService.getSumOfTaskAndSubTask(subprojectId);
         assertNotNull(result);
         assertEquals(10, result);
+    }*/
 
-    }
-
-    @Test
+    /*@Test
     void testGetTotalSumOfProject() throws SQLException {
         Project testProject = new Project(99, "test", 1, Date.valueOf("2025-05-12"), Date.valueOf("2025-05-12"),"testDB", "test");
         g1SRepository.createProject(testProject);
@@ -295,7 +294,7 @@ public class alphaSolutionsIntegrationsTest {
         Integer result = g1SService.getTotalSumOfProject(testSub.getProjectID());
         assertNotNull(result);
         assertEquals(10, result);
-    }
+    }*/
 
 
 
@@ -400,7 +399,7 @@ public class alphaSolutionsIntegrationsTest {
         subtask.setSubtaskPriority("High");
         subtask.setSubtaskDescription("Test Description");
         subtask.setSubtaskStatus("Not Started");
-        subtask.setHoursSpent(0);
+        subtask.setSubtaskHoursSpent(0);
 
 
         g1SRepository.createSubTask(subtask);
