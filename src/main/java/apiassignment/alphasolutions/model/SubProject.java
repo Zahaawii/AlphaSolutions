@@ -1,6 +1,8 @@
 package apiassignment.alphasolutions.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubProject {
 
@@ -9,6 +11,7 @@ public class SubProject {
     private java.sql.Date subprojectStartDate;
     private java.sql.Date subprojectEndDate;
     private int projectID;
+    private List<Employee> assignees = new ArrayList<>();
 
     public SubProject(int subprojectID, String subprojectName, java.sql.Date subprojectStartDate, java.sql.Date subprojectEndDate, int projectID) {
         this.subprojectID = subprojectID;
@@ -65,6 +68,14 @@ public class SubProject {
 
     public void setSubprojectEndDate(java.sql.Date subprojectEndDate) {
         this.subprojectEndDate = subprojectEndDate;
+    }
+
+    public List<Employee> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(List<Employee> assignees) {
+        this.assignees = assignees;
     }
 
     @Override

@@ -301,6 +301,18 @@ public class G1SService {
     public void clearTaskAssignees(int taskId) {
         g1SRepository.clearTaskAssignees(taskId);
     }
+
+    public void addAssigneeToSubtask(int subtaskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToSubtask(subtaskId,employeeIds);
+    }
+
+    public List<Integer> getSubtaskAssignees(int subtaskId) {
+        return g1SRepository.getSubtaskAssignees(subtaskId);
+    }
+
+    public void clearSubtaskAssignees(int subtaskId) {
+        g1SRepository.clearSubtaskAssignees(subtaskId);
+    }
 }
 
 

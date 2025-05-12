@@ -513,4 +513,32 @@ public class G1SRepository {
         jdbcTemplate.update(sql, taskId);
     }
 
+    public void addAssigneeToSubtask(int subtaskId, List<Integer> employeeIds) {
+        for (Integer emp : employeeIds) {
+            String sql = "INSERT INTO subtaskassignees (subtaskID, employeeID) VALUES (?, ?)";
+            jdbcTemplate.update(sql,subtaskId,emp);
+        }
+    }
+
+    public List<Integer> getSubtaskAssignees(int subtaskId) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN subtaskassignees ON employee.employeeID = subtaskassignees.employeeID
+        WHERE subtaskassignees.subtaskID = ?
+    """;
+        List<Employee> employees = jdbcTemplate.query(sql,new EmployeeRowmapper(),subtaskId);
+        List<Integer> empIds = new ArrayList<>();
+
+        for (Employee emp : employees) {
+            empIds.add(emp.getEmployeeId());
+        }
+
+        return empIds;
+    }
+
+    public void clearSubtaskAssignees(int subtaskId) {
+        String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
+        jdbcTemplate.update(sql, subtaskId);
+    }
 }
