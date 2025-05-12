@@ -3,47 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Panel</title>
+    <link rel="stylesheet" th:href="@{/css/adminPanel.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <table>
-        <tr>
-            <th scope="row"> Employee id</th>
-            <th scope="row"> Name</th>
-            <th scope="row"> Email</th>
-            <th scope="row"> Username</th>
-            <th scope="row"> Password</th>
-            <th scope="row"> Role id</th>
-            <th scope="row"> Skills</th>
-            <th scope="row"> Edit panel</th>
-        </tr>
+<div class="layout">
+    <div th:replace="fragments/dashboard :: dashboard"></div>
 
-        <tr th:each="i : ${getAllEmployee}">
-            <td th:text="${i.getEmployeeId()}"></td>
-            <td th:text="${i.getEmployeeName()}"></td>
-            <td th:text="${i.getEmployeeEmail()}"></td>
-            <td th:text="${i.getEmployeeUsername()}"></td>
-            <td th:text="${i.getEmployeePassword()}"></td>
-            <td th:text="${i.getRoleId()}"></td>
-            <td>
-                <li th:each="b : ${i.getSkills()}">
-                    <span th:text="${b.getSkillName()}"></span>
-                </li>
-            </td>
-            <td>
-                <div>
-                    <button><a th:href="@{/admin/update/{employeeId}(employeeId=${i.getEmployeeId()})}" >
-                    Update employee</a></button>
-                    <form th:action="@{/admin/delete/{employeeId}(employeeId = ${i.getEmployeeId()})}" method="post">
-                        <button type="submit">Delete employee</button>
-                    </form>
-                </div>
-            </td>
+    <div class="taskListContainer">
+        <h1>Admin Panel</h1>
 
-        </tr>
-    </table>
+        <table class="employee-table">
+            <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role ID</th>
+                <th>Skills</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="i : ${getAllEmployee}">
+                <td th:text="${i.getEmployeeId()}"></td>
+                <td th:text="${i.getEmployeeName()}"></td>
+                <td th:text="${i.getEmployeeEmail()}"></td>
+                <td th:text="${i.getEmployeeUsername()}"></td>
+                <td th:text="${i.getEmployeePassword()}"></td>
+                <td th:text="${i.getRoleId()}"></td>
+                <td>
+                    <ul>
+                        <li th:each="b : ${i.getSkills()}">
+                            <span th:text="${b.getSkillName()}"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td class="adminButtons">
+                    <div class="action-buttons">
+                        <a class="button update" th:href="@{/admin/update/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form th:action="@{/admin/delete/{employeeId}(employeeId=${i.getEmployeeId()})}" method="post">
+                            <button class="button delete" type="submit" onclick="return confirm('Are you sure you want to delete this employee?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div>
-        <button type="button"><a th:href="@{/admin/addEmployee}">Click her to add a new employee</a></button>
+        <div class="add-button">
+            <a class="button add" th:href="@{/admin/addEmployee}">Add New Employee</a>
+        </div>
+        <div class="h-separator"></div>
     </div>
+</div>
 </body>
 </html>
