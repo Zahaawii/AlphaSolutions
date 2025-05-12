@@ -1,6 +1,7 @@
 package apiassignment.alphasolutions.controller;
 
 
+import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
 
 
@@ -261,14 +262,16 @@ public class G1SController {
         }
         //projekleder(role 2) kan kun se medarbejdere
         if(checkEmployee.getRoleId() == 2){
-            List<Employee>getAllCommonWorkers = g1SService.getAllCommonWorkers();
+            List<Employee>getAllCommonWorkers = g1SService.getAllCommonWorkersPlusSkills();
             model.addAttribute("getAllEmployee", getAllCommonWorkers);
         }
         //admins(role 3) kan se alle, medarbejdere, projektledere og admins
         if(checkEmployee.getRoleId() == 3) {
-            List<Employee> getAllEmployee = g1SService.getAllEmployee();
+            List<Employee> getAllEmployee = g1SService.getAllEmployeePlusSkills();
             model.addAttribute("getAllEmployee", getAllEmployee);
         }
+        List<Skill> skillList = g1SService.getAllSkills();
+        model.addAttribute("skillList", skillList);
         return "adminPanel";
     }
 
@@ -280,7 +283,7 @@ public class G1SController {
             return "redirect:/home";
         }
         //tilføjer et nyt employee objekt
-        Employee employee = new Employee();
+        DTOEmployee employee = new DTOEmployee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
         if(checkEmployee.getRoleId() == 2) {
@@ -291,14 +294,16 @@ public class G1SController {
             model.addAttribute("admin", true);
             List<Role> listOfRoles = g1SService.getAllRoles();
             model.addAttribute("roles", listOfRoles);
+            List<Skill> skillList = g1SService.getAllSkills();
+            model.addAttribute("skillList", skillList);
         }
         model.addAttribute("employee", employee);
         return "adminAddEmployee";
     }
 
     @PostMapping("/admin/register")
-    public String adminRegisterEmployee(@ModelAttribute Employee employee, Model model){
-        if(!g1SService.isUsernameFree(employee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
+    public String adminRegisterEmployee(@ModelAttribute DTOEmployee employee, Model model){
+        if(!g1SService.isUsernameFree(employee)){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
@@ -405,10 +410,10 @@ public class G1SController {
             return "redirect:/home";
         }
         //laver et employee objekt ud fra det id vi får med i URL'en
-        Employee oldEmployee = g1SService.getEmployeeById(id);
+        Employee oldEmployee = g1SService.getEmployeeByIdPlusSkills(id);
         model.addAttribute("oldEmployee", oldEmployee);
         //tilføjer et nyt employee objekt
-        Employee newEmployee = new Employee();
+        DTOEmployee newEmployee = new DTOEmployee();
         //hvis den givne employee er role 2(projektleder) så tilgår de siden
         //projektledere kan kun oprette medarbejdere og ikke projektledere og admins
         if(checkEmployee.getRoleId() == 2) {
@@ -420,19 +425,20 @@ public class G1SController {
             List<Role> listOfRoles = g1SService.getAllRoles();
             model.addAttribute("roles", listOfRoles);
         }
+        List<Skill> skillList = g1SService.getAllSkills();
+        model.addAttribute("skillList", skillList);
         model.addAttribute("newEmployee", newEmployee);
         return "adminUpdateEmployee";
     }
 
     @PostMapping("/admin/update")
-    public String adminUpdateEmployeePost(@ModelAttribute Employee newEmployee, HttpSession session, Model model){
-        int employeeID = newEmployee.getEmployeeId();
-        if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
+    public String adminUpdateEmployeePost(@ModelAttribute DTOEmployee newEmployee, HttpSession session, Model model){
+        if(!g1SService.isUsernameFree(newEmployee)){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
-            return "redirect:/admin/update/" + employeeID; //hvis det ikke er frit, bliver man smidt tilbage til update siden
+            return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
         }
         g1SService.updateEmployee(newEmployee);
-        return "redirect:/adminPanel";
+        return "redirect:/adminpanel";
     }
 
 
