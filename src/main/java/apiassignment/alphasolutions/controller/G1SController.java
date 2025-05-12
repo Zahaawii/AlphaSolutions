@@ -128,6 +128,7 @@ public class G1SController {
         model.addAttribute("completion", g1SService.getProjectCompletion(id));
         model.addAttribute("assignees",g1SService.getProjectAssignees(id));
         model.addAttribute("project",g1SService.getProjectById(id));
+
         return "myProjectSubproject";
     }
 

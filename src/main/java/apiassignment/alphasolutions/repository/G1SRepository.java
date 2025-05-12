@@ -250,6 +250,17 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new SubTaskRowMapper(), projectid);
     }
 
+    public List<SubTask> getAllSubtasksBySubprojectID(int subprojectID) {
+        String sql = """
+                SELECT subtask.* FROM subtask
+                JOIN task ON subtask.taskID = task.taskID
+                JOIN subproject ON task.subProjectId = subproject.subprojectID
+                WHERE subproject.subprojectID = ?;
+                """;
+        return jdbcTemplate.query(sql, new SubTaskRowMapper(), subprojectID);
+
+    }
+
 
     public Employee login(String username, String password) {
         String sql = "SELECT * FROM employee WHERE employee_username = ?";
