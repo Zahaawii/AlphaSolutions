@@ -440,6 +440,16 @@ public class alphaSolutionsIntegrationsTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void testEncryptPassword() {
+        String testpassword = "hej";
+        String encrypted = g1SService.encryptTest(testpassword);
+
+        assertNotNull(encrypted);
+        assertTrue(g1SService.decryptTest(testpassword, encrypted));
+        assertFalse(g1SService.decryptTest("forkert", encrypted));
+    }
+
 
 
 
