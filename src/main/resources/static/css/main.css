@@ -75,6 +75,7 @@ a:hover {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
 .assigneeSection {
     display: flex;
     flex-direction: column;
@@ -85,6 +86,7 @@ h1, h3 {
     margin: 0;
     padding: 0.2em 0;
     text-align: center;
+
 }
 .taskListContainer.big {
     align-self: center;
@@ -122,6 +124,7 @@ h1, h3 {
     align-items: center;
     text-align: center;
 
+
 }
 
 .projectInfoWrapper {
@@ -131,6 +134,7 @@ h1, h3 {
     justify-content: center;
     align-items: center;
 
+
 }
 
 .projectInfoText {
@@ -138,10 +142,12 @@ h1, h3 {
     flex-direction: column;
     padding: 1em;
     text-align: center;
+
 }
 .projectInfoText h4, h3 {
     padding: 0;
     margin: 0;
+
 }
 .projectInfoText h4 {
     font-weight: 300;
@@ -669,6 +675,71 @@ h2, .description-label, .date-group label {
 .text-success {
     color: green;
 }
+
+.progress-circle-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    transition: 0.3s ease;
+}
+
+.progress-text-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: 800;
+    color: black;
+    pointer-events: none;
+    transition: 0.3s ease-out;
+}
+.progress-ring {
+    stroke: var(--accent-color); /* or whatever default you want */
+    transition: stroke 0.3s ease-out, stroke-dashoffset 1s ease-out;
+}
+
+.circleGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12em;
+}
+
+.circleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-out;
+}
+
+.subprojectContent:hover .progress-ring {
+    stroke: black;
+    transition: stroke 0.3s ease;
+}
+
+
+
+
+.subprojectContent:hover .progress-text-circle {
+    color: #FF325A;
+    transition: color 0.3s ease;
+}
+
+.subprojectContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.subprojectContent h2 {
+    font-size: 2em;
+    font-weight: 800;
+
+}
+
 
 
 
