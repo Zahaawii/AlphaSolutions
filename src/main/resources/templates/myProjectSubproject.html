@@ -33,7 +33,7 @@
       <h4>Prediction ratio</h4>
       <h3 th:text="${predictionRatio}"
           th:class="${predictionRatio > 1.5 || predictionRatio < 0.5 ? 'text-danger' : 'text-success'}"
-          >
+      >
       </h3>
 
 
@@ -44,14 +44,10 @@
 
 
 
-    <a class="addSubproject" th:href="@{'/create/subproject/' + ${projectid}}">
-      <span> Add sub project </span>
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </a>
-
-
-
-
+  <a class="addSubproject" th:href="@{'/create/subproject/' + ${projectid}}">
+    <span> Add sub project </span>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
 
 
 

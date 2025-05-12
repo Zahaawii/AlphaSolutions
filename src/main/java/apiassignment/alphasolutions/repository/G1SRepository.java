@@ -506,6 +506,83 @@ public class G1SRepository {
         }
     }
 
+    public Employee findByUsername(String username) {
+        try {
+            String sql = "SELECT * FROM employee WHERE employee_username = ?";
+            Employee emp = jdbcTemplate.queryForObject(sql, new EmployeeRowmapper(), username);
+            return emp;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
+
+    public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
+        for (Integer emp : employeeIds) {
+            String sql = "INSERT INTO taskassignees (taskID, employeeID) VALUES (?, ?)";
+            jdbcTemplate.update(sql,taskId,emp);
+        }
+    }
+
+    public int getSubprojectIdFromTaskId(int taskId) {
+        String sql = "SELECT subProjectId FROM task WHERE taskID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, taskId);
+    }
+
+    public int getProjectIdFromSubprojectId(int subprojectId) {
+        String sql = "SELECT projectID FROM subproject WHERE subprojectID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+    }
+
+    public List<Integer> getTaskAssignees(int taskId) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN taskassignees ON employee.employeeID = taskassignees.employeeID
+        WHERE taskassignees.taskID = ?
+    """;
+        List<Employee> employees = jdbcTemplate.query(sql,new EmployeeRowmapper(),taskId);
+        List<Integer> empIds = new ArrayList<>();
+
+        for (Employee emp : employees) {
+            empIds.add(emp.getEmployeeId());
+        }
+
+        return empIds;
+    }
+
+    public void clearTaskAssignees(int taskId) {
+        String sql = "DELETE FROM taskassignees WHERE taskID = ?";
+        jdbcTemplate.update(sql, taskId);
+    }
+
+    public void addAssigneeToSubtask(int subtaskId, List<Integer> employeeIds) {
+        for (Integer emp : employeeIds) {
+            String sql = "INSERT INTO subtaskassignees (subtaskID, employeeID) VALUES (?, ?)";
+            jdbcTemplate.update(sql,subtaskId,emp);
+        }
+    }
+
+    public List<Integer> getSubtaskAssignees(int subtaskId) {
+        String sql = """
+        SELECT *
+        FROM employee
+        JOIN subtaskassignees ON employee.employeeID = subtaskassignees.employeeID
+        WHERE subtaskassignees.subtaskID = ?
+    """;
+        List<Employee> employees = jdbcTemplate.query(sql,new EmployeeRowmapper(),subtaskId);
+        List<Integer> empIds = new ArrayList<>();
+
+        for (Employee emp : employees) {
+            empIds.add(emp.getEmployeeId());
+        }
+
+        return empIds;
+    }
+
+    public void clearSubtaskAssignees(int subtaskId) {
+        String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
+        jdbcTemplate.update(sql, subtaskId);
+    }
 
 }
