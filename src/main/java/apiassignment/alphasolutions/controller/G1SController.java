@@ -369,9 +369,13 @@ public class G1SController {
     }
 
     @PostMapping("/subproject/{subprojectid}/create/task")
-    public String createTask(@PathVariable int subprojectid, Task task) {
+    public String createTask(@PathVariable int subprojectid, Task task, @RequestParam(required = false) List<Integer> employeeIds) {
         task.setSubprojectId(subprojectid);
         g1SService.createTask(task);
+
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToTask(task.getTaskId(), employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -381,14 +385,21 @@ public class G1SController {
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
         model.addAttribute("subtask", new SubTask());
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
         System.out.println("THIS IS THE TASKID: " + taskid);
         return "createSubtask";
     }
 
     @PostMapping("/subproject/{subprojectid}/task/{taskid}/create/subtask")
-    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask) {
+    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds) {
         subtask.setTaskID(taskid);
         g1SService.createSubtask(subtask);
+
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToSubtask(subtask.getSubtaskID(), employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -553,14 +564,14 @@ public class G1SController {
         return "redirect:/projects";
     }
 
-    @PostMapping("/task/{taskId}/assign")
-    public String assignProjectAssigneesToTask(
-            @PathVariable int taskId,
-            @RequestParam("employeeIds") List<Integer> employeeIds
-    ) {
-        g1SService.addAssigneeToTask(taskId, employeeIds);
-        int subprojectId = g1SService.getSubprojectIdFromTaskId(taskId);
-        return "redirect:/subproject/" + subprojectId;
-    }
+//    @PostMapping("/task/{taskId}/assign")
+//    public String assignProjectAssigneesToTask(
+//            @PathVariable int taskId,
+//            @RequestParam("employeeIds") List<Integer> employeeIds
+//    ) {
+//        g1SService.addAssigneeToTask(taskId, employeeIds);
+//        int subprojectId = g1SService.getSubprojectIdFromTaskId(taskId);
+//        return "redirect:/subproject/" + subprojectId;
+//    }
 
 }
