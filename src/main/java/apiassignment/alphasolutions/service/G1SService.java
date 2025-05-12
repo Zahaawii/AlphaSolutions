@@ -8,6 +8,7 @@ import apiassignment.alphasolutions.repository.G1SRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class G1SService {
         g1SRepository.deleteProject(projectID);
     }
 
-    public String getProjectCompletion(int projectid) {
+    public int getProjectCompletion(int projectid) {
 
         List<SubTask> subtasks = g1SRepository.getAllSubtasksByProjectId(projectid);
 
@@ -55,7 +56,7 @@ public class G1SService {
         }
         int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
 
-        return percentcomplete + "%";
+        return percentcomplete;
     }
 
     public List<Employee> getAllEmployees() {
@@ -296,7 +297,7 @@ public class G1SService {
         return sum;
     }
 
-    public Integer getTotalSumOfProject(int projectID) {
+    public Integer getTotalEstimateOfProject(int projectID) {
         List<SubProject> subProjects = g1SRepository.getSubprojectByProjectId(projectID);
         Integer sum = 0;
 
@@ -317,10 +318,33 @@ public class G1SService {
         return sum;
     }
 
+    public int getTotalActualOfProject(int projectID) {
+        List<SubTask> subtasks = g1SRepository.getAllSubtasksByProjectId(projectID);
+        int actualHours = 0;
+        for (SubTask subtask : subtasks) {
+            actualHours += subtask.getSubtaskHoursSpent();
+        }
+
+        return actualHours;
+    }
+
+    public double getPredictionRatioOfProject(int projectID) {
+        double actual = getTotalActualOfProject(projectID);
+        double estimate = getTotalEstimateOfProject(projectID);
+
+        if (actual / estimate == 0) return 0.00;
+
+
+        double ratio = (estimate / actual);
+
+        return Math.round(ratio * 100.0) / 100.0;
+
+    }
+
     public List<Project> getAllProjectsWithSum(int employeeID) {
     List<Project> projects = g1SRepository.getAllProjects(employeeID);
     for(Project project : projects) {
-        Integer sum = getTotalSumOfProject(project.getProjectId());
+        Integer sum = getTotalEstimateOfProject(project.getProjectId());
         project.setSum(sum);
     }
      return projects;
