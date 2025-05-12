@@ -564,14 +564,4 @@ public class G1SController {
         return "redirect:/projects";
     }
 
-//    @PostMapping("/task/{taskId}/assign")
-//    public String assignProjectAssigneesToTask(
-//            @PathVariable int taskId,
-//            @RequestParam("employeeIds") List<Integer> employeeIds
-//    ) {
-//        g1SService.addAssigneeToTask(taskId, employeeIds);
-//        int subprojectId = g1SService.getSubprojectIdFromTaskId(taskId);
-//        return "redirect:/subproject/" + subprojectId;
-//    }
-
 }
