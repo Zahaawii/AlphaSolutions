@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create user</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="layout">
+
+  <div class="taskListContainer">
+
+    <h1>Register Employee</h1>
+    <p th:if="${notFree}">There is already an employee with this username</p>
+
+    <form th:action="@{/create/user}" th:object="${employee}" method="post" >
+      <div>
+        <label for="employeeName"></label>
+        <input type="text" id="employeeName" name="awaitingEmployee_name" placeholder="Name" required>
+      </div>
+      <div>
+        <label for="employeeEmail"></label>
+        <input type="text" id="employeeEmail" name="awaitingEmployee_email" placeholder="Email" required>
+      </div>
+      <div>
+        <label for="employeeUsername"></label>
+        <input type="text" id="employeeUsername" name="awaitingEmployee_username" placeholder="Username" required>
+      </div>
+      <div>
+        <label for="employeePassword"></label>
+        <input type="password" id="employeePassword" name="awaitingEmployee_password" placeholder="Password" required>
+      </div>
+
+      <button type="submit">Register</button>
+
+    </form>
+  </div>
+</div>
+
+
+</body>
+</html>

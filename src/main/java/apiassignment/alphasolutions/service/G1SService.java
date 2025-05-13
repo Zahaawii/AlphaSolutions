@@ -413,6 +413,18 @@ public class G1SService {
         return g1SRepository.findByUsername(username);
 
     }
+
+    public AwaitingEmployee createUser(AwaitingEmployee employee) {
+        return g1SRepository.createUser(employee);
+    }
+
+    public List<AwaitingEmployee> getAllAwaitingUsers() {
+        return g1SRepository.getAllAwaitingUsers();
+    }
+
+    public void deleteAwaitingEmployee(int id) {
+        g1SRepository.deleteAwaitingEmployee(id);
+    }
 }
 
 
