@@ -54,7 +54,7 @@ public class G1SController {
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        List <Project> getAllProjects = g1SService.getAllProjectsWithSum(employee.getEmployeeId());
+        List <Project> getAllProjects = g1SService.getProjectsWithAssignees(employee.getEmployeeId());
 
         if (employee == null) {
             return "redirect:/login";
@@ -138,17 +138,10 @@ public class G1SController {
         return "myProjectSubproject";
     }
 
-    @GetMapping("/select-collaborators")
-    public String selectCollaborators(Model model) {
-        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
-        return "selectCollaborators";
-    }
-
-    @PostMapping("/save-collaborators")
-    public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
-        List<Employee> selected = g1SService.getEmployeesByIds(ids);
-        session.setAttribute("selectedCollaborators", selected);
-        return "redirect:/projects";
+    @GetMapping("/project/{id}/assigneesList")
+    public String getProjectAssignees(@PathVariable int id, Model model, HttpSession session) {
+        model.addAttribute("assignees",g1SService.getProjectAssignees(id));
+        return "projectAssignees";
     }
 
 

@@ -425,6 +425,10 @@ public class G1SService {
     public void deleteAwaitingEmployee(int id) {
         g1SRepository.deleteAwaitingEmployee(id);
     }
+
+    public List<Project> getProjectsWithAssignees(int empId) {
+        return g1SRepository.getProjectsWithAssignees(empId);
+    }
 }
 
 
