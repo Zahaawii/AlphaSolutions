@@ -706,6 +706,13 @@ h2, .description-label, .date-group label {
     gap: 12em;
 }
 
+@media(max-width: 1700px) {
+    .circleGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
 .circleWrapper {
     display: flex;
     justify-content: space-between;
