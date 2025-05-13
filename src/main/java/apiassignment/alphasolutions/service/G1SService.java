@@ -364,6 +364,7 @@ public class G1SService {
     for(Project project : projects) {
         Integer sum = getTotalEstimateOfProject(project.getProjectId());
         project.setSum(sum);
+        project.setSubtasks(g1SRepository.getAllSubtasksByProjectId(project.getProjectId()));
     }
      return projects;
     }

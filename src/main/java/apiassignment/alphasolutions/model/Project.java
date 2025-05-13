@@ -14,6 +14,8 @@ public class Project {
     private String projectStatus;
     private Integer sum;
     private List<Employee> assignees = new ArrayList<>();
+    private List<SubTask> subtasks = new ArrayList<>();
+
 
     public Project() {}
 
@@ -105,8 +107,57 @@ public class Project {
         return sum;
     }
 
+    public List<SubTask> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(List<SubTask> subtasks) {
+        this.subtasks = subtasks;
+    }
+
+    public int calculateCompletion() {
+        int subtaskcount = subtasks.size();
+        int subtaskscomplete = 0;
+
+        for (SubTask subtask : subtasks) {
+            if (subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
+                subtaskscomplete++;
+            }
+        }
+        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
+
+        return percentcomplete;
+    }
+
+    public int calculateTotalEstimate() {
+        int sum = 0;
+        for (SubTask subtask : subtasks) {
+            sum += subtask.getSubtaskEstimate();
+        }
+        return sum;
+    }
+
+    public int calculateTotalActual() {
+        int sum = 0;
+        for (SubTask subtask : subtasks) {
+            sum += subtask.getSubtaskHoursSpent();
+        }
+        return sum;
+    }
+
+    public double calculatePredictionRatio() {
+        double actual = calculateTotalActual();
+        double estimate = calculateTotalEstimate();
 
 
+
+        if (actual / estimate == 0) return 0.00;
+
+
+        double ratio = (estimate / actual);
+
+        return Math.round(ratio * 100.0) / 100.0;
+    }
 
     @Override
     public String toString() {
