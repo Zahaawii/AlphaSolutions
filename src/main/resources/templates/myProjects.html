@@ -11,16 +11,21 @@
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
 <div class="taskListContainer">
-    <h1>My Projects</h1>
-
     <div th:each="project : ${projects}">
-        <div class="taskContentContainer">
 
-            <div class="projectCard">
-                <h1>
-                    <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
-                </h1>
-            </div>
+            <a th:href="@{'project/' + ${project.projectId}}">
+                <div class="projectCard">
+                    <h1 th:text="${project.projectName}"></h1>
+                    <div class="project-progress-container">
+                        <span class="project-progress-text" th:text="${project.calculateCompletion()} + '%'"></span>
+                        <div class="project-progress-bar" th:style="'width: ' + ${project.calculateCompletion()} + '%; background: linear-gradient(to right, #FF6A6A, #FF325A);'">
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+
+
 
             <!--<div class="taskelementEnd">
                 <h5>Name</h5>
@@ -94,7 +99,6 @@
         </div>
 
         <div class="h-separator"></div>-->
-    </div>
 </div>
 
 </body>

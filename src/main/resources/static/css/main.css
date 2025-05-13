@@ -674,8 +674,40 @@ h2, .description-label, .date-group label {
     font-weight: bold;
 }
 
+.project-progress-container {
+    width: 500px;
+    background-color: #FFF0F3;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: Montserrat;
+    overflow: hidden;
+}
+
+.project-progress-bar {
+    background-color: var(--accent-color);
+    height: 100%;
+    transition: width 0.5s ease;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.project-progress-text {
+    position: absolute;
+    z-index: 2;
+    color: black;
+    font-weight: 800;
+    font-size: 1.5em;
+    width: 100%;
+    text-align: center;
+}
+
+
 .progress-container {
-    width: 100%; /* Full width */
+    width: 100%;
     background-color: #FFF0F3;
     height: 35px;
     display: flex;
@@ -685,6 +717,8 @@ h2, .description-label, .date-group label {
     color: white;
     font-family: Montserrat
 }
+
+
 
 .progress-bar {
     background-color: var(--accent-color);
@@ -782,6 +816,16 @@ h2, .description-label, .date-group label {
     font-weight: 800;
 
 }
+
+.projectCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
 
 
 
