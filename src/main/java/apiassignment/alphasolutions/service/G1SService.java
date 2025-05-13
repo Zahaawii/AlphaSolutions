@@ -8,6 +8,7 @@ import apiassignment.alphasolutions.repository.G1SRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +147,7 @@ public class G1SService {
         return employeeList;
     }
 
-    public boolean isUsernameFree(DTOEmployee employee) {
+    public boolean isUsernameFree(String employee) {
         return g1SRepository.isUsernameFree(employee);
     }
 
@@ -424,6 +425,25 @@ public class G1SService {
 
     public void deleteAwaitingEmployee(int id) {
         g1SRepository.deleteAwaitingEmployee(id);
+    }
+
+    public void deleteAwaitingEmployeeWithUsername(String username) {
+        g1SRepository.deleteAwaitingEmployeeWithUsername(username);
+    }
+
+    public void sendEmail(String employee) {
+        var emailService = new G1SEmailService();
+        var body = "Hej, der er en bruger ved navn: " + employee + " som har anmodet om at blive oprettet i systemet." +
+                " Du kan se brugeren herinde: www.localhost:8080/awaitingusers";
+        try {
+            emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isUsernameAwaitingUserFree(String username) {
+        return g1SRepository.isUsernameAwaitingUserFree(username);
     }
 }
 

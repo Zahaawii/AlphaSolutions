@@ -316,12 +316,11 @@ public class G1SController {
 
     @PostMapping("/admin/register")
     public String adminRegisterEmployee(@ModelAttribute DTOEmployee employee, Model model){
-        if(!g1SService.isUsernameFree(employee)){ //tjekker om brugernavnet er frit
+        if(!g1SService.isUsernameFree(employee.getEmployeeUsername()) || !g1SService.isUsernameAwaitingUserFree(employee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
-        String test = g1SService.encryptTest(employee.getEmployeePassword());
-        employee.setEmployeePassword(test);
+        employee.setEmployeePassword(g1SService.encryptTest(employee.getEmployeePassword()));
         g1SService.adminRegisterEmployee(employee);
         return "redirect:/adminpanel";
     }
@@ -480,7 +479,7 @@ public class G1SController {
 
     @PostMapping("/admin/update")
     public String adminUpdateEmployeePost(@ModelAttribute DTOEmployee newEmployee, HttpSession session, Model model){
-        if(!g1SService.isUsernameFree(newEmployee)){ //tjekker om brugernavnet er frit
+        if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername()) || !g1SService.isUsernameAwaitingUserFree(newEmployee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
         }
@@ -596,15 +595,12 @@ public class G1SController {
 
     @PostMapping("/create/user")
     public String createUserPost(@ModelAttribute AwaitingEmployee employee) {
-        g1SService.createUser(employee);
-        var emailService = new G1SEmailService();
-        var body = "Hej, der er en bruger ved navn: " + employee.getAwaitingEmployee_name() + " som har anmodet om at blive oprettet i systemet." +
-                "Du kan se brugeren herinde: localhost:8080/awaitingusers";
-        try {
-            emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!g1SService.isUsernameFree(employee.getAwaitingEmployee_name()) || !g1SService.isUsernameAwaitingUserFree(employee.getAwaitingEmployee_name())) {
+            return "redirect:/create/user";
         }
+        employee.setAwaitingEmployee_password(g1SService.encryptTest(employee.getAwaitingEmployee_password()));
+        g1SService.createUser(employee);
+        g1SService.sendEmail(employee.getAwaitingEmployee_name());
         return "redirect:/login";
     }
 
@@ -618,7 +614,7 @@ public class G1SController {
     @PostMapping("/create/user/adminApproval")
     public String adminApprovedEmployee(@ModelAttribute DTOEmployee employee) {
         g1SService.adminRegisterEmployee(employee);
-        System.out.println(employee.getEmployeeId());
+        g1SService.deleteAwaitingEmployeeWithUsername(employee.getEmployeeUsername());
         return "redirect:/awaitingusers";
     }
 

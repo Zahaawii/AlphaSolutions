@@ -277,9 +277,9 @@ public class G1SRepository {
         return employee;
     }
 
-    public boolean isUsernameFree(DTOEmployee employee){
+    public boolean isUsernameFree(String employee){
         String sql = "SELECT * FROM employee WHERE employee_username = ?";
-        List<Employee>employeeList = jdbcTemplate.query(sql, new EmployeeRowmapper(), employee.getEmployeeUsername());
+        List<Employee>employeeList = jdbcTemplate.query(sql, new EmployeeRowmapper(), employee);
         if(employeeList.isEmpty()){
             return true;
         } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
@@ -287,7 +287,7 @@ public class G1SRepository {
         //men vi måske kun har opdateret vores email eller lignende
         //derfor tjekker vi om employeeId matcher
         for(Employee i: employeeList){
-            if(i.getEmployeeId() != employee.getEmployeeId()){
+            if(i.getEmployeeUsername().equalsIgnoreCase(employee)){
                 return false;
             }
         }
@@ -566,6 +566,11 @@ public class G1SRepository {
         jdbcTemplate.update(sql,id);
     }
 
+    public void deleteAwaitingEmployeeWithUsername(String username) {
+        String sql = "DELETE FROM awaitingemployee where awaitingEmployee_name = ?;";
+        jdbcTemplate.update(sql, username);
+    }
+
     public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
         for (Integer emp : employeeIds) {
             String sql = "INSERT INTO taskassignees (taskID, employeeID) VALUES (?, ?)";
@@ -632,5 +637,22 @@ public class G1SRepository {
     public void clearSubtaskAssignees(int subtaskId) {
         String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtaskId);
+    }
+
+    public boolean isUsernameAwaitingUserFree(String employee){
+        String sql = "SELECT * FROM awaitingemployee WHERE awaitingEmployee_name = ?";
+        List<AwaitingEmployee>employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
+        if(employeeList.isEmpty()){
+            return true;
+        } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
+        //vores egen employee object kommer til at indgå i listen, hvis vi ikke har opdateret brugernavn
+        //men vi måske kun har opdateret vores email eller lignende
+        //derfor tjekker vi om employeeId matcher
+        for(AwaitingEmployee i: employeeList){
+            if(i.getAwaitingEmployee_username().equalsIgnoreCase(employee)){
+                return false;
+            }
+        }
+        return true;
     }
 }
