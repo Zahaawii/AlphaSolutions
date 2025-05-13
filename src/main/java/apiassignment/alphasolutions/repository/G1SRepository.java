@@ -49,7 +49,9 @@ public class G1SRepository {
     public Project getProjectById(int projectId) {
         try {
             String sql = "SELECT * FROM project WHERE projectID = ?";
-            return jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
+            Project project = jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
+            project.setSubtasks(getAllSubtasksByProjectId(projectId));
+            return project;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -632,6 +634,16 @@ public class G1SRepository {
     public void clearSubtaskAssignees(int subtaskId) {
         String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtaskId);
+    }
+
+    public List<Project> getProjectsWithAssignees(int empId) {
+        List<Project> projects = getProjectsForOneEmployee(empId);
+        for(Project p : projects) {
+            p.setAssignees(getProjectAssignees(p.getProjectId()));
+            p.setSubtasks(getAllSubtasksByProjectId(p.getProjectId()));
+        }
+
+        return projects;
     }
 
     public List<SubTask> getSortedSubtaskByEmployeeId(String sortColumn, int employeeId) {
