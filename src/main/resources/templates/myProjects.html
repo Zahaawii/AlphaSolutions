@@ -10,7 +10,7 @@
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<div class="taskListContainer">
+<div class="subprojectListContainer">
     <div th:each="project : ${projects}">
 
             <a th:href="@{'project/' + ${project.projectId}}">
@@ -22,54 +22,33 @@
                         </div>
                     </div>
 
+                    <div class="projectInfoContainer2">
+                        <div class="projectInfoText">
+                            <h4>Estimated</h4>
+                            <h3 th:text="${project.calculateTotalEstimate()}"></h3>
+                        </div>
+                        <div class="projectInfoText">
+                            <h4>Actual</h4>
+                            <h3 th:text="${project.calculateTotalActual()}"></h3>
+                        </div>
+                        <div class="projectInfoText">
+                            <h4>Prediction</h4>
+                            <h3 th:text="${project.calculatePredictionRatio()}"
+                                th:class="${project.calculatePredictionRatio() > 1.5 || project.calculatePredictionRatio() < 0.5 ? 'text-danger' : 'text-success'}">
+                            </h3>
+                        </div>
+                    </div>
                 </div>
+
             </a>
 
 
-
-            <!--<div class="taskelementEnd">
-                <h5>Name</h5>
-                <h2>
-                    <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
-                </h2>
-            </div>
-
-            <div class="v-separator" style="height: 60px;"></div>
-
-            <div class="taskelement">
-                <h5>Status</h5>
-                <h2 th:text="${project.projectStatus}"></h2>
-            </div>
-
-            <div class="v-separator" style="height: 60px;"></div>
-
-            <div class="taskelement">
-                <h5>Start Date</h5>
-                <h2 th:text="${project.projectStartDate}"></h2>
-            </div>
-
-            <div class="v-separator" style="height: 60px;"></div>
-
-            <div class="taskelement">
-                <h5>End Date</h5>
-                <h2 th:text="${project.projectEndDate}"></h2>
-            </div>
-
-            <div class="v-separator" style="height: 60px;"></div>
-
-            <div class="taskelement">
-                <h5> Estimated Hours </h5>
-                <h2 th:text="${project.sum}"></h2>
-            </div>
-
-            <div class="v-separator" style="height: 60px;"></div>-->
 
             <div class="taskelement">
                 <a th:href="@{/project/{id}/assigneesList(id=${project.projectId})}">
                     <h5> assignees </h5>
                 </a>
-
-                <div class="avatargrid">
+                <div class="project-assignee-wrapper">
                     <div class="avatargrid">
                         <div th:each="assignee, iterStat : ${project.getAssignees()}" th:if="${iterStat.index < 4}">
                             <a th:href="@{/profile/{employeeId}(employeeId=${assignee.employeeId})}">
@@ -87,33 +66,25 @@
                                 </div>
                             </a>
                         </div>
-
-                        <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
-                            <h4>add more...</h4>
-                        </a>
                     </div>
+
+                    <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
+                        <h4>add more...</h4>
+                    </a>
+
                 </div>
+
+
+
+                <div class="h-separator-big"></div>
+
+
             </div>
 
-            <!--
-            <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>
 
-            <div class="taskelementStart" th:if="${isProjectManager or isAdmin}">
-                <h5>Actions</h5>
-                <div>
-                    <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
-                       onclick="return confirm('Are you sure you want to delete this project?');">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
-                </div>
-            </div>-->
         </div>
 
 
-        <div class="h-separator"></div>-->
 
 </div>
 
