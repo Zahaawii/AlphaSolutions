@@ -76,6 +76,7 @@ a:hover {
     -ms-overflow-style: none;
 }
 
+
 .assigneeSection {
     display: flex;
     flex-direction: column;
@@ -116,6 +117,20 @@ h1, h3 {
     align-items: center;
     gap: 2em;
 }
+
+@media (max-width: 1670px) {
+    .taskContentContainer {
+        transform: scale(80%);
+    }
+}
+
+@media (max-width: 1400px) {
+    .taskContentContainer {
+        transform: scale(70%);
+    }
+}
+
+
 
 .projectInfoContainer {
     width: 100%;
