@@ -430,7 +430,11 @@ public class G1SService {
     public List<Project> getProjectsWithAssignees(int empId) {
         return g1SRepository.getProjectsWithAssignees(empId);
     }
-}
+
+    public List<SubTask>getSortedSubtaskByEmployeeId(String sorted, int employeeId){
+        return g1SRepository.getSortedSubtaskByEmployeeId(sorted, employeeId);
+    }
+    }
 
 
 
