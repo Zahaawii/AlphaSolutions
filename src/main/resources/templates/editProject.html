@@ -31,6 +31,30 @@
     </div>
   </div>
 
+  <div class="taskelement">
+    <h5>Assignees</h5>
+
+    <div class="avatargrid">
+
+      <div th:each="assignee : ${assignees}">
+        <a th:href="@{/profile/{employeeId}(employeeId=${assignee.getEmployeeId()})}">
+          <div class="avatar"
+               th:text="${#strings.substring(assignee.getEmployeeName(), 0, 1) +
+                             #strings.substring(assignee.getEmployeeName(), assignee.getEmployeeName().indexOf(' ') + 1, assignee.getEmployeeName().indexOf(' ') + 2)}">
+
+          </div>
+        </a>
+
+      </div>
+
+      <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
+        <div class="avatar">+</div>
+      </a>
+
+    </div>
+
+  </div>
+
   <div class="create-project-header">
     <h2>UPDATE PROJECT</h2>
     <button type="submit" class="submit-btn">+</button>

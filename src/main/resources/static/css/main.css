@@ -5,6 +5,8 @@
 }
 
 
+
+
 html, body {
     margin: 0;
     padding: 0;
@@ -73,6 +75,19 @@ a:hover {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
+.assigneeSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
+h1, h3 {
+    margin: 0;
+    padding: 0.2em 0;
+    text-align: center;
+
+}
 .taskListContainer.big {
     align-self: center;
     justify-self: center;
@@ -101,11 +116,54 @@ a:hover {
     align-items: center;
     gap: 2em;
 }
+
+.projectInfoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+
+}
+
+.projectInfoWrapper {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.projectInfoText {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    text-align: center;
+
+}
+.projectInfoText h4, h3 {
+    padding: 0;
+    margin: 0;
+
+}
+.projectInfoText h4 {
+    font-weight: 300;
+    font-size: 1.25em;
+}
+
+.projectInfoText h3 {
+    font-weight: 700;
+    font-size: 1.75em;
+}
+
 .taskelement {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1em;
+    margin-top: 0.5em;
 }
 .taskelementEnd {
     display: flex;
@@ -579,6 +637,119 @@ h2, .description-label, .date-group label {
     margin-top: 1em;
     font-weight: bold;
 }
+
+.progress-container {
+    width: 100%; /* Full width */
+    background-color: #FFF0F3;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+    color: white;
+    font-family: Montserrat
+}
+
+.progress-bar {
+    background-color: var(--accent-color);
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    position: absolute;
+    z-index: 2;
+    color: black;
+    font-weight: 800;
+    font-size: 1.5em;
+    font-family: Montserrat;
+    width: 100%;
+    text-align: center;
+}
+.text-danger {
+    color: var(--accent-color);
+}
+
+
+
+.text-success {
+    color: green;
+}
+
+.progress-circle-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    transition: 0.3s ease;
+}
+
+.progress-text-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: 800;
+    color: black;
+    pointer-events: none;
+    transition: 0.3s ease-out;
+}
+.progress-ring {
+    stroke: var(--accent-color); /* or whatever default you want */
+    transition: stroke 0.3s ease-out, stroke-dashoffset 1s ease-out;
+}
+
+.circleGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12em;
+}
+
+@media(max-width: 1700px) {
+    .circleGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+.circleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-out;
+}
+
+.subprojectContent:hover .progress-ring {
+    stroke: black;
+    transition: stroke 0.3s ease;
+}
+
+
+
+
+.subprojectContent:hover .progress-text-circle {
+    color: #FF325A;
+    transition: color 0.3s ease;
+}
+
+.subprojectContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.subprojectContent h2 {
+    font-size: 2em;
+    font-weight: 800;
+
+}
+
+
+
+
 
 
 

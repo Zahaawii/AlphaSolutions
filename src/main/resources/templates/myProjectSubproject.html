@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Projects</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="fragments/dashboard :: dashboard"></div>
+
+<div class="taskListContainer">
+  <h1 th:text="${project.projectName}"></h1>
+
+  <div class="projectInfoWrapper">
+    <div class="progress-container">
+      <div class="progress-bar" th:style="'width: ' + ${completion} + '%; background: linear-gradient(to right, #FF6A6A, #FF325A);'">
+      </div>
+      <span class="progress-text" th:text="${completion} + '%'"></span>
+    </div>
+    <div class="projectInfoContainer">
+      <div class="projectInfoText">
+        <h4>Estimated</h4>
+        <h3 th:text="${estimate}"></h3>
+      </div>
+      <div class="projectInfoText">
+        <h4>Actual</h4>
+        <h3 th:text="${actual}"></h3>
+      </div>
+    </div>
+    <div class="projectInfoText">
+      <h4>Prediction</h4>
+      <h3 th:text="${predictionRatio}"
+          th:class="${predictionRatio > 1.5 || predictionRatio < 0.5 ? 'text-danger' : 'text-success'}"
+      >
+      </h3>
+    </div>
+  </div>
+
+
+
+
+  <a class="addSubproject" th:href="@{'/create/subproject/' + ${projectid}}">
+    <span> Add sub project </span>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
+
+  <div class="circleWrapper">
+    <div class="circleGrid">
+      <div th:each="subproject : ${subprojects}">
+        <a th:href="@{/subproject/{subprojectid}(subprojectid=${subproject.subprojectID})}">
+          <div class="subprojectContent">
+            <h2 th:text="${subproject.subprojectName}"></h2>
+            <div class="progress-circle-container">
+              <svg class="progress-circle" width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FF6A6A"/>
+                    <stop offset="100%" stop-color="#FF325A"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Background Circle (Faded Pink) -->
+                <circle cx="120" cy="120" r="100" stroke="#FFF0F3" stroke-width="40" fill="none" transform="rotate(-90 120 120)" />
+
+                <!-- Progress Circle with Gradient Stroke -->
+                <circle cx="120" cy="120" r="100" stroke="url(#progress-gradient)" stroke-width="40" fill="none"
+                        transform="rotate(-90 120 120)"
+                        stroke-dasharray="628"
+                        class="progress-ring"
+                        th:style="'stroke-dashoffset: ' + (628 - (628 * ${subproject.calculateCompletion()} / 100))" />
+              </svg>
+
+              <span class="progress-text-circle" th:text="${subproject.calculateCompletion()} + '%'"></span>
+            </div>
+            <div class="projectInfoContainer">
+              <div class="projectInfoText">
+                <h4>Estimated</h4>
+                <h3 th:text="${subproject.calculateTotalEstimate()}"></h3>
+              </div>
+              <div class="projectInfoText">
+                <h4>Actual</h4>
+                <h3 th:text="${subproject.calculateTotalActual()}"></h3>
+              </div>
+              <div class="projectInfoText">
+                <h4>Prediction</h4>
+                <h3 th:text="${subproject.calculatePredictionRatio()}"
+                    th:class="${subproject.calculatePredictionRatio() > 1.5 || subproject.calculatePredictionRatio() < 0.5 ? 'text-danger' : 'text-success'}"
+                >
+                </h3>
+              </div>
+            </div>
+
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

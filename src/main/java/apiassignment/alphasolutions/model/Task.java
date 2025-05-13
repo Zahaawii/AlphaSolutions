@@ -131,6 +131,44 @@ public class Task {
         return days + " days";
     }
 
+    public int subtaskEstimateTotal() {
+        int sum = 0;
+        for (SubTask subtask : subtasks) {
+            sum += subtask.getSubtaskEstimate();
+        }
+        return sum;
+    }
+
+    public String calculateStatus() {
+        //hvis der ikke er subtasks, sæt task status til "not started"
+        if (subtasks.isEmpty()) return "Not Started";
+
+        boolean allComplete = true;
+        boolean allNotstarted = true;
+
+        /* loop gennem subtasks og tjek for deres statusser. Hvis en status er complete, opdateres allComplete boolean
+         det samme tjek sker med "allNotstarted". Hvis begge statements bliver false returner vi 'in progress' */
+
+        for (SubTask subtask : subtasks) {
+            if (!subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
+                allComplete = false;
+            }
+            if (!subtask.getSubtaskStatus().equalsIgnoreCase("Not Started")) {
+                allNotstarted = false;
+            }
+        }
+
+        return allComplete ? "Completed" : allNotstarted ? "Not Started" : "In Progress";
+    }
+
+    public int calculateHoursSpent() {
+        int sum = 0;
+        for (SubTask subtask : subtasks) {
+            sum += subtask.getSubtaskHoursSpent();
+        }
+        return sum;
+    }
+
     @Override
     public String toString() {
         return "Task{" +

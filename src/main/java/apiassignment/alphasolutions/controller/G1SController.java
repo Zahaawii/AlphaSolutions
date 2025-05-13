@@ -6,12 +6,12 @@ import apiassignment.alphasolutions.model.*;
 import apiassignment.alphasolutions.service.G1SEmailService;
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class G1SController {
 
         model.addAttribute("projects", getAllProjects);
 
-        return "myprojects";
+        return "myProjects";
     }
 
     @GetMapping("/projects/new")
@@ -93,7 +93,9 @@ public class G1SController {
             return "redirect:/login";
         }
 
+        List<Employee> assignees = g1SService.getProjectAssignees(id);
         Project project = g1SService.getProjectById(id);
+        model.addAttribute("assignees",assignees);
         model.addAttribute("project", project);
         return "editProject";
     }
@@ -119,11 +121,21 @@ public class G1SController {
     @GetMapping("/project/{id}")
     public String projectView (@PathVariable int id, Model model, HttpSession session) {
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
-        Integer sum = g1SService.getTotalSumOfProject(id);
-        model.addAttribute("sum", sum);
+
+        model.addAttribute("project", g1SService.getProjectById(id));
+        model.addAttribute("estimate", g1SService.getTotalEstimateOfProject(id));
+        model.addAttribute("actual", g1SService.getTotalActualOfProject(id));
+        model.addAttribute("predictionRatio", g1SService.getPredictionRatioOfProject(id));
         model.addAttribute("subprojects", subProjectByProjectId);
         model.addAttribute("projectid", id);
-        return "myprojectSubproject";
+        model.addAttribute("completion", g1SService.getProjectCompletion(id));
+        model.addAttribute("assignees",g1SService.getProjectAssignees(id));
+
+
+
+
+
+        return "myProjectSubproject";
     }
 
     @GetMapping("/select-collaborators")
@@ -344,14 +356,22 @@ public class G1SController {
         model.addAttribute("task", g1SService.getTaskById(taskid));
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
+        model.addAttribute("assigned",g1SService.getTaskAssignees(taskid));
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
         return "editTask";
     }
 
     @PostMapping("/subproject/{subprojectid}/edit/task/{taskid}")
-    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task) {
+    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task, @RequestParam(required = false) List<Integer> employeeIds) {
 
-        System.out.println(task);
         g1SService.updateTask(task);
+
+        g1SService.clearTaskAssignees(taskid);
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToTask(taskid, employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -361,13 +381,21 @@ public class G1SController {
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("task", new Task());
 
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
+
+
         return "createTask";
     }
 
     @PostMapping("/subproject/{subprojectid}/create/task")
-    public String createTask(@PathVariable int subprojectid, Task task) {
+    public String createTask(@PathVariable int subprojectid, Task task, @RequestParam(required = false) List<Integer> employeeIds) {
         task.setSubprojectId(subprojectid);
         g1SService.createTask(task);
+
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToTask(task.getTaskId(), employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -377,14 +405,21 @@ public class G1SController {
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
         model.addAttribute("subtask", new SubTask());
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
         System.out.println("THIS IS THE TASKID: " + taskid);
         return "createSubtask";
     }
 
     @PostMapping("/subproject/{subprojectid}/task/{taskid}/create/subtask")
-    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask) {
+    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds) {
         subtask.setTaskID(taskid);
         g1SService.createSubtask(subtask);
+
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToSubtask(subtask.getSubtaskID(), employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -394,13 +429,22 @@ public class G1SController {
         model.addAttribute("subtask", g1SService.getSubtaskById(subtaskid));
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("subtaskid", subtaskid);
+        model.addAttribute("assigned",g1SService.getSubtaskAssignees(subtaskid));
+
+        int projectId = g1SService.getProjectIdFromSubprojectId(subprojectid);
+        model.addAttribute("projectAssignees", g1SService.getProjectAssignees(projectId));
 
         return "editSubtask";
     }
 
     @PostMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
-    public String editSubtask(@PathVariable int subprojectid, @PathVariable int subtaskid, @ModelAttribute SubTask subtask) {
+    public String editSubtask(@PathVariable int subprojectid, @PathVariable int subtaskid, @ModelAttribute SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds) {
         g1SService.updateSubtask(subtask);
+
+        g1SService.clearSubtaskAssignees(subtaskid);
+        if (employeeIds != null && !employeeIds.isEmpty()) {
+            g1SService.addAssigneeToSubtask(subtaskid, employeeIds);
+        }
 
         return "redirect:/subproject/" + subprojectid;
     }
@@ -583,6 +627,4 @@ public class G1SController {
         g1SService.deleteAwaitingEmployee(id);
         return "redirect:/awaitingusers";
     }
-
-
 }

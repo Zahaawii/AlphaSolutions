@@ -8,6 +8,7 @@ import apiassignment.alphasolutions.repository.G1SRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,41 @@ public class G1SService {
 
     public void deleteProject(int projectID) {
         g1SRepository.deleteProject(projectID);
+    }
+
+    public int getProjectCompletion(int projectid) {
+
+        List<SubTask> subtasks = g1SRepository.getAllSubtasksByProjectId(projectid);
+
+        int subtaskcount = subtasks.size();
+        int subtaskscomplete = 0;
+
+        for (SubTask subtask : subtasks) {
+            if (subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
+                subtaskscomplete++;
+            }
+        }
+        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
+
+        return percentcomplete;
+    }
+
+    public int getSubprojectCompletion(int subprojectID) {
+        List<SubTask> subtasks = g1SRepository.getAllSubtasksBySubprojectID(subprojectID);
+
+        int subtaskcount = subtasks.size();
+        int subtaskscomplete = 0;
+
+        for (SubTask subtask : subtasks) {
+            if (subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
+                subtaskscomplete++;
+            }
+        }
+
+        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
+
+        return percentcomplete;
+
     }
 
     public List<Employee> getAllEmployees() {
@@ -279,7 +315,7 @@ public class G1SService {
         return sum;
     }
 
-    public Integer getTotalSumOfProject(int projectID) {
+    public Integer getTotalEstimateOfProject(int projectID) {
         List<SubProject> subProjects = g1SRepository.getSubprojectByProjectId(projectID);
         Integer sum = 0;
 
@@ -300,15 +336,70 @@ public class G1SService {
         return sum;
     }
 
+    public int getTotalActualOfProject(int projectID) {
+        List<SubTask> subtasks = g1SRepository.getAllSubtasksByProjectId(projectID);
+        int actualHours = 0;
+        for (SubTask subtask : subtasks) {
+            actualHours += subtask.getSubtaskHoursSpent();
+        }
+
+        return actualHours;
+    }
+
+    public double getPredictionRatioOfProject(int projectID) {
+        double actual = getTotalActualOfProject(projectID);
+        double estimate = getTotalEstimateOfProject(projectID);
+
+        if (actual / estimate == 0) return 0.00;
+
+
+        double ratio = (estimate / actual);
+
+        return Math.round(ratio * 100.0) / 100.0;
+
+    }
+
     public List<Project> getAllProjectsWithSum(int employeeID) {
     List<Project> projects = g1SRepository.getAllProjects(employeeID);
     for(Project project : projects) {
-        Integer sum = getTotalSumOfProject(project.getProjectId());
+        Integer sum = getTotalEstimateOfProject(project.getProjectId());
         project.setSum(sum);
     }
      return projects;
     }
 
+
+    public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToTask(taskId, employeeIds);
+    }
+
+    public int getSubprojectIdFromTaskId(int taskId) {
+        return g1SRepository.getSubprojectIdFromTaskId(taskId);
+    }
+
+    public int getProjectIdFromSubprojectId(int subprojectId) {
+        return g1SRepository.getProjectIdFromSubprojectId(subprojectId);
+    }
+
+    public List<Integer> getTaskAssignees(int taskId) {
+        return g1SRepository.getTaskAssignees(taskId);
+    }
+
+    public void clearTaskAssignees(int taskId) {
+        g1SRepository.clearTaskAssignees(taskId);
+    }
+
+    public void addAssigneeToSubtask(int subtaskId, List<Integer> employeeIds) {
+        g1SRepository.addAssigneeToSubtask(subtaskId,employeeIds);
+    }
+
+    public List<Integer> getSubtaskAssignees(int subtaskId) {
+        return g1SRepository.getSubtaskAssignees(subtaskId);
+    }
+
+    public void clearSubtaskAssignees(int subtaskId) {
+        g1SRepository.clearSubtaskAssignees(subtaskId);
+    }
     public String encryptTest(String password) {
         String salt = BCrypt.gensalt(10);
         return BCrypt.hashpw(password, salt);
@@ -320,6 +411,7 @@ public class G1SService {
 
     public Employee findByUsername(String username) {
         return g1SRepository.findByUsername(username);
+
     }
 
     public AwaitingEmployee createUser(AwaitingEmployee employee) {

@@ -54,21 +54,25 @@
 
                 </div>
 
+            </div>
 
+        </div>
 
-                <div class="taskelement">
-                    <h5>Estimate</h5>
-                    <input th:field="*{taskEstimate}" class="inputDropdown">
+        <div class="avatargrid">
+
+            <div class="taskelement">
+                <h5>Add assignees to task</h5>
+                <div class="assignee-selection">
+                    <div th:each="assignee : ${projectAssignees}">
+                        <label>
+                            <input type="checkbox" name="employeeIds"
+                                   th:value="${assignee.employeeId}" />
+                            <span th:text="${assignee.employeeName}"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
-            <div class="taskelement">
-                <h5>Status</h5>
-                <select placeholder="Not Started" th:field="*{taskStatus}" class="inputDropdown">
-                    <option value="Not Started">Not Started</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                </select>
-            </div>
+
         </div>
 
         <button type="submit" class="saveButton">Create</button>

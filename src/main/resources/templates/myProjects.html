@@ -16,7 +16,13 @@
     <div th:each="project : ${projects}">
         <div class="taskContentContainer">
 
-            <div class="taskelementEnd">
+            <div class="projectCard">
+                <h1>
+                    <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
+                </h1>
+            </div>
+
+            <!--<div class="taskelementEnd">
                 <h5>Name</h5>
                 <h2>
                     <a th:href="@{'project/' + ${project.projectId}}" th:text="${project.projectName}"></a>
@@ -44,9 +50,31 @@
                 <h2 th:text="${project.projectEndDate}"></h2>
             </div>
 
+            <div class="v-separator" style="height: 60px;"></div>
+
             <div class="taskelement">
-                <h2> Estimated Hours </h2>
+                <h5> Estimated Hours </h5>
                 <h2 th:text="${project.sum}"></h2>
+            </div>
+
+            <div class="v-separator" style="height: 60px;"></div>
+
+            <div class="taskelement">
+                <h5> add assignees </h5>
+                <div class="avatargrid">
+
+                    <div>
+                        <a href="">
+                            <div class="avatar avatar--extra"
+                                 th:text="${project.assignees.size()}">
+                            </div>
+                        </a>
+                    </div>
+                    <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
+                        <div class="avatar">+</div>
+                    </a>
+
+                </div>
             </div>
 
             <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>
@@ -65,7 +93,7 @@
             </div>
         </div>
 
-        <div class="h-separator"></div>
+        <div class="h-separator"></div>-->
     </div>
 </div>
 
