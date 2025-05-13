@@ -57,26 +57,40 @@
                 <h2 th:text="${project.sum}"></h2>
             </div>
 
-            <div class="v-separator" style="height: 60px;"></div>
+            <div class="v-separator" style="height: 60px;"></div>-->
 
             <div class="taskelement">
-                <h5> add assignees </h5>
-                <div class="avatargrid">
+                <a th:href="@{/project/{id}/assigneesList(id=${project.projectId})}">
+                    <h5> assignees </h5>
+                </a>
 
-                    <div>
-                        <a href="">
-                            <div class="avatar avatar--extra"
-                                 th:text="${project.assignees.size()}">
-                            </div>
+                <div class="avatargrid">
+                    <div class="avatargrid">
+                        <div th:each="assignee, iterStat : ${project.getAssignees()}" th:if="${iterStat.index < 4}">
+                            <a th:href="@{/profile/{employeeId}(employeeId=${assignee.employeeId})}">
+                                <div class="avatar"
+                                     th:text="${#strings.substring(assignee.employeeName, 0, 1) +
+                             #strings.substring(assignee.employeeName, assignee.employeeName.indexOf(' ') + 1, assignee.employeeName.indexOf(' ') + 2)}">
+                                </div>
+                            </a>
+                        </div>
+
+                        <div th:if="${project.assignees.size() > 4}">
+                            <a th:href="@{/project/{id}/assigneesList(id=${project.projectId})}">
+                                <div class="avatar avatar--extra"
+                                     th:text="'+' + ${project.assignees.size() - 4}">
+                                </div>
+                            </a>
+                        </div>
+
+                        <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
+                            <h4>add more...</h4>
                         </a>
                     </div>
-                    <a th:href="@{/project/{projectId}/assignees(projectId=${project.projectId})}">
-                        <div class="avatar">+</div>
-                    </a>
-
                 </div>
             </div>
 
+            <!--
             <div class="v-separator" style="height: 60px;" th:if="${isProjectManager or isAdmin}"></div>
 
             <div class="taskelementStart" th:if="${isProjectManager or isAdmin}">
@@ -90,10 +104,10 @@
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 </div>
-            </div>
+            </div>-->
         </div>
 
-        <div class="h-separator"></div>-->
+        <div class="h-separator"></div>
     </div>
 </div>
 

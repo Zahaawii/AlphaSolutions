@@ -633,4 +633,13 @@ public class G1SRepository {
         String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtaskId);
     }
+
+    public List<Project> getProjectsWithAssignees(int empId) {
+        List<Project> projects = getProjectsForOneEmployee(empId);
+        for(Project p : projects) {
+            p.setAssignees(getProjectAssignees(p.getProjectId()));
+        }
+
+        return projects;
+    }
 }
