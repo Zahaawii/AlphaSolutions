@@ -129,4 +129,15 @@ CREATE TABLE skillRelation
     FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
 );
 
+CREATE TABLE awaitingEmployee (
+    awaitingEmployeeID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
+    awaitingEmployee_name VARCHAR(100),
+    awaitingEmployee_email VARCHAR(100),
+    awaitingEmployee_username VARCHAR(100),
+    awaitingEmployee_password VARCHAR(256),
+    awaitingEmployee_status VARCHAR(100)
+);
+
+
+
 

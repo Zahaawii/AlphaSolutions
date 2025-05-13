@@ -505,4 +505,41 @@ public class G1SRepository {
             return null;
         }
     }
+
+    public AwaitingEmployee createUser(AwaitingEmployee employee){
+        try {
+            String sql = "INSERT INTO awaitingemployee (awaitingEmployee_name, awaitingEmployee_email, awaitingEmployee_username, awaitingEmployee_password, awaitingEmployee_status) VALUES (?, ?, ?, ?, ?)";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, employee.getAwaitingEmployee_name());
+                ps.setString(2, employee.getAwaitingEmployee_email());
+                ps.setString(3, employee.getAwaitingEmployee_username());
+                ps.setString(4, employee.getAwaitingEmployee_password());
+                ps.setString(5, "Awaiting admin approval");
+                return ps;
+            }, keyHolder);
+
+            int employeeId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+            if (employeeId != -1) {
+                employee.setAwaitingEmployeeID(employeeId);
+            }
+
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to register employee ", e);
+        }
+
+        return employee;
+    }
+
+    public List<AwaitingEmployee> getAllAwaitingUsers() {
+        String sql = "SELECT * FROM awaitingemployee";
+        return jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper());
+    }
+
+    public void deleteAwaitingEmployee(int id) {
+        String sql = "DELETE FROM awaitingemployee where awaitingEmployeeID = ?;";
+        jdbcTemplate.update(sql,id);
+    }
 }

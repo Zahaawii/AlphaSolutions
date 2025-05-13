@@ -3,6 +3,7 @@ package apiassignment.alphasolutions.controller;
 
 import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
+import apiassignment.alphasolutions.service.G1SEmailService;
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriUtils;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -537,6 +540,48 @@ public class G1SController {
         System.out.println(subProject);
         g1SService.updateSubproject(subProject);
         return "redirect:/projects";
+    }
+
+    @GetMapping("/create/user")
+    public String createUser(Model model, HttpSession session) {
+        AwaitingEmployee employee = new AwaitingEmployee();
+        model.addAttribute("employee", employee);
+
+        return "createUser";
+    }
+
+    @PostMapping("/create/user")
+    public String createUserPost(@ModelAttribute AwaitingEmployee employee) {
+        g1SService.createUser(employee);
+        var emailService = new G1SEmailService();
+        var body = "Hej, der er en bruger ved navn: " + employee.getAwaitingEmployee_name() + " som har anmodet om at blive oprettet i systemet." +
+                "Du kan se brugeren herinde: localhost:8080/awaitingusers";
+        try {
+            emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/awaitingusers")
+    public String getAllAwaitingUsers(Model model) {
+        List<AwaitingEmployee> getAll = g1SService.getAllAwaitingUsers();
+        model.addAttribute("getAll", getAll);
+        return "awaitinguserslist";
+    }
+
+    @PostMapping("/create/user/adminApproval")
+    public String adminApprovedEmployee(@ModelAttribute DTOEmployee employee) {
+        g1SService.adminRegisterEmployee(employee);
+        System.out.println(employee.getEmployeeId());
+        return "redirect:/awaitingusers";
+    }
+
+    @PostMapping("/delete/user/admindenied/{id}")
+    public String adminDenied(@PathVariable int id) {
+        g1SService.deleteAwaitingEmployee(id);
+        return "redirect:/awaitingusers";
     }
 
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Awaiting users</title>
+</head>
+<body>
+
+<div th:if="${isAdmin}" th:each="i : ${getAll}">
+
+    <h2 th:text="${i.awaitingEmployeeID}"></h2>
+    <h2 th:text="${i.awaitingEmployee_name}"></h2>
+    <h2 th:text="${i.awaitingEmployee_email}"></h2>
+    <h2 th:text="${i.awaitingEmployee_username}"></h2>
+    <h2 th:text="${i.awaitingEmployee_password}"></h2>
+    <h2 th:text="${i.awaitingEmployee_status}"></h2>
+    <form th:action="@{/create/user/adminApproval}" method="post">
+    <input type="hidden" name="employeeName" th:value="${i.awaitingEmployee_name}">
+    <input type="hidden" name="employeeEmail" th:value="${i.awaitingEmployee_email}">
+    <input type="hidden" name="employeeUsername" th:value="${i.awaitingEmployee_username}">
+    <input type="hidden" name="employeePassword" th:value="${i.awaitingEmployee_password}">
+    <input type="hidden" name="roleId" th:value="1">
+    <button type="submit">Add employee to Employee </button>
+    </form>
+</div>
+
+
+</body>
+</html>
