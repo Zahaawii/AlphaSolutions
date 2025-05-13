@@ -1,0 +1,98 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+}
+
+/* Main Content Styling */
+.main-content {
+    margin-left: 250px; /* account for sidebar */
+    padding: 3rem 4rem;
+    width: 100%;
+}
+
+/* Header + Sort form */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.sort-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.sort-form select,
+.sort-form button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.sort-form button {
+    background-color: #f04e64;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.sort-form button:hover {
+    background-color: #d43b52;
+}
+
+/* Subtask Cards */
+.subtask-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.subtask-card {
+    border: 1px solid #fcb6c5;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s ease;
+}
+
+.subtask-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subtask-header h2 {
+    font-size: 1.5rem;
+    color: #f04e64;
+    margin-bottom: 1rem;
+}
+
+.subtask-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+
+.detail-item span {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+
+.detail-item p {
+    color: #666;
+}

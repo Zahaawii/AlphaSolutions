@@ -425,7 +425,10 @@ public class G1SService {
     public void deleteAwaitingEmployee(int id) {
         g1SRepository.deleteAwaitingEmployee(id);
     }
-}
+    public List<SubTask>getSortedSubtaskByEmployeeId(String sorted, int employeeId){
+        return g1SRepository.getSortedSubtaskByEmployeeId(sorted, employeeId);
+    }
+    }
 
 
 

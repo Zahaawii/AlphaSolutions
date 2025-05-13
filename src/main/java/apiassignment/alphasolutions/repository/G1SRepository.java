@@ -633,4 +633,50 @@ public class G1SRepository {
         String sql = "DELETE FROM subtaskassignees WHERE subtaskID = ?";
         jdbcTemplate.update(sql, subtaskId);
     }
+
+    public List<SubTask> getSortedSubtaskByEmployeeId(String sortColumn, int employeeId) {
+        List<String> allowedSortColumns = List.of("subtask_estimate", "subtask_end_date", "subtask_end_date desc", "subtask_priority");
+        if(sortColumn == null || sortColumn.isBlank()){
+            String sqlNotSorted = "SELECT subtask.* FROM subtask " +
+                    "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
+                    "WHERE subtaskassignees.employeeId = ? ";
+            List<SubTask> subTaskListNotSorted = jdbcTemplate.query(sqlNotSorted, new SubTaskRowMapper(), employeeId);
+            if(subTaskListNotSorted.isEmpty()){
+                return null;
+            }//sætter subprojectId på subtask objektet
+            for(SubTask i: subTaskListNotSorted){
+                i.setSubProjectId(getSubProjectIdWithSubTaskId(i.getSubtaskID()));
+            }
+            return subTaskListNotSorted;
+        }
+        if (!allowedSortColumns.contains(sortColumn)) {
+           return null;
+        }
+
+        String sql = "SELECT subtask.* FROM subtask " +
+                "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
+                "WHERE subtaskassignees.employeeId = ? " +
+                "ORDER BY " + sortColumn;
+
+        List<SubTask> subTaskList = jdbcTemplate.query(sql, new SubTaskRowMapper(), employeeId);
+
+        if(subTaskList.isEmpty()){
+            return null;
+        }//sætter subprojectId på subtask objektet
+        for(SubTask b: subTaskList){
+            b.setSubProjectId(getSubProjectIdWithSubTaskId(b.getSubtaskID()));
+        }
+        return subTaskList;
+    }
+
+    public int getSubProjectIdWithSubTaskId(int subtaskId){
+        String sql ="SELECT task.* from task " +
+                "join subtask on task.taskId = subtask.taskId " +
+                "where subtask.subtaskId = ?";
+        List<Task>subProjects = jdbcTemplate.query(sql, new TaskRowMapper(), subtaskId);
+        if(subProjects.isEmpty()){
+            return 0;
+        }
+        return subProjects.getFirst().getSubprojectId();
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -564,6 +565,39 @@ public class G1SController {
         model.addAttribute("projects", projectList);
         return "profile";
     }
+
+    @GetMapping("/mySubtasks/sortBy")
+    public String redirectToSkill(
+            @RequestParam String skill) {
+
+        return "redirect:/mySubtasks" + "/sortBy?chosen=" + UriUtils.encode(skill, StandardCharsets.UTF_8);
+    }
+
+    @GetMapping("/mySubTasks/sortBy")
+    public String sortMyTasks(@RequestParam(required = false) String chosen, HttpSession session, Model model){
+        /* List<String> sortSubtasksValue = List.of("subtask_estimate", "subtask_end_date", "subtask_start_date", "subtask_priority");
+        model.addAttribute("sortListValue", sortSubtasksValue);
+        List<String> sortSubtasksShown = List.of("Estimate", "End Date", "Start Date", "Priority");
+        model.addAttribute("sortListShown", sortSubtasksShown); */
+        Employee employee = (Employee)session.getAttribute("employee");
+        System.out.println(chosen);
+        List<SubTask>subTaskList = g1SService.getSortedSubtaskByEmployeeId(chosen, employee.getEmployeeId());
+        if(subTaskList == null || subTaskList.isEmpty()){
+            System.out.println("fandt ingen");
+            model.addAttribute("noSubTasks", true);
+            model.addAttribute("found", false);
+            return "mySubTasks";
+        }
+        System.out.println("fandt nogle");
+        model.addAttribute("found", true);
+        model.addAttribute(subTaskList);
+        return "mySubTasks";
+    }
+
+
+
+
+
 
 
     @GetMapping("/subproject/edit/{id}")
