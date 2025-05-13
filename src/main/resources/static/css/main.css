@@ -183,43 +183,64 @@ h1, h3 {
 }
 .taskelement h5 {
     font-weight: 200;
+    white-space: nowrap;
+
 }
 .taskelementStart h5 {
     font-weight: 200;
+    white-space: nowrap;
 }
 .taskelementEnd h5 {
     font-weight: 200;
+    white-space: nowrap;
+
 }
 .taskelement h4 {
     font-size: .75em;
     font-weight: 500;
+    white-space: nowrap;
+
 }
 .taskelementStart h4 {
     font-size: .75em;
     font-weight: 500;
+    white-space: nowrap;
+
 }
 .taskelementEnd h4 {
     font-size: .75em;
     font-weight: 500;
+    white-space: nowrap;
+
 }
 .taskelement h2 {
     font-size: 1.5em;
+    white-space: nowrap;
+
 }
 .taskelementStart h2, i {
     font-size: 1.5em;
+    white-space: nowrap;
+
 }
 
 .taskelementStart i {
     margin-bottom: 1em;
     margin-right: .5em;
+    white-space: nowrap;
+
 }
 .trashcan {
     color: var(--accent-color);
     margin-bottom: 1em;
+    white-space: nowrap;
+
 }
 
 .taskelementEnd h2 {
     font-size: 1.5em;
+    white-space: nowrap;
+
 }
 .taskelement h5, .taskelement h2, .taskelement h4 {
     margin: 0;
