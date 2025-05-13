@@ -365,6 +365,7 @@ public class G1SService {
     for(Project project : projects) {
         Integer sum = getTotalEstimateOfProject(project.getProjectId());
         project.setSum(sum);
+        project.setSubtasks(g1SRepository.getAllSubtasksByProjectId(project.getProjectId()));
     }
      return projects;
     }
@@ -427,6 +428,7 @@ public class G1SService {
         g1SRepository.deleteAwaitingEmployee(id);
     }
 
+
     public void deleteAwaitingEmployeeWithUsername(String username) {
         g1SRepository.deleteAwaitingEmployeeWithUsername(username);
     }
@@ -446,6 +448,16 @@ public class G1SService {
         return g1SRepository.isUsernameAwaitingUserFree(username);
     }
 }
+
+    public List<Project> getProjectsWithAssignees(int empId) {
+        return g1SRepository.getProjectsWithAssignees(empId);
+    }
+
+    public List<SubTask>getSortedSubtaskByEmployeeId(String sorted, int employeeId){
+        return g1SRepository.getSortedSubtaskByEmployeeId(sorted, employeeId);
+    }
+    }
+
 
 
 

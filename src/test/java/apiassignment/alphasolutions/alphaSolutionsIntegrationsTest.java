@@ -144,6 +144,35 @@ public class alphaSolutionsIntegrationsTest {
         assertNull(deletedProject);
     }
 
+    @Test
+    void testUpdateProject() throws SQLException {
+        Project newProject = new Project();
+        newProject.setProjectName("Test project");
+        newProject.setProjectStartDate(Date.valueOf("2025-05-08"));
+        newProject.setProjectEndDate(Date.valueOf("2025-05-09"));
+        newProject.setEmployeeId(1);
+        newProject.setProjectDescription("Test project description");
+
+        g1SRepository.createProject(newProject);
+        int createdProjectId = newProject.getProjectId();
+
+        // Opdaterer projektet
+        newProject.setProjectName("Updated test project");
+        newProject.setProjectStatus("Completed");
+        newProject.setProjectDescription("Updated test description");
+
+        g1SRepository.updateProject(newProject);
+
+        // Henter det opdateret projekt og kontrollere om projektet er blevet opdateret
+        Project updatedProject = g1SRepository.getProjectById(createdProjectId);
+
+        assertEquals("Updated test project", updatedProject.getProjectName());
+        assertEquals("Completed", updatedProject.getProjectStatus());
+        assertEquals("Updated test description", updatedProject.getProjectDescription());
+        assertEquals(Date.valueOf("2025-05-08"), updatedProject.getProjectStartDate());
+        assertEquals(Date.valueOf("2025-05-09"), updatedProject.getProjectEndDate());
+    }
+
     //Testing if you get all subprojects
     @Test
     void testGetAllSubProjects() throws SQLException {
@@ -445,8 +474,56 @@ public class alphaSolutionsIntegrationsTest {
         assertFalse(g1SService.decryptTest("forkert", encrypted));
     }
 
+    @Test
+    void testAddGetAndClearTaskAssignees() {
+        int taskId = 1;
 
+        // Tømmer først listen for taskAssignees
+        g1SRepository.clearTaskAssignees(taskId);
 
+        List<Integer> employeeIds = List.of(1, 2);
 
+        // Tilføjer assignees til en task
+        g1SRepository.addAssigneeToTask(taskId, employeeIds);
+
+        // Henter listen af task assignees og tester at den ikke er null, der er 2 employees i listen og de 2 employees passer med de employeeIds jeg tilføjede
+        List<Integer> taskAssignees = g1SRepository.getTaskAssignees(taskId);
+        assertNotNull(taskAssignees);
+        assertEquals(2, taskAssignees.size());
+        assertTrue(taskAssignees.containsAll(employeeIds));
+
+        // Fjerner assignees fra listen
+        g1SRepository.clearTaskAssignees(taskId);
+
+        // Kontrollere at listen nu er tom
+        List<Integer> afterClear = g1SRepository.getTaskAssignees(taskId);
+        assertTrue(afterClear.isEmpty());
+    }
+
+    @Test
+    void testAddGetAndClearSubtaskAssignees() {
+        int subtaskId = 1;
+
+        // Tømmer først listen for subtaskAssignees
+        g1SRepository.clearSubtaskAssignees(subtaskId);
+
+        List<Integer> employeeIds = List.of(1, 2);
+
+        // Tilføjer assignees til en subtask
+        g1SRepository.addAssigneeToSubtask(subtaskId, employeeIds);
+
+        // Henter listen af subtask assignees og tester at den ikke er null, der er 2 employees i listen og de 2 employees passer med de employeeIds jeg tilføjede
+        List<Integer> fetchedAssignees = g1SRepository.getSubtaskAssignees(subtaskId);
+        assertNotNull(fetchedAssignees);
+        assertEquals(2, fetchedAssignees.size());
+        assertTrue(fetchedAssignees.containsAll(employeeIds));
+
+        // Fjerner assignees fra listen
+        g1SRepository.clearSubtaskAssignees(subtaskId);
+
+        // Kontrollere at listen nu er tom
+        List<Integer> afterClear = g1SRepository.getSubtaskAssignees(subtaskId);
+        assertTrue(afterClear.isEmpty());
+    }
 
 }

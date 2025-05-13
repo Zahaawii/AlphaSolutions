@@ -16,6 +16,7 @@ import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -54,7 +55,7 @@ public class G1SController {
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        List <Project> getAllProjects = g1SService.getAllProjectsWithSum(employee.getEmployeeId());
+        List <Project> getAllProjects = g1SService.getProjectsWithAssignees(employee.getEmployeeId());
 
         if (employee == null) {
             return "redirect:/login";
@@ -138,17 +139,10 @@ public class G1SController {
         return "myProjectSubproject";
     }
 
-    @GetMapping("/select-collaborators")
-    public String selectCollaborators(Model model) {
-        model.addAttribute("employees", g1SService.getAllEmployeeWithSkills());
-        return "selectCollaborators";
-    }
-
-    @PostMapping("/save-collaborators")
-    public String saveCollaborators(@RequestParam("employeeIds") List<Integer> ids, HttpSession session) {
-        List<Employee> selected = g1SService.getEmployeesByIds(ids);
-        session.setAttribute("selectedCollaborators", selected);
-        return "redirect:/projects";
+    @GetMapping("/project/{id}/assigneesList")
+    public String getProjectAssignees(@PathVariable int id, Model model, HttpSession session) {
+        model.addAttribute("assignees",g1SService.getProjectAssignees(id));
+        return "projectAssignees";
     }
 
 
@@ -563,6 +557,39 @@ public class G1SController {
         model.addAttribute("projects", projectList);
         return "profile";
     }
+
+    @GetMapping("/mySubtasks/sortBy")
+    public String redirectToSkill(
+            @RequestParam String skill) {
+
+        return "redirect:/mySubtasks" + "/sortBy?chosen=" + UriUtils.encode(skill, StandardCharsets.UTF_8);
+    }
+
+    @GetMapping("/mySubTasks/sortBy")
+    public String sortMyTasks(@RequestParam(required = false) String chosen, HttpSession session, Model model){
+        /* List<String> sortSubtasksValue = List.of("subtask_estimate", "subtask_end_date", "subtask_start_date", "subtask_priority");
+        model.addAttribute("sortListValue", sortSubtasksValue);
+        List<String> sortSubtasksShown = List.of("Estimate", "End Date", "Start Date", "Priority");
+        model.addAttribute("sortListShown", sortSubtasksShown); */
+        Employee employee = (Employee)session.getAttribute("employee");
+        System.out.println(chosen);
+        List<SubTask>subTaskList = g1SService.getSortedSubtaskByEmployeeId(chosen, employee.getEmployeeId());
+        if(subTaskList == null || subTaskList.isEmpty()){
+            System.out.println("fandt ingen");
+            model.addAttribute("noSubTasks", true);
+            model.addAttribute("found", false);
+            return "mySubTasks";
+        }
+        System.out.println("fandt nogle");
+        model.addAttribute("found", true);
+        model.addAttribute(subTaskList);
+        return "mySubTasks";
+    }
+
+
+
+
+
 
 
     @GetMapping("/subproject/edit/{id}")

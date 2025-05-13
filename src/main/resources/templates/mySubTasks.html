@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Subtasks</title>
+  <link rel="stylesheet" th:href="@{/css/mysubtasks.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Sidebar layout -->
+<div th:replace="fragments/dashboard :: dashboard"></div>
+
+<!-- Main content -->
+<main class="main-content">
+  <div class="header">
+    <h1>Sort Subtasks</h1>
+    <form class="sort-form" th:action="@{/mySubTasks/sortBy}" method="get">
+      <select name="chosen">
+        <option value="">-- Don't sort --</option>
+        <option value="subtask_estimate">Estimate</option>
+        <option value="subtask_end_date">End date</option>
+        <option value="subtask_end_date desc">End date Descending</option>
+        <option value="subtask_priority">Priority</option>
+      </select>
+      <button type="submit">Sort</button>
+    </form>
+  </div>
+
+  <section class="subtask-list" th:each="subtask : ${subTaskList}">
+    <div class="subtask-card">
+      <div class="subtask-header">
+        <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subtask.getSubProjectId()}, subtaskid=${subtask.subtaskID})}">
+          <h2 th:text="${subtask.getSubtaskName()}">Subtask Name</h2>
+        </a>
+      </div>
+
+      <div class="subtask-details">
+        <div class="detail-item">
+          <span>Start:</span>
+          <p th:text="${#dates.format(subtask.subtaskStartDate, 'dd-MM-yyyy')}"></p>
+        </div>
+        <div class="detail-item">
+          <span>End:</span>
+          <p th:text="${#dates.format(subtask.subtaskEndDate, 'dd-MM-yyyy')}"></p>
+        </div>
+        <div class="detail-item">
+          <span>Priority:</span>
+          <p th:text="${subtask.getSubtaskPriority()}"></p>
+        </div>
+        <div class="detail-item">
+          <span>Estimate:</span>
+          <p th:text="${subtask.getSubtaskEstimate().toString()} + ' hrs'"></p>
+        </div>
+        <div class="detail-item">
+          <span>Status:</span>
+          <p th:text="${subtask.getSubtaskStatus()}"></p>
+        </div>
+        <div class="detail-item">
+          <span>Hours Spent:</span>
+          <p th:text="${subtask.getSubtaskHoursSpent()} + ' hrs'"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

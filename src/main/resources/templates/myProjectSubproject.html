@@ -10,7 +10,7 @@
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<div class="taskListContainer">
+<div class="subprojectListContainer">
   <h1 th:text="${project.projectName}"></h1>
 
   <div class="projectInfoWrapper">
@@ -19,22 +19,21 @@
       </div>
       <span class="progress-text" th:text="${completion} + '%'"></span>
     </div>
-    <div class="projectInfoContainer">
+    <div class="projectInfoContainer2">
       <div class="projectInfoText">
         <h4>Estimated</h4>
-        <h3 th:text="${estimate}"></h3>
+        <h3 th:text="${project.calculateTotalEstimate()}"></h3>
       </div>
       <div class="projectInfoText">
         <h4>Actual</h4>
-        <h3 th:text="${actual}"></h3>
+        <h3 th:text="${project.calculateTotalActual()}"></h3>
       </div>
-    </div>
-    <div class="projectInfoText">
-      <h4>Prediction</h4>
-      <h3 th:text="${predictionRatio}"
-          th:class="${predictionRatio > 1.5 || predictionRatio < 0.5 ? 'text-danger' : 'text-success'}"
-      >
-      </h3>
+      <div class="projectInfoText">
+        <h4>Prediction</h4>
+        <h3 th:text="${project.calculatePredictionRatio()}"
+            th:class="${project.calculatePredictionRatio() > 1.5 || project.calculatePredictionRatio() < 0.5 ? 'text-danger' : 'text-success'}">
+        </h3>
+      </div>
     </div>
   </div>
 
@@ -45,6 +44,9 @@
     <span> Add sub project </span>
     <i class="fa fa-plus" aria-hidden="true"></i>
   </a>
+
+  <div class="h-separator"></div>
+
 
   <div class="circleWrapper">
     <div class="circleGrid">

@@ -79,7 +79,7 @@
                     <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
 
 
-                    <div class="taskelement">
+                    <!--<div class="taskelement">
                         <h5>Start Date</h5>
                         <h2 th:text="${task.getTaskStartDate()}"></h2>
                         <div th:each="subtask : ${task.getSubtasks()}">
@@ -92,7 +92,7 @@
                         </div>
                     </div>
 
-                    <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
+                    <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>-->
 
 
                     <div class="taskelement">
@@ -122,6 +122,9 @@
                             <span class="hidden"> Add subtask </span>
                         </div>
                     </div>
+
+                    <div class="v-separator" th:style="'height:' + (${task.getSubtasks().size()} * 60) + 'px'"></div>
+
 
                     <div class="taskelement">
                         <h5>Hours Spent</h5>

@@ -16,6 +16,7 @@ public class SubTask {
     private String subtaskDescription;
     private String subtaskStatus;
     private List<Employee> assignees;
+    private int subProjectId;
 
     public SubTask() {
     }
@@ -130,5 +131,13 @@ public class SubTask {
         int days = (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
         return days + " days";
+    }
+
+    public int getSubProjectId() {
+        return subProjectId;
+    }
+
+    public void setSubProjectId(int subProjectId) {
+        this.subProjectId = subProjectId;
     }
 }
