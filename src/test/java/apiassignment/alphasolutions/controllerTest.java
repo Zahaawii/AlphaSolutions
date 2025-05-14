@@ -3,10 +3,7 @@ package apiassignment.alphasolutions;
 
 import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.controller.G1SController;
-import apiassignment.alphasolutions.model.Employee;
-import apiassignment.alphasolutions.model.Project;
-import apiassignment.alphasolutions.model.Skill;
-import apiassignment.alphasolutions.model.SubProject;
+import apiassignment.alphasolutions.model.*;
 import apiassignment.alphasolutions.service.G1SService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +32,7 @@ public class controllerTest {
     Project project;
     SubProject subProject;
     Skill skill;
+    SubTask subtask;
 
     //Calling MockMvc method to test our controllers
     @Autowired
@@ -53,6 +51,7 @@ public class controllerTest {
         project = new Project(1, "Project test", 1,null, null, "test", "igang");
         subProject = new SubProject(1, "subProject test", null,null,1);
         skill = new Skill(1, "Frontend");
+        subtask = new SubTask();
 
     }
 
@@ -457,6 +456,17 @@ public class controllerTest {
         mockMvc.perform(get("/profile/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"));
+    }
+    @Test
+    void sortMyTasks() throws Exception{
+        List<SubTask>subTaskList = new ArrayList<>();
+        subTaskList.add(subtask);
+        String a = "";
+        when(g1SService.getSortedSubtaskByEmployeeId(a, employee.getEmployeeId())).thenReturn(subTaskList);
+        mockMvc.perform(get("/mySubTasks/sortBy"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("mySubTasks"));
+
     }
 
 

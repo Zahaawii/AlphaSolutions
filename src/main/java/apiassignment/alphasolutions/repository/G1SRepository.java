@@ -681,6 +681,29 @@ public class G1SRepository {
         return subTaskList;
     }
 
+    public List<SubTask> getSortedSubtaskByEmployeeIdPerfected(String sortColumn, int employeeId) {
+        List<String> allowedSortColumns = List.of("subtask_estimate", "subtask_end_date", "subtask_end_date desc", "subtask_priority");
+        String order =""; //inizialiter en tom string
+        if (sortColumn != null && !sortColumn.isBlank()) { // checker om vores sortering input er en tom string
+            if (allowedSortColumns.contains(sortColumn)) { //checker om vores sortering input er en af dem i vores DB
+                order = "ORDER BY "; //starter vores string med mysql sorterings formen "order by"
+                order += sortColumn; //definere hvad vi vil sortere efter fx, slut dato
+            }
+        } //laver en query, hvor vi vil have alle subtask for en given employee og evt sortere dem ud for en parameter
+        String sql = "SELECT subtask.* FROM subtask " +
+                "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
+                "WHERE subtaskassignees.employeeId = ? " + order;
+        List<SubTask> subTaskList = jdbcTemplate.query(sql, new SubTaskRowMapper(), employeeId);
+        //vi får forhåbenligt en liste med subtask tilbage, hvis den er tom, så returnere vi null
+        if(subTaskList.isEmpty()){
+            return null;
+        }//sætter subprojectId på subtask objektet
+        for(SubTask b: subTaskList){
+            b.setSubProjectId(getSubProjectIdWithSubTaskId(b.getSubtaskID()));
+        }
+        return subTaskList;
+    }
+
     public int getSubProjectIdWithSubTaskId(int subtaskId){
         String sql ="SELECT task.* from task " +
                 "join subtask on task.taskId = subtask.taskId " +

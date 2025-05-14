@@ -432,9 +432,9 @@ public class G1SService {
     }
 
     public List<SubTask>getSortedSubtaskByEmployeeId(String sorted, int employeeId){
-        return g1SRepository.getSortedSubtaskByEmployeeId(sorted, employeeId);
+        return g1SRepository.getSortedSubtaskByEmployeeIdPerfected(sorted, employeeId);
     }
-    }
+}
 
 
 
