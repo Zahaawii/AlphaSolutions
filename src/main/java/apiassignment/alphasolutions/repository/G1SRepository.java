@@ -736,11 +736,46 @@ public class G1SRepository {
             return 0;
         }
         return subProjects.getFirst().getSubprojectId();
-
     }
+    public void deleteSkill(int skillId){
+        String sql ="DELETE FROM skill WHERE skillID = ?";
+        jdbcTemplate.update(sql, skillId);
+    }
+
+
 
     public void removeAssigneeFromProject(int projectId, int employeeId) {
         String sql = "DELETE FROM projectAssignees WHERE projectID = ? AND employeeID = ?";
         jdbcTemplate.update(sql,projectId,employeeId);
+
+        }
+    public Skill createSkill(Skill skill){
+        try{
+        String sql ="INSERT INTO skill (skill_name) VALUES (?) ";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, skill.getSkillName());
+            return ps;
+        }, keyHolder);
+
+        int skillId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+        if(skillId != -1){
+            skill.setSkillId(skillId);
+        }
+        } catch (DataAccessException e) {
+        throw new RuntimeException("Failed to register skill ", e);
+         }
+        return skill;
     }
+    public boolean skillNotInDb(Skill skill){
+        String sqlChecker = "SELECT * FROM skill WHERE skill_name = ?";
+        List<Skill> checkIfSkillExists = jdbcTemplate.query(sqlChecker, new SkillRowmapper(), skill.getSkillName());
+        if(!checkIfSkillExists.isEmpty()){ //checker om den givne skill allerede er i DB
+            return false;
+        }
+        return true;
+    }
+
 }

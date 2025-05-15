@@ -136,5 +136,51 @@ body {
     background-color: #333;
     color: white;
 }
+.register-skill {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skill-form {
+    display: flex;
+    gap: 0.5rem;
+    background-color: #fce4ec;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.skill-form label {
+    display: none; /* Optional: Hide label if you want minimalist UI */
+}
+
+.skill-form input[type="text"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 200px;
+    font-size: 1rem;
+}
+
+.skill-form button {
+    padding: 0.5rem 1rem;
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.skill-form button:hover {
+    background-color: #c2185b;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 0.5rem;
+}
 
 
