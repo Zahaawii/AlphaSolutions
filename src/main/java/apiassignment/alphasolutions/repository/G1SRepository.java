@@ -569,7 +569,7 @@ public class G1SRepository {
     }
 
     public void deleteAwaitingEmployeeWithUsername(String username) {
-        String sql = "DELETE FROM awaitingemployee where awaitingEmployee_name = ?;";
+        String sql = "DELETE FROM awaitingemployee where awaitingEmployee_username = ?;";
         jdbcTemplate.update(sql, username);
     }
 
@@ -647,10 +647,7 @@ public class G1SRepository {
         List<AwaitingEmployee> employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
         if (employeeList.isEmpty()) {
             return true;
-        } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
-        //vores egen employee object kommer til at indgå i listen, hvis vi ikke har opdateret brugernavn
-        //men vi måske kun har opdateret vores email eller lignende
-        //derfor tjekker vi om employeeId matcher
+        }
         for (AwaitingEmployee i : employeeList) {
             if (i.getAwaitingEmployee_username().equalsIgnoreCase(employee)) {
                 return false;
