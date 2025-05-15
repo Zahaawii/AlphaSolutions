@@ -642,21 +642,22 @@ public class G1SRepository {
     }
 
 
-    public boolean isUsernameAwaitingUserFree(String employee){
+    public boolean isUsernameAwaitingUserFree(String employee) {
         String sql = "SELECT * FROM awaitingemployee WHERE awaitingEmployee_name = ?";
-        List<AwaitingEmployee>employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
-        if(employeeList.isEmpty()){
+        List<AwaitingEmployee> employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
+        if (employeeList.isEmpty()) {
             return true;
         } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
         //vores egen employee object kommer til at indgå i listen, hvis vi ikke har opdateret brugernavn
         //men vi måske kun har opdateret vores email eller lignende
         //derfor tjekker vi om employeeId matcher
-        for(AwaitingEmployee i: employeeList){
-            if(i.getAwaitingEmployee_username().equalsIgnoreCase(employee)){
+        for (AwaitingEmployee i : employeeList) {
+            if (i.getAwaitingEmployee_username().equalsIgnoreCase(employee)) {
                 return false;
             }
         }
         return true;
+    }
 
     public List<Project> getProjectsWithAssignees(int empId) {
         List<Project> projects = getProjectsForOneEmployee(empId);
@@ -735,6 +736,39 @@ public class G1SRepository {
             return 0;
         }
         return subProjects.getFirst().getSubprojectId();
-
     }
+    public void deleteSkill(int skillId){
+        String sql ="DELETE FROM skill WHERE skillID = ?";
+        jdbcTemplate.update(sql, skillId);
+    }
+
+    public Skill createSkill(Skill skill){
+        try{
+        String sql ="INSERT INTO skill (skill_name) VALUES (?) ";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, skill.getSkillName());
+            return ps;
+        }, keyHolder);
+
+        int skillId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+        if(skillId != -1){
+            skill.setSkillId(skillId);
+        }
+        } catch (DataAccessException e) {
+        throw new RuntimeException("Failed to register skill ", e);
+         }
+        return skill;
+    }
+    public boolean skillNotInDb(Skill skill){
+        String sqlChecker = "SELECT * FROM skill WHERE skill_name = ?";
+        List<Skill> checkIfSkillExists = jdbcTemplate.query(sqlChecker, new SkillRowmapper(), skill.getSkillName());
+        if(!checkIfSkillExists.isEmpty()){ //checker om den givne skill allerede er i DB
+            return false;
+        }
+        return true;
+    }
+
 }

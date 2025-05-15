@@ -447,7 +447,6 @@ public class G1SService {
     public boolean isUsernameAwaitingUserFree(String username) {
         return g1SRepository.isUsernameAwaitingUserFree(username);
     }
-}
 
     public List<Project> getProjectsWithAssignees(int empId) {
         return g1SRepository.getProjectsWithAssignees(empId);
@@ -456,7 +455,18 @@ public class G1SService {
     public List<SubTask>getSortedSubtaskByEmployeeId(String sorted, int employeeId){
         return g1SRepository.getSortedSubtaskByEmployeeIdPerfected(sorted, employeeId);
     }
-}
+    public void deleteSkill(int skillId){
+        g1SRepository.deleteSkill(skillId);
+    }
+
+    public Skill createSkill(Skill skill){
+        return g1SRepository.createSkill(skill);
+    }
+    public boolean skillNotInDb(Skill skill){
+        return g1SRepository.skillNotInDb(skill);
+    }
+
+    }
 
 
 

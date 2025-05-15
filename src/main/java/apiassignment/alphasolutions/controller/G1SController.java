@@ -643,4 +643,35 @@ public class G1SController {
         g1SService.deleteAwaitingEmployee(id);
         return "redirect:/awaitingusers";
     }
+
+    @GetMapping("/admin/skillsPanel")
+    public String skillsPanel(HttpSession session, Model model){
+        List<Skill>skillList = g1SService.getAllSkills();
+        model.addAttribute("skillList", skillList);
+        Skill skill = new Skill();
+        model.addAttribute("skill", skill);
+        return "skillsPanel";
+    }
+
+
+
+    @PostMapping("/admin/skillsPanel/delete/{skillId}")
+    public String deleteSkill(@PathVariable int skillId, HttpSession session){
+        g1SService.deleteSkill(skillId);
+
+        return "redirect:/admin/skillsPanel";
+    }
+
+
+    @PostMapping("/admin/skillsPanel/create")
+    public String createSkill(@ModelAttribute Skill skill, HttpSession session, Model model){
+        if(!g1SService.skillNotInDb(skill)){
+            model.addAttribute("alreadyInDb", true);
+            return "redirect:/admin/skillsPanel";
+        }
+
+        g1SService.createSkill(skill);
+        return "redirect:/admin/skillsPanel";
+    }
+
 }
