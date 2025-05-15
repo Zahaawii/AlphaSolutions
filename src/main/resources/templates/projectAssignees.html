@@ -11,11 +11,51 @@
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
 
-  <h1>Liste af project assignees skal laves her</h1>
+<div class="assigneeListContainer">
+  <h1>Assignees</h1>
 
-<div th:each="assignee : ${assignees}">
+  <div th:each="assignee : ${assignees}">
+    <div class="taskContentContainer">
 
+      <div class="taskelement">
+        <a th:href="@{/profile/{id}(id=${assignee.employeeId})}">
+          <div class="avatar"
+               th:text="${#strings.substring(assignee.employeeName, 0, 1) +
+                               #strings.substring(assignee.employeeName, assignee.employeeName.indexOf(' ') + 1, assignee.employeeName.indexOf(' ') + 2)}">
+          </div>
+        </a>
+      </div>
+
+      <div class="taskelement">
+        <h4 th:text="${assignee.employeeName}"></h4>
+      </div>
+
+      <div class="taskelement">
+        <h4 th:text="${assignee.employeeEmail}"></h4>
+      </div>
+
+
+      <div class="taskelement">
+        <div th:each="skill : ${assignee.skills}">
+          <h4 th:text="${skill.skillName}"></h4>
+        </div>
+      </div>
+
+      <div class="taskelement">
+        <div th:if="${canManageProjects}">
+          <form th:action="@{/project/{projectId}/assignee/{employeeId}/remove(projectId=${projectId}, employeeId=${assignee.employeeId})}"
+                method="post"
+                onsubmit="return confirm('Are you sure you want to remove this assignee?')">
+            <button type="submit" class="iconbutton">
+              <i class="fa-solid fa-trash"></i> Remove assignee
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-separator"></div>
+  </div>
 </div>
-
 </body>
 </html>

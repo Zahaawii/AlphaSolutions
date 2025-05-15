@@ -642,21 +642,22 @@ public class G1SRepository {
     }
 
 
-    public boolean isUsernameAwaitingUserFree(String employee){
+    public boolean isUsernameAwaitingUserFree(String employee) {
         String sql = "SELECT * FROM awaitingemployee WHERE awaitingEmployee_name = ?";
-        List<AwaitingEmployee>employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
-        if(employeeList.isEmpty()){
+        List<AwaitingEmployee> employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
+        if (employeeList.isEmpty()) {
             return true;
         } //vi får en liste af employees som hedder det navn vi prøver at opdatere vores employee til
         //vores egen employee object kommer til at indgå i listen, hvis vi ikke har opdateret brugernavn
         //men vi måske kun har opdateret vores email eller lignende
         //derfor tjekker vi om employeeId matcher
-        for(AwaitingEmployee i: employeeList){
-            if(i.getAwaitingEmployee_username().equalsIgnoreCase(employee)){
+        for (AwaitingEmployee i : employeeList) {
+            if (i.getAwaitingEmployee_username().equalsIgnoreCase(employee)) {
                 return false;
             }
         }
         return true;
+    }
 
     public List<Project> getProjectsWithAssignees(int empId) {
         List<Project> projects = getProjectsForOneEmployee(empId);
@@ -736,5 +737,10 @@ public class G1SRepository {
         }
         return subProjects.getFirst().getSubprojectId();
 
+    }
+
+    public void removeAssigneeFromProject(int projectId, int employeeId) {
+        String sql = "DELETE FROM projectAssignees WHERE projectID = ? AND employeeID = ?";
+        jdbcTemplate.update(sql,projectId,employeeId);
     }
 }
