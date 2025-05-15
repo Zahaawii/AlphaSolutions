@@ -175,7 +175,7 @@ public class G1SController {
      public String addSubproject(@ModelAttribute SubProject subProject) {
          System.out.println(subProject);
         g1SService.addSubproject(subProject);
-        return "redirect:/home";
+        return "redirect:/project/" + subProject.getProjectID();
      }
 
 
@@ -644,6 +644,7 @@ public class G1SController {
     @PostMapping("/create/user/adminApproval")
     public String adminApprovedEmployee(@ModelAttribute DTOEmployee employee) {
         g1SService.adminRegisterEmployee(employee);
+        System.out.println(employee.getEmployeeUsername());
         g1SService.deleteAwaitingEmployeeWithUsername(employee.getEmployeeUsername());
         return "redirect:/awaitingusers";
     }
