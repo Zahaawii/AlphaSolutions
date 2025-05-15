@@ -742,6 +742,13 @@ public class G1SRepository {
         jdbcTemplate.update(sql, skillId);
     }
 
+
+
+    public void removeAssigneeFromProject(int projectId, int employeeId) {
+        String sql = "DELETE FROM projectAssignees WHERE projectID = ? AND employeeID = ?";
+        jdbcTemplate.update(sql,projectId,employeeId);
+
+        }
     public Skill createSkill(Skill skill){
         try{
         String sql ="INSERT INTO skill (skill_name) VALUES (?) ";

@@ -108,7 +108,7 @@ public class G1SController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/projects/delete/{id}")
+    @PostMapping("/projects/delete/{id}")
     public String deleteProject(@PathVariable int id, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
@@ -141,10 +141,20 @@ public class G1SController {
 
     @GetMapping("/project/{id}/assigneesList")
     public String getProjectAssignees(@PathVariable int id, Model model, HttpSession session) {
-        model.addAttribute("assignees",g1SService.getProjectAssignees(id));
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("projectId",id);
+        model.addAttribute("assignees",g1SService.getProjectAssigneesWithSkills(id));
         return "projectAssignees";
     }
 
+    @PostMapping("/project/{projectId}/assignee/{employeeId}/remove")
+    public String removeAssigneeFromProject(@PathVariable int projectId, @PathVariable int employeeId, Model model) {
+        g1SService.removeAssigneeFromProject(projectId,employeeId);
+        return "redirect:/project/" + projectId + "/assigneesList";
+    }
 
     @GetMapping("/subprojects")
     public String subProjects(Model model) {
