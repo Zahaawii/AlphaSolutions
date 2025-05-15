@@ -86,6 +86,18 @@ public class G1SService {
         return g1SRepository.getProjectAssignees(projectId);
     }
 
+    public List<Employee> getProjectAssigneesWithSkills(int projectId) {
+        List<Employee> employees = getProjectAssignees(projectId);
+        for (Employee emp : employees) {
+            emp.setSkills(getSkillsForEmployee(emp.getEmployeeId()));
+        }
+        return employees;
+    }
+
+    public void removeAssigneeFromProject(int projectId, int employeeId) {
+        g1SRepository.removeAssigneeFromProject(projectId,employeeId);
+    }
+
     public List<Employee> getAllEmployeeWithSkills() {
         List<Employee> employees = g1SRepository.getAllEmployee();
 
@@ -447,7 +459,6 @@ public class G1SService {
     public boolean isUsernameAwaitingUserFree(String username) {
         return g1SRepository.isUsernameAwaitingUserFree(username);
     }
-}
 
     public List<Project> getProjectsWithAssignees(int empId) {
         return g1SRepository.getProjectsWithAssignees(empId);
