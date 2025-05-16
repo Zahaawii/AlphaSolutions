@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>New Project</title>
+    <meta charset="UTF-8">
+    <title>Create New Project</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<form th:action="@{/projects}" th:object="${project}" method="post">
-    <div class="input-group">
-        <input type="text" placeholder="PROJECT NAME" th:field="*{projectName}" required>
-    </div>
+<div class="taskListContainer big">
+    <form class="inputWrapper"
+          th:object="${project}"
+          th:action="@{/projects}"
+          method="post">
 
-    <label class="description-label">DESCRIPTION</label>
-    <div class="description-box">
-        <textarea th:field="*{projectDescription}" id="description" maxlength="256"></textarea>
-        <div class="char-counter">Max. 256 characters</div>
-    </div>
+        <textarea placeholder="Project Name" th:field="*{projectName}" class="inputName" rows="2" maxlength="100" required></textarea>
 
-    <div class="date-container">
-        <div class="date-group">
-            <label for="startDate">START DATE</label>
-            <input type="date" id="startDate" th:field="*{projectStartDate}">
+        <div class="gradientBorder">
+            <div class="inputDescriptionBox">
+                <textarea placeholder="Project Description" th:field="*{projectDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+            </div>
         </div>
-        <div class="date-group">
-            <label for="endDate">END DATE</label>
-            <input type="date" id="endDate" th:field="*{projectEndDate}">
+
+        <div class="inputWrapperTwo">
+            <div class="date-container">
+                <div class="date-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" th:field="*{projectStartDate}">
+                </div>
+                <div class="date-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" th:field="*{projectEndDate}">
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="create-project-header">
-        <h2>CREATE PROJECT</h2>
-        <button type="submit" class="submit-btn">+</button>
-    </div>
-</form>
+        <button type="submit" class="saveButton">Create Project</button>
+    </form>
+</div>
 
-<a th:href="@{/projects}">Back to My Projects</a>
+<a th:href="@{/projects}" class="back-link">Back to My Projects</a>
 </body>
 </html>
