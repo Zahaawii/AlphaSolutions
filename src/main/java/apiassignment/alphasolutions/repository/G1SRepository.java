@@ -657,7 +657,7 @@ public class G1SRepository {
     }
 
     public List<Project> getProjectsWithAssignees(int empId) {
-        List<Project> projects = getProjectsForOneEmployee(empId);
+        List<Project> projects = getAllProjects(empId);
         for(Project p : projects) {
             p.setAssignees(getProjectAssignees(p.getProjectId()));
             p.setSubtasks(getAllSubtasksByProjectId(p.getProjectId()));
