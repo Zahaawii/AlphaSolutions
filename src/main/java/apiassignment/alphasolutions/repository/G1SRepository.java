@@ -720,6 +720,10 @@ public class G1SRepository {
         }//sætter subprojectId på subtask objektet
         for(SubTask b: subTaskList){
             b.setSubProjectId(getSubProjectIdWithSubTaskId(b.getSubtaskID()));
+        }//nedenstående metode er nødvendig, fordi "order by" kommer til at sortere alfabetisk ved priority
+        //så sortere den efter high, low og så medium, fordi "l" kom før "m" i alfabetet, metoden sortere dem så efter den rigtige prioritet
+        if(sortColumn != null && sortColumn.equalsIgnoreCase("subtask_priority")){
+            return sortSubtasksByPriority(subTaskList);
         }
         return subTaskList;
     }
@@ -743,9 +747,10 @@ public class G1SRepository {
 
     public void removeAssigneeFromProject(int projectId, int employeeId) {
         String sql = "DELETE FROM projectAssignees WHERE projectID = ? AND employeeID = ?";
-        jdbcTemplate.update(sql,projectId,employeeId);
+        jdbcTemplate.update(sql, projectId, employeeId);
 
-        }
+    }
+
     public Skill createSkill(Skill skill){
         try{
         String sql ="INSERT INTO skill (skill_name) VALUES (?) ";
@@ -773,6 +778,28 @@ public class G1SRepository {
             return false;
         }
         return true;
+    }
+    public List<SubTask>sortSubtasksByPriority(List<SubTask>subTasks){
+        List<SubTask> subTasksList = new ArrayList<>();
+        if(subTasks == null || subTasks.isEmpty()){
+            return null;
+        }
+        for(SubTask i: subTasks){
+            if(i.getSubtaskPriority().equalsIgnoreCase("High")){
+                subTasksList.add(i);
+            }
+        }
+        for(SubTask b: subTasks){
+            if(b.getSubtaskPriority().equalsIgnoreCase("Medium")){
+                subTasksList.add(b);
+            }
+        }
+        for(SubTask c: subTasks){
+            if(c.getSubtaskPriority().equalsIgnoreCase("Low")){
+                subTasksList.add(c);
+            }
+        }
+        return subTasksList;
     }
 
 }
