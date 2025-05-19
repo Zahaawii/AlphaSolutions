@@ -1,9 +1,13 @@
 ➡️ Fork the repository
 
 ➡️ Create a feature branch (branch name = feature name)
+
 ➡️ Commit changes (in English, with clear messages)
+
 ➡️ Open a Pull Request (PR)
+
 ➡️ Wait for review and testing
+
 ➡️ Merge after approval
 
 # Contributing to this Project
