@@ -193,4 +193,14 @@ var(--accent-color);
     align-items: center;
 }
 
+.sort-form button {
+    background-color: #f04e64;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.sort-form button:hover {
+    background-color: #d43b52;
+}
 

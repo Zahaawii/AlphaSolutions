@@ -1,0 +1,154 @@
+/* Reset and structure */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar (already handled by fragment, but just in case) */
+.sidebar {
+    width: 250px;
+    background-color: #ffe6ea;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Main content */
+.taskListContainerSkill {
+    margin-left: 250px;
+    padding: 30px 40px;
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+/* Skill filter box */
+.skill-filter-form {
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+
+.skill-filter-form h1 {
+    margin-top: 0;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.skill-filter-form select,
+.skill-filter-form button {
+    padding: 10px 14px;
+    font-size: 14px;
+    margin-right: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.skill-filter-form button {
+    background-color: #ff507f;
+    color: white;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.skill-filter-form button:hover {
+    background-color: #e1446f;
+}
+
+/* Table */
+.employee-table-container {
+    overflow-x: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.employee-table th, .employee-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    vertical-align: top;
+}
+
+.employee-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.employee-table td a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.employee-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Skills as bullet list */
+.employee-table ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.employee-table li {
+    margin-bottom: 4px;
+}
+
+/* Edit buttons */
+.edit-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-buttons .btn,
+.edit-buttons button {
+    background-color: #ff507f;
+    color: white;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.edit-buttons .btn:hover,
+.edit-buttons button:hover {
+    background-color: #e1446f;
+}
+
+/* Messages */
+.notice {
+    margin-top: 40px;
+    background-color: #fff3cd;
+    padding: 20px;
+    border-left: 6px solid #ffc107;
+    border-radius: 6px;
+    font-size: 16px;
+}

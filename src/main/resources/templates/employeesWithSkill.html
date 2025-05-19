@@ -3,68 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Employees with a certain skill</title>
+    <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/adminPanel.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-    <div>
-        <h1>Select a Skill</h1>
-        <form th:action=" @{/project/{projectId}/assignees/select-skill(projectId=${projectId})}" method="get">
-            <select name="skill">
-                <option value="">-- All employees --</option>
-                <option th:each="skill : ${skills}" th:value="${skill.getSkillName()}" th:text="${skill.getSkillName()}"></option>
-            </select>
-            <button type="submit">Filter</button>
-        </form>
+<div class="layout">
+    <div th:replace="fragments/dashboard :: dashboard"></div>
+
+    <div class="taskListContainer">
+        <div class="skill-filter-form">
+            <h1>Select a Skill</h1>
+            <form class="sort-form" th:action="@{/project/{projectId}/assignees/select-skill(projectId=${projectId})}" method="get">
+                <select name="skill">
+                    <option value="">-- All employees --</option>
+                    <option th:each="skill : ${skills}" th:value="${skill.getSkillName()}" th:text="${skill.getSkillName()}"></option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+
+        <div th:if="${foundEmployee}" class="employee-table-container">
+            <table class="employee-table">
+                <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Role ID</th>
+                    <th>Skills</th>
+                    <th>Edit Panel</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="i : ${listOfEmployee}">
+
+                    <td >
+                        <a th:text="${i.getEmployeeId()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                            </a>
+                    </td>
+                    <td>
+                        <a th:text="${i.getEmployeeName()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                        </a>
+                    </td>
+
+                    <td>
+                        <a th:text="${i.getEmployeeEmail()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:text="${i.getEmployeeUsername()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:text="${i.getRoleId()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}">
+                        </a>
+                    </td>
+                    <td>
+
+                        <ul>
+                            <li th:each="b : ${i.getSkills()}">
+                                <span th:text="${b.getSkillName()}"></span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="edit-buttons">
+
+                            <form th:action="@{/project/{projectId}/add/{employeeId}(projectId=${projectId}, employeeId=${i.getEmployeeId()})}" method="post">
+                                <button type="submit" class="addButton">Add</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${noEmployee}" class="notice">
+            <h2>Did not find any employee with this skill</h2>
+            <h2>They might already be part of the project</h2>
+        </div>
+        <div th:if="${notPartOfProject}" class="notice">
+            <h2>Did not find any employee who were not already a part of the project</h2>
+        </div>
     </div>
-<div th:if="${foundEmployee}">
-<table>
-    <tr>
-        <th scope="row"> Employee id</th>
-        <th scope="row"> Name</th>
-        <th scope="row"> Email</th>
-        <th scope="row"> Username</th>
-        <th scope="row"> Password</th>
-        <th scope="row"> Role id</th>
-        <th scope="row"> Skills</th>
-        <th scope="row"> Edit panel</th>
-    </tr>
-
-    <tr th:each="i : ${listOfEmployee}">
-        <td th:text="${i.getEmployeeId()}"></td>
-        <td >
-            <a th:text="${i.getEmployeeName()}" th:href="@{projects}">
-
-            </a>
-        </td>
-        <td th:text="${i.getEmployeeEmail()}"></td>
-        <td th:text="${i.getEmployeeUsername()}"></td>
-        <td th:text="${i.getEmployeePassword()}"></td>
-        <td th:text="${i.getRoleId()}"></td>
-        <td>
-            <li th:each="b : ${i.getSkills()}">
-                <span th:text="${b.getSkillName()}"></span>
-            </li>
-        </td>
-
-        <td>
-            <div>
-                <button><a th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}" >
-                    See employee profile</a></button>
-                <form th:action="@{/project/{projectId}/add/{employeeId}(projectId=${projectId}, employeeId = ${i.getEmployeeId})}" method="post">
-                    <button type="submit">Add to project</button>
-                </form>
-            </div>
-        </td>
-
-    </tr>
-</table>
 </div>
-    <div th:if="${noEmployee}">
-        <h2>Did not find any employee with this skill</h2>
-        <h2>They might already be part of the project</h2>
-    </div>
-    <div th:if="${notPartOfProject}">
-        <h2>Did not find any employee who were not already a part of the project</h2>
-    </div>
+
 </body>
 </html>
