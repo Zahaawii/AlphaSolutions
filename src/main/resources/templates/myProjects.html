@@ -18,9 +18,10 @@
                     <h1 th:text="${project.projectName}"></h1>
                     <div class="project-progress-container">
                         <span class="project-progress-text" th:text="${project.calculateCompletion()} + '%'"></span>
-                        <div class="project-progress-bar" th:style="'width: ' + ${project.calculateCompletion()} + '%; background: linear-gradient(to right, #FF6A6A, #FF325A);'">
+                        <div class="project-progress-bar" th:style="'width: ' + ${project.calculateCompletion()} + '%; background: linear-(to right, #FF6A6A, #FF325A);'">
                         </div>
                     </div>
+
 
                     <div class="projectInfoContainer2">
                         <div class="projectInfoText">
@@ -38,6 +39,18 @@
                             </h3>
                         </div>
                     </div>
+
+                </div>
+                <div class="buttoncontainer">
+                    <a th:href="@{/projects/edit/{id}(id=${project.projectId})}">
+                        <i class="fas fa-edit fa-2x"></i>
+                    </a>
+                    <form th:action="@{/projects/delete/{id}(id=${project.projectId})}"
+                          method="post" onsubmit="return confirm('Are you sure you want to delete this subtask?')">
+                        <button type="submit" class="iconbutton">
+                            <i class="fa-solid fa-trash fa-2x"></i>
+                        </button>
+                    </form>
                 </div>
 
             </a>

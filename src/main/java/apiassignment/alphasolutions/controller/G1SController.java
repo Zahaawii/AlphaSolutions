@@ -236,15 +236,15 @@ public class G1SController {
     @PostMapping("/subproject/delete/{id}")
     public String deleteSubprojectBySubprojectId(@PathVariable int id) {
         System.out.println(g1SService.getSubProjectById(id));
+        int projectid = g1SService.getSubProjectById(id).getProjectID();
         g1SService.deleteSubprojectBysubProjectId(id);
-        return "redirect:/projects";
+        return "redirect:/project/" + projectid;
     }
 
 
     @GetMapping("/subproject/{id}")
     public String subProjectView (@PathVariable("id") int subprojectId, Model model) {
         List<Task> tasks = g1SService.getTasksBySubprojectId(subprojectId);
-        Integer sum = g1SService.getSumOfTaskAndSubTask(subprojectId);
 
         //loop igennem alle tasks og sæt assignees til deres respektive task. Samme sker med subtasks.
         for (Task task : tasks) {
@@ -257,7 +257,6 @@ public class G1SController {
 
         model.addAttribute("tasks", tasks);
         SubProject subproject = g1SService.getSubProjectById(subprojectId);
-        model.addAttribute("sum", sum);
         model.addAttribute("subproject", subproject);
 
         return "subprojectview";
@@ -604,7 +603,7 @@ public class G1SController {
 
 
         SubProject subProject = g1SService.getSubProjectById(id);
-        model.addAttribute("subprojects", subProject);
+        model.addAttribute("subproject", subProject);
         return "editSubprojects";
     }
 
@@ -612,7 +611,7 @@ public class G1SController {
     public String updateSubProject(@ModelAttribute SubProject subProject) {
         System.out.println(subProject);
         g1SService.updateSubproject(subProject);
-        return "redirect:/projects";
+        return "redirect:/project/" + subProject.getProjectID();
     }
 
     @GetMapping("/create/user")

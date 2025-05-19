@@ -14,6 +14,16 @@
     <div class="taskListContainer">
         <h1>Admin Panel</h1>
 
+        <div class="buttonscontainer">
+            <div class="add-button">
+                <a class="button add" th:href="@{/admin/addEmployee}">Add New Employee</a>
+            </div>
+
+            <div class="add-button">
+                <a class="button add" th:href="@{/admin/skillsPanel}">Manage Skills</a>
+            </div>
+        </div>
+
         <table class="employee-table">
             <thead>
             <tr>
@@ -56,13 +66,9 @@
             </tbody>
         </table>
 
-        <div class="add-button">
-            <a class="button add" th:href="@{/admin/addEmployee}">Add New Employee</a>
-        </div>
 
-        <div class="add-button">
-            <a class="button add" th:href="@{/admin/skillsPanel}">Manage Skills</a>
-        </div>
+
+
         <div class="h-separator"></div>
     </div>
 </div>

@@ -123,7 +123,7 @@ public class G1SRepository {
 
     public SubProject addSubProject(SubProject subProject) {
 
-        String sql = "INSERT INTO subproject (subprojectID, subproject_name, subproject_start_date, subproject_end_date, projectID) VALUES(?, ?, ?, ?,?)";
+        String sql = "INSERT INTO subproject (subprojectID, subproject_name, subproject_start_date, subproject_end_date, projectID, subproject_description) VALUES(?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -135,6 +135,7 @@ public class G1SRepository {
                 ps.setDate(3, subProject.getSubprojectStartDate());
                 ps.setDate(4, subProject.getSubprojectEndDate());
                 ps.setInt(5, subProject.getProjectID());
+                ps.setString(6, subProject.getSubprojectDescription());
                 return ps;
             }, keyHolder);
 
@@ -179,7 +180,11 @@ public class G1SRepository {
 
     public SubProject getSubProjectById (int id) {
         String sql = "SELECT * FROM subproject WHERE subprojectID = ?";
-        return jdbcTemplate.query(sql, new SubprojectRowMapper(), id).getFirst();
+
+
+        SubProject subproject = jdbcTemplate.query(sql, new SubprojectRowMapper(), id).getFirst();
+        subproject.setSubtasks(getAllSubtasksBySubprojectID(subproject.getSubprojectID()));
+        return subproject;
     }
 
     public List<SubTask> getSubtasksByTaskId(int id) {
@@ -507,12 +512,13 @@ public class G1SRepository {
 
 
     public void updateSubproject(SubProject subProject) {
-        String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";
+        String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ?, subproject_description = ? WHERE subprojectID = ?";
         int rowsAffected = jdbcTemplate.update(
                 sql,
                 subProject.getSubprojectName(),
                 subProject.getSubprojectStartDate(),
                 subProject.getSubprojectEndDate(),
+                subProject.getSubprojectDescription(),
                 subProject.getSubprojectID()
         );
 
@@ -657,7 +663,7 @@ public class G1SRepository {
     }
 
     public List<Project> getProjectsWithAssignees(int empId) {
-        List<Project> projects = getProjectsForOneEmployee(empId);
+        List<Project> projects = getAllProjects(empId);
         for(Project p : projects) {
             p.setAssignees(getProjectAssignees(p.getProjectId()));
             p.setSubtasks(getAllSubtasksByProjectId(p.getProjectId()));
