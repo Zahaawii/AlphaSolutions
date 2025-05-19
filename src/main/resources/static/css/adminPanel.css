@@ -1,7 +1,12 @@
 /* Base styling */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --accent-color: #FF325A;
+}
 body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Montserrat';
     background-color: #fff;
 }
 
@@ -52,17 +57,16 @@ body {
 /* Buttons */
 .button {
     border: none;
-    padding: 8px 16px;
     margin-right: 5px;
-    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    padding: 1em 2em;
 }
 
 .button.update {
-    background-color: #ff4f7b;
+    background-color: var(--accent-color);
     color: white;
 }
 
@@ -72,9 +76,9 @@ body {
 }
 
 .button.add {
-    background-color: #ff4f7b;
+    background-color: var(--accent-color);
     color: white;
-    padding: 10px 20px;
+    padding: 1em 3em;
     text-align: center;
 }
 
@@ -128,7 +132,7 @@ body {
 }
 
 .button.update {
-    background-color: #ff6b81;
+    background-color: var(--accent-color);
     color: white;
 }
 
@@ -166,7 +170,7 @@ body {
 
 .skill-form button {
     padding: 0.5rem 1rem;
-    background-color: #e91e63;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -175,12 +179,18 @@ body {
 }
 
 .skill-form button:hover {
-    background-color: #c2185b;
+    background-color: var(--accent-color);
 }
 
 .error-message {
-    color: red;
+var(--accent-color);
     margin-bottom: 0.5rem;
+}
+
+.buttonscontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

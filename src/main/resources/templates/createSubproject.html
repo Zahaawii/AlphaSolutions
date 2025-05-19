@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <title>Create sub project</title>
+  <meta charset="UTF-8">
+  <title>Create New Subproject</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
+<div class="taskListContainer big">
+  <form class="inputWrapper"
+        th:object="${subproject}"
+        th:action="@{/create/subproject}"
+        method="post">
+    <input type="hidden" th:field="*{projectID}">
+    <textarea placeholder="Subproject Name" th:field="*{subprojectName}" class="inputName" rows="2" maxlength="100" required></textarea>
 
-
-<form th:action="@{/create/subproject}" th:object="${subproject}" method="post">
-
-  <div class="input-group">
-    <input type="text" placeholder="PROJECT NAME" th:field="*{subprojectName}" required>
-  </div>
-
-  <div class="date-container">
-    <div class="date-group">
-      <label for="startDate">START DATE</label>
-      <input type="date" id="startDate" th:field="*{subprojectStartDate}" required>
+    <div class="gradientBorder">
+      <div class="inputDescriptionBox">
+        <textarea placeholder="Subproject Description" th:field="*{subprojectDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+      </div>
     </div>
-    <div class="date-group">
-      <label for="endDate">END DATE</label>
-      <input type="date" id="endDate" th:field="*{subprojectEndDate}" required>
+
+    <div class="inputWrapperTwo">
+      <div class="date-container">
+        <div class="date-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" th:field="*{subprojectStartDate}">
+        </div>
+        <div class="date-group">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" th:field="*{subprojectEndDate}">
+        </div>
+      </div>
     </div>
-  </div>
 
-  <input type="hidden" th:field="*{projectID}">
+    <button type="submit" class="saveButton">Create</button>
+  </form>
+</div>
 
-  <div class="create-project-header">
-    <h2>CREATE SUB PROJECT</h2>
-    <button type="submit" class="submit-btn">+</button>
-  </div>
-</form>
-
-<a th:href="@{/projects}">Back to My Projects</a>
-
+<a th:href="@{/subprojects}" class="back-link">Back to My Projects</a>
 </body>
 </html>

@@ -45,7 +45,7 @@
             </div>
 
 
-            <div class="">
+            <div class="subtaskinfowrapper">
                 <div class="taskelement">
                     <h5>Priority</h5>
                     <select th:field="*{subtaskPriority}" class="inputDropdown">
@@ -62,7 +62,6 @@
                     <h5>Estimate</h5>
                     <input th:field="*{subtaskEstimate}" class="inputDropdown" type="number">
                 </div>
-            </div>
             <div class="taskelement">
                 <h5>Status</h5>
                 <select th:field="*{subtaskStatus}" class="inputDropdown">
@@ -76,6 +75,8 @@
                 <h5>Hours Spent</h5>
                 <input type="number" class="inputDropdown" th:field="*{subtaskHoursSpent}">
             </div>
+            </div>
+
         </div>
 
 

@@ -12,7 +12,7 @@
 <body>
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<div class="taskListContainer big">
+<div class="taskListContainer">
     <form class="inputWrapper"
           th:object="${subtask}"
           th:action="@{/subproject/{subprojectid}/task/{taskid}/create/subtask(subprojectid=${subprojectid}, taskid=${taskid})}"

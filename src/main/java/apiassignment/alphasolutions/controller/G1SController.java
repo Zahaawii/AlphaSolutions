@@ -236,8 +236,9 @@ public class G1SController {
     @PostMapping("/subproject/delete/{id}")
     public String deleteSubprojectBySubprojectId(@PathVariable int id) {
         System.out.println(g1SService.getSubProjectById(id));
+        int projectid = g1SService.getSubProjectById(id).getProjectID();
         g1SService.deleteSubprojectBysubProjectId(id);
-        return "redirect:/projects";
+        return "redirect:/project/" + projectid;
     }
 
 
@@ -604,7 +605,7 @@ public class G1SController {
 
 
         SubProject subProject = g1SService.getSubProjectById(id);
-        model.addAttribute("subprojects", subProject);
+        model.addAttribute("subproject", subProject);
         return "editSubprojects";
     }
 
@@ -612,7 +613,7 @@ public class G1SController {
     public String updateSubProject(@ModelAttribute SubProject subProject) {
         System.out.println(subProject);
         g1SService.updateSubproject(subProject);
-        return "redirect:/projects";
+        return "redirect:/project/" + subProject.getProjectID();
     }
 
     @GetMapping("/create/user")
