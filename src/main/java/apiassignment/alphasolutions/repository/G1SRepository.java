@@ -123,7 +123,7 @@ public class G1SRepository {
 
     public SubProject addSubProject(SubProject subProject) {
 
-        String sql = "INSERT INTO subproject (subprojectID, subproject_name, subproject_start_date, subproject_end_date, projectID) VALUES(?, ?, ?, ?,?)";
+        String sql = "INSERT INTO subproject (subprojectID, subproject_name, subproject_start_date, subproject_end_date, projectID, subproject_description) VALUES(?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -135,6 +135,7 @@ public class G1SRepository {
                 ps.setDate(3, subProject.getSubprojectStartDate());
                 ps.setDate(4, subProject.getSubprojectEndDate());
                 ps.setInt(5, subProject.getProjectID());
+                ps.setString(6, subProject.getSubprojectDescription());
                 return ps;
             }, keyHolder);
 
@@ -507,12 +508,13 @@ public class G1SRepository {
 
 
     public void updateSubproject(SubProject subProject) {
-        String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ? WHERE subprojectID = ?";
+        String sql = "UPDATE subproject SET subproject_Name = ?, subproject_start_date = ?, subproject_end_date = ?, subproject_description = ? WHERE subprojectID = ?";
         int rowsAffected = jdbcTemplate.update(
                 sql,
                 subProject.getSubprojectName(),
                 subProject.getSubprojectStartDate(),
                 subProject.getSubprojectEndDate(),
+                subProject.getSubprojectDescription(),
                 subProject.getSubprojectID()
         );
 

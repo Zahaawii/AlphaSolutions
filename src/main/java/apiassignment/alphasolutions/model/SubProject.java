@@ -8,6 +8,7 @@ public class SubProject {
 
     private int subprojectID;
     private String subprojectName;
+    private String subprojectDescription;
     private java.sql.Date subprojectStartDate;
     private java.sql.Date subprojectEndDate;
     private int projectID;
@@ -87,6 +88,14 @@ public class SubProject {
         this.subtasks = subtasks;
     }
 
+    public String getSubprojectDescription() {
+        return subprojectDescription;
+    }
+
+    public void setSubprojectDescription(String subprojectDescription) {
+        this.subprojectDescription = subprojectDescription;
+    }
+
     public int calculateCompletion() {
         int subtaskcount = subtasks.size();
         int subtaskscomplete = 0;
@@ -133,12 +142,15 @@ public class SubProject {
 
     @Override
     public String toString() {
-        return "subProject{" +
+        return "SubProject{" +
                 "subprojectID=" + subprojectID +
-                ", subproject_name='" + subprojectName + '\'' +
-                ", subproject_start_date=" + subprojectStartDate +
-                ", subproject_end_date=" + subprojectEndDate +
+                ", subprojectName='" + subprojectName + '\'' +
+                ", subprojectDescription='" + subprojectDescription + '\'' +
+                ", subprojectStartDate=" + subprojectStartDate +
+                ", subprojectEndDate=" + subprojectEndDate +
                 ", projectID=" + projectID +
+                ", assignees=" + assignees +
+                ", subtasks=" + subtasks +
                 '}';
     }
 }

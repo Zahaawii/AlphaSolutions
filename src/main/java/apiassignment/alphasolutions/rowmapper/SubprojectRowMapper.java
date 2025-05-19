@@ -20,6 +20,7 @@ public class SubprojectRowMapper implements RowMapper<SubProject> {
         subProject.subprojectEndDate(rs.getDate("subproject_end_date"));
         subProject.setSubprojectEndDate(rs.getDate("subproject_end_date"));
         subProject.setProjectID(rs.getInt("projectID"));
+        subProject.setSubprojectDescription(rs.getString("subproject_description"));
 
         return subProject;
 
