@@ -180,7 +180,11 @@ public class G1SRepository {
 
     public SubProject getSubProjectById (int id) {
         String sql = "SELECT * FROM subproject WHERE subprojectID = ?";
-        return jdbcTemplate.query(sql, new SubprojectRowMapper(), id).getFirst();
+
+
+        SubProject subproject = jdbcTemplate.query(sql, new SubprojectRowMapper(), id).getFirst();
+        subproject.setSubtasks(getAllSubtasksBySubprojectID(subproject.getSubprojectID()));
+        return subproject;
     }
 
     public List<SubTask> getSubtasksByTaskId(int id) {

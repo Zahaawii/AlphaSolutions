@@ -31,7 +31,11 @@
 
     <tr th:each="i : ${listOfEmployee}">
         <td th:text="${i.getEmployeeId()}"></td>
-        <td th:text="${i.getEmployeeName()}"></td>
+        <td >
+            <a th:text="${i.getEmployeeName()}" th:href="@{projects}">
+
+            </a>
+        </td>
         <td th:text="${i.getEmployeeEmail()}"></td>
         <td th:text="${i.getEmployeeUsername()}"></td>
         <td th:text="${i.getEmployeePassword()}"></td>

@@ -14,15 +14,39 @@
 
 
         <div class="taskListContainer">
-            <h1 th:text="${subproject.getSubprojectName()}"></h1>
+            <div class="projectCard">
+                <h1 th:text="${subproject.subprojectName}"></h1>
+                <div class="project-progress-container">
+                    <span class="project-progress-text" th:text="${subproject.calculateCompletion()} + '%'"></span>
+                    <div class="project-progress-bar" th:style="'width: ' + ${subproject.calculateCompletion()} + '%; background: linear-(to right, #FF6A6A, #FF325A);'">
+                    </div>
+                </div>
+
+
+                <div class="projectInfoContainer2">
+                    <div class="projectInfoText">
+                        <h4>Estimated</h4>
+                        <h3 th:text="${subproject.calculateTotalEstimate()}"></h3>
+                    </div>
+                    <div class="projectInfoText">
+                        <h4>Actual</h4>
+                        <h3 th:text="${subproject.calculateTotalActual()}"></h3>
+                    </div>
+                    <div class="projectInfoText">
+                        <h4>Prediction</h4>
+                        <h3 th:text="${subproject.calculatePredictionRatio()}"
+                            th:class="${subproject.calculatePredictionRatio() > 1.5 || subproject.calculatePredictionRatio() < 0.5 ? 'text-danger' : 'text-success'}">
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+
             <a class="addSubproject" th:href="@{/subproject/{subprojectid}/create/task(subprojectid=${subproject.subprojectID})}">
                 <span>Create new task</span>
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
-            <div class="" th:if="${sum > 0}">
-                <span> Estimated hours</span>
-                <span th:text="${sum}"></span>
-            </div>
+
 
             <div th:each="task : ${tasks}">
                 <div class="taskContentContainer">
