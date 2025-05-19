@@ -77,15 +77,6 @@ CREATE TABLE projectAssignees
     FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
 );
 
-CREATE TABLE subprojectAssignees
-(
-    subprojectID INTEGER,
-    employeeID INTEGER,
-    PRIMARY KEY (subprojectID, employeeID),
-    FOREIGN KEY (subprojectID) REFERENCES subproject (subprojectID) ON DELETE CASCADE,
-    FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
-);
-
 CREATE TABLE taskAssignees
 (
     taskID INTEGER,

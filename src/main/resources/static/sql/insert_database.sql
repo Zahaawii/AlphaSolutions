@@ -147,55 +147,6 @@ VALUES ('User Interface Design', '2025-01-15', '2025-03-15', 1),
        ('Leave Management System', '2025-08-15', '2025-10-30', 7),
        ('Performance Review Module', '2025-09-15', '2025-11-30', 7);
 
--- Subproject Assignees
-INSERT INTO subprojectAssignees (subprojectID, employeeID)
-VALUES (1, 4),   -- Louise på UI Design
-       (1, 8),   -- Emma på UI Design
-       (1, 14),  -- Anne på UI Design
-       (2, 2),   -- Marie på Backend API
-       (2, 3),   -- Peter på Backend API
-       (2, 11),  -- Christian på Backend API
-       (2, 13),  -- Thomas på Backend API
-       (3, 5),   -- Mikkel på Testing
-       (3, 12),  -- Sarah på Testing
-       (4, 6),   -- Sofie på Legacy Analysis
-       (4, 10),  -- Ida på Legacy Analysis
-       (5, 15),  -- Lars på Migration Planning
-       (5, 6),   -- Sofie på Migration Planning
-       (6, 2),   -- Marie på Implementation
-       (6, 10),  -- Ida på Implementation
-       (6, 13),  -- Thomas på Implementation
-       (7, 2),   -- Marie på Data Conversion
-       (7, 13),  -- Thomas på Data Conversion
-       (8, 3),   -- Peter på iOS
-       (8, 11),  -- Christian på iOS
-       (9, 2),   -- Marie på Android
-       (9, 11),  -- Christian på Android
-       (10, 3),  -- Peter på Backend Services
-       (10, 11), -- Christian på Backend Services
-       (11, 9),  -- Frederik på Server Migration
-       (11, 10), -- Ida på Server Migration
-       (12, 9),  -- Frederik på Network
-       (12, 3),  -- Peter på Network
-       (13, 9),  -- Frederik på Security Audit
-       (13, 13), -- Thomas på Security Audit
-       (14, 1),  -- Anders på Compliance Docs
-       (14, 13), -- Thomas på Compliance Docs
-       (15, 4),  -- Louise på Product Catalog Design
-       (15, 14), -- Anne på Product Catalog Design
-       (16, 11), -- Christian på Payment Processing
-       (16, 8),  -- Emma på Payment Processing
-       (17, 11), -- Christian på User Authentication
-       (17, 8),  -- Emma på User Authentication
-       (18, 1),  -- Anders på Employee Portal
-       (18, 6),  -- Sofie på Employee Portal
-       (19, 1),  -- Anders på Leave Management
-       (19, 6),  -- Sofie på Leave Management
-       (19, 7),  -- Jacob på Leave Management
-       (20, 1),  -- Anders på Performance Review
-       (20, 6),  -- Sofie på Performance Review
-       (20, 7);
--- Jacob på Performance Review
 
 -- Tasks
 INSERT INTO task (task_Name, subProjectId, task_start_date, task_end_date, task_priority, task_description)

@@ -95,15 +95,6 @@ CREATE TABLE projectAssignees
     FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
 );
 
-CREATE TABLE subprojectAssignees
-(
-    subprojectID INTEGER,
-    employeeID INTEGER,
-    PRIMARY KEY (subprojectID, employeeID),
-    FOREIGN KEY (subprojectID) REFERENCES subproject (subprojectID) ON DELETE CASCADE,
-    FOREIGN KEY (employeeID) REFERENCES employee (employeeID) ON DELETE CASCADE
-);
-
 CREATE TABLE taskAssignees
 (
     taskID INTEGER,
@@ -133,11 +124,11 @@ CREATE TABLE skillRelation
 
 CREATE TABLE awaitingEmployee (
     awaitingEmployeeID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
-    awaitingEmployee_name VARCHAR(100),
-    awaitingEmployee_email VARCHAR(100),
-    awaitingEmployee_username VARCHAR(100),
-    awaitingEmployee_password VARCHAR(256),
-    awaitingEmployee_status VARCHAR(100)
+    awaitingEmployee_name VARCHAR(100) NOT NULL,
+    awaitingEmployee_email VARCHAR(100) NOT NULL,
+    awaitingEmployee_username VARCHAR(100) NOT NULL,
+    awaitingEmployee_password VARCHAR(256) NOT NULL,
+    awaitingEmployee_status VARCHAR(100) NOT NULL
 );
 
 
