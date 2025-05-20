@@ -5,6 +5,7 @@ import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
 
 import apiassignment.alphasolutions.repository.G1SRepository;
+import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class G1SService {
         this.g1SRepository = g1SRepository;
     }
 
+    public boolean isLoggedIn(HttpSession session){
+        return session.getAttribute("employee") != null;
+    }
 
     public List<Project> getAllProjects(int employeeID) {
         return g1SRepository.getAllProjects(employeeID);

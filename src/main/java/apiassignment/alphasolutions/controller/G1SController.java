@@ -54,6 +54,9 @@ public class G1SController {
 
     @GetMapping("/projects")
     public String getMyProjects(Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         List <Project> getAllProjects = g1SService.getProjectsWithAssignees(employee.getEmployeeId());
 
@@ -68,6 +71,9 @@ public class G1SController {
 
     @GetMapping("/projects/new")
     public String newProject(Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -78,6 +84,9 @@ public class G1SController {
 
     @PostMapping("/projects")
     public String createProject(@ModelAttribute Project project, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
 
         // Her sættes projektlederen som ejer af projektet.
@@ -89,6 +98,9 @@ public class G1SController {
 
     @GetMapping("/projects/edit/{id}")
     public String editProject(@PathVariable int id, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -102,7 +114,10 @@ public class G1SController {
     }
 
     @PostMapping("/projects/update")
-    public String updateProject(@ModelAttribute Project project) {
+    public String updateProject(@ModelAttribute Project project, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         System.out.println(project);
         g1SService.updateProject(project);
         return "redirect:/projects";
@@ -110,6 +125,9 @@ public class G1SController {
 
     @PostMapping("/projects/delete/{id}")
     public String deleteProject(@PathVariable int id, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -121,6 +139,9 @@ public class G1SController {
 
     @GetMapping("/project/{id}")
     public String projectView (@PathVariable int id, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(id);
 
         model.addAttribute("project", g1SService.getProjectById(id));
@@ -141,6 +162,9 @@ public class G1SController {
 
     @GetMapping("/project/{id}/assigneesList")
     public String getProjectAssignees(@PathVariable int id, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -151,7 +175,10 @@ public class G1SController {
     }
 
     @PostMapping("/project/{projectId}/assignee/{employeeId}/remove")
-    public String removeAssigneeFromProject(@PathVariable int projectId, @PathVariable int employeeId, Model model) {
+    public String removeAssigneeFromProject(@PathVariable int projectId, @PathVariable int employeeId, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.removeAssigneeFromProject(projectId,employeeId);
         return "redirect:/project/" + projectId + "/assigneesList";
     }
@@ -164,7 +191,10 @@ public class G1SController {
     }
 
     @GetMapping("/create/subproject/{id}")
-    public String createSubproject(Model model, @PathVariable int id) {
+    public String createSubproject(Model model, @PathVariable int id, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         SubProject subProject = new SubProject();
         subProject.setProjectID(id);
         model.addAttribute("subproject", subProject);
@@ -172,7 +202,10 @@ public class G1SController {
     }
 
      @PostMapping("/create/subproject")
-     public String addSubproject(@ModelAttribute SubProject subProject) {
+     public String addSubproject(@ModelAttribute SubProject subProject, HttpSession session) {
+         if(!g1SService.isLoggedIn(session)){
+             return "redirect:/login";
+         }
          System.out.println(subProject);
         g1SService.addSubproject(subProject);
         return "redirect:/project/" + subProject.getProjectID();
@@ -215,6 +248,9 @@ public class G1SController {
 
     @GetMapping("/home")
     public String home(HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -222,19 +258,12 @@ public class G1SController {
         return "home";
     }
 
-   /* Ikke relevant længere tror jeg
-    @GetMapping("/{id}/subproject")
-    public String subProjectByProjectId(@PathVariable("id") int projectId, Model model) {
-        List<SubProject> subProjectByProjectId = g1SService.getSubProjectByProjectId(projectId);
-
-        model.addAttribute("subprojectById", subProjectByProjectId);
-
-        return "subprojectByProjectId";
-    }
-    */
 
     @PostMapping("/subproject/delete/{id}")
-    public String deleteSubprojectBySubprojectId(@PathVariable int id) {
+    public String deleteSubprojectBySubprojectId(@PathVariable int id, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         System.out.println(g1SService.getSubProjectById(id));
         int projectid = g1SService.getSubProjectById(id).getProjectID();
         g1SService.deleteSubprojectBysubProjectId(id);
@@ -243,7 +272,10 @@ public class G1SController {
 
 
     @GetMapping("/subproject/{id}")
-    public String subProjectView (@PathVariable("id") int subprojectId, Model model) {
+    public String subProjectView (@PathVariable("id") int subprojectId, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         List<Task> tasks = g1SService.getTasksBySubprojectId(subprojectId);
 
         //loop igennem alle tasks og sæt assignees til deres respektive task. Samme sker med subtasks.
@@ -262,16 +294,12 @@ public class G1SController {
         return "subprojectview";
     }
 
-    @GetMapping("/test/{id}")
-    public String testUrl (@PathVariable("id") int subprojectId, Model model) {
-        model.addAttribute("tasks", g1SService.getTasksBySubprojectId(subprojectId));
-
-        return "test";
-    }
-
 
     @GetMapping("/adminpanel")
     public String adminPanel(HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee checkEmployee = (Employee) session.getAttribute("employee");
         if(checkEmployee.getRoleId() != 2 && checkEmployee.getRoleId() != 3){
             return "redirect:/home";
@@ -293,6 +321,9 @@ public class G1SController {
 
     @GetMapping("/admin/addEmployee")
     public String adminPanelAddEmployee(HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
         if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
@@ -318,7 +349,10 @@ public class G1SController {
     }
 
     @PostMapping("/admin/register")
-    public String adminRegisterEmployee(@ModelAttribute DTOEmployee employee, Model model){
+    public String adminRegisterEmployee(@ModelAttribute DTOEmployee employee, Model model, HttpSession session){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         if(!g1SService.isUsernameFree(employee.getEmployeeUsername(), employee.getEmployeeId()) || !g1SService.isUsernameAwaitingUserFree(employee.getEmployeeUsername(), employee.getEmployeeId())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
@@ -330,15 +364,19 @@ public class G1SController {
 
     @PostMapping("/admin/delete/{id}")
     public String adminDeleteEmployee(@PathVariable int id, HttpSession session){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.deleteEmployee(id);
         return "redirect:/adminpanel";
     }
 
     @PostMapping("/subproject/{subprojectid}/delete/subtask/{subtaskid}")
     public String deleteSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
-
-
 
         String subprojectIdString = String.valueOf(subprojectid);
         g1SService.deleteSubtask(subtaskid);
@@ -347,6 +385,9 @@ public class G1SController {
 
     @PostMapping("/subproject/{subprojectid}/delete/task/{taskid}")
     public String deleteTask (@PathVariable int subprojectid, @PathVariable int taskid, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         String subprojectIdString = String.valueOf(subprojectid);
         g1SService.deleteTask(taskid);
         return "redirect:/subproject/" + subprojectIdString;
@@ -355,6 +396,9 @@ public class G1SController {
 
     @GetMapping("/subproject/{subprojectid}/edit/task/{taskid}")
     public String editTask (@PathVariable int subprojectid, @PathVariable int taskid, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         model.addAttribute("task", g1SService.getTaskById(taskid));
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
@@ -366,7 +410,11 @@ public class G1SController {
     }
 
     @PostMapping("/subproject/{subprojectid}/edit/task/{taskid}")
-    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task, @RequestParam(required = false) List<Integer> employeeIds) {
+    public String editTask(@PathVariable int subprojectid, @PathVariable int taskid, @ModelAttribute Task task,
+                           @RequestParam(required = false) List<Integer> employeeIds, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
 
         g1SService.updateTask(task);
 
@@ -380,6 +428,9 @@ public class G1SController {
 
     @GetMapping("/subproject/{subprojectid}/create/task")
     public String createTask(@PathVariable int subprojectid, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("task", new Task());
 
@@ -391,7 +442,11 @@ public class G1SController {
     }
 
     @PostMapping("/subproject/{subprojectid}/create/task")
-    public String createTask(@PathVariable int subprojectid, Task task, @RequestParam(required = false) List<Integer> employeeIds) {
+    public String createTask(@PathVariable int subprojectid, Task task,
+                             @RequestParam(required = false) List<Integer> employeeIds, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         task.setSubprojectId(subprojectid);
         g1SService.createTask(task);
 
@@ -404,6 +459,9 @@ public class G1SController {
 
     @GetMapping("/subproject/{subprojectid}/task/{taskid}/create/subtask")
     public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, Model model, HttpSession session ) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("taskid", taskid);
         model.addAttribute("subtask", new SubTask());
@@ -415,7 +473,11 @@ public class G1SController {
     }
 
     @PostMapping("/subproject/{subprojectid}/task/{taskid}/create/subtask")
-    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds) {
+    public String createSubtask(@PathVariable int subprojectid, @PathVariable int taskid, SubTask subtask,
+                                @RequestParam(required = false) List<Integer> employeeIds, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         subtask.setTaskID(taskid);
         g1SService.createSubtask(subtask);
 
@@ -428,6 +490,9 @@ public class G1SController {
 
     @GetMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
     public String editSubtask (@PathVariable int subprojectid, @PathVariable int subtaskid, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         model.addAttribute("subtask", g1SService.getSubtaskById(subtaskid));
         model.addAttribute("subprojectid", subprojectid);
         model.addAttribute("subtaskid", subtaskid);
@@ -440,7 +505,11 @@ public class G1SController {
     }
 
     @PostMapping("/subproject/{subprojectid}/edit/subtask/{subtaskid}")
-    public String editSubtask(@PathVariable int subprojectid, @PathVariable int subtaskid, @ModelAttribute SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds) {
+    public String editSubtask(@PathVariable int subprojectid, @PathVariable int subtaskid,
+                              @ModelAttribute SubTask subtask, @RequestParam(required = false) List<Integer> employeeIds, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.updateSubtask(subtask);
 
         g1SService.clearSubtaskAssignees(subtaskid);
@@ -453,6 +522,9 @@ public class G1SController {
 
     @GetMapping("/admin/update/{id}")
     public String adminUpdateEmployeeGet(@PathVariable int id, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
         if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
@@ -482,6 +554,9 @@ public class G1SController {
 
     @PostMapping("/admin/update")
     public String adminUpdateEmployeePost(@ModelAttribute DTOEmployee newEmployee, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername(), newEmployee.getEmployeeId()) || !g1SService.isUsernameAwaitingUserFree(newEmployee.getEmployeeUsername(), newEmployee.getEmployeeId())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
@@ -504,7 +579,10 @@ public class G1SController {
     public String getEmployees(
             @PathVariable int projectId,
             @RequestParam(required = false) String skill,
-            Model model) {
+            Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         //henter en liste med all skills og tilføjer dem til model
         List<Skill> skillList = g1SService.getAllSkills();
         model.addAttribute("skills", skillList);
@@ -548,6 +626,9 @@ public class G1SController {
 
     @PostMapping("/project/{projectId}/add/{employeeId}")
     public String addEmployeeToProject( @PathVariable int projectId, @PathVariable int employeeId, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         if(projectId == 0 || employeeId == 0){
             //der mangler lige en "model.addAttribute("notAdded", true),
             // som retunere en til projekt siden og siger man ikke kunne tilføje den givne empployee
@@ -559,6 +640,9 @@ public class G1SController {
 
     @GetMapping("/profile/{employeeId}")
     public String seeProfile(@PathVariable int employeeId, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = g1SService.getEmployeeById(employeeId);
         employee.setSkills(g1SService.getSkillsForEmployee(employeeId));
         List<Project>projectList = g1SService.getProjectsForOneEmployee(employeeId);
@@ -568,9 +652,11 @@ public class G1SController {
     }
 
 
-
     @GetMapping("/mySubTasks/sortBy")
     public String sortMyTasks(@RequestParam(required = false) String chosen, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee)session.getAttribute("employee");
         List<SubTask>subTaskList = g1SService.getSortedSubtaskByEmployeeId(chosen, employee.getEmployeeId());
         if(subTaskList == null || subTaskList.isEmpty()){
@@ -584,13 +670,11 @@ public class G1SController {
     }
 
 
-
-
-
-
-
     @GetMapping("/subproject/edit/{id}")
     public String editSubProject(@PathVariable int id, Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         Employee employee = (Employee) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
@@ -603,14 +687,16 @@ public class G1SController {
     }
 
     @PostMapping("/subprojects/update")
-    public String updateSubProject(@ModelAttribute SubProject subProject) {
-        System.out.println(subProject);
+    public String updateSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.updateSubproject(subProject);
         return "redirect:/project/" + subProject.getProjectID();
     }
 
     @GetMapping("/create/user")
-    public String createUser(Model model, HttpSession session) {
+    public String createUser(Model model) {
         AwaitingEmployee employee = new AwaitingEmployee();
         model.addAttribute("employee", employee);
 
@@ -629,14 +715,20 @@ public class G1SController {
     }
 
     @GetMapping("/awaitingusers")
-    public String getAllAwaitingUsers(Model model) {
+    public String getAllAwaitingUsers(Model model, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         List<AwaitingEmployee> getAll = g1SService.getAllAwaitingUsers();
         model.addAttribute("getAll", getAll);
         return "awaitinguserslist";
     }
 
     @PostMapping("/create/user/adminApproval")
-    public String adminApprovedEmployee(@ModelAttribute DTOEmployee employee) {
+    public String adminApprovedEmployee(@ModelAttribute DTOEmployee employee, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.adminRegisterEmployee(employee);
         System.out.println(employee.getEmployeeUsername());
         g1SService.deleteAwaitingEmployeeWithUsername(employee.getEmployeeUsername());
@@ -644,13 +736,19 @@ public class G1SController {
     }
 
     @PostMapping("/delete/user/admindenied/{id}")
-    public String adminDenied(@PathVariable int id) {
+    public String adminDenied(@PathVariable int id, HttpSession session) {
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.deleteAwaitingEmployee(id);
         return "redirect:/awaitingusers";
     }
 
     @GetMapping("/admin/skillsPanel")
     public String skillsPanel(HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         List<Skill>skillList = g1SService.getAllSkills();
         model.addAttribute("skillList", skillList);
         Skill skill = new Skill();
@@ -662,6 +760,9 @@ public class G1SController {
 
     @PostMapping("/admin/skillsPanel/delete/{skillId}")
     public String deleteSkill(@PathVariable int skillId, HttpSession session){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         g1SService.deleteSkill(skillId);
 
         return "redirect:/admin/skillsPanel";
@@ -670,11 +771,13 @@ public class G1SController {
 
     @PostMapping("/admin/skillsPanel/create")
     public String createSkill(@ModelAttribute Skill skill, HttpSession session, Model model){
+        if(!g1SService.isLoggedIn(session)){
+            return "redirect:/login";
+        }
         if(!g1SService.skillNotInDb(skill)){
             model.addAttribute("alreadyInDb", true);
             return "redirect:/admin/skillsPanel";
         }
-
         g1SService.createSkill(skill);
         return "redirect:/admin/skillsPanel";
     }
