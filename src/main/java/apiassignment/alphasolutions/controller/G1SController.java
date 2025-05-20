@@ -567,12 +567,7 @@ public class G1SController {
         return "profile";
     }
 
-    @GetMapping("/mySubtasks/sortBy")
-    public String redirectToSkill(
-            @RequestParam String skill) {
 
-        return "redirect:/mySubtasks" + "/sortBy?chosen=" + UriUtils.encode(skill, StandardCharsets.UTF_8);
-    }
 
     @GetMapping("/mySubTasks/sortBy")
     public String sortMyTasks(@RequestParam(required = false) String chosen, HttpSession session, Model model){

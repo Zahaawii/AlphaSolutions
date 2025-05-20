@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<div class="layout">
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
+<div class="taskListContainer">
 
-<main class="main-content">
 
   <div class="header">
     <div th:if="${noSubTasks}" class="noSubtasks">
@@ -69,6 +70,7 @@
     </div>
   </section>
 </main>
-
+</div>
+</div>
 </body>
 </html>
