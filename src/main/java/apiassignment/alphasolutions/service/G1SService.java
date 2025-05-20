@@ -159,8 +159,8 @@ public class G1SService {
         return employeeList;
     }
 
-    public boolean isUsernameFree(String employee) {
-        return g1SRepository.isUsernameFree(employee);
+    public boolean isUsernameFree(String employee, int id) {
+        return g1SRepository.isUsernameFree(employee, id);
     }
 
     public DTOEmployee adminRegisterEmployee(DTOEmployee employee) {
@@ -456,8 +456,8 @@ public class G1SService {
         }
     }
 
-    public boolean isUsernameAwaitingUserFree(String username) {
-        return g1SRepository.isUsernameAwaitingUserFree(username);
+    public boolean isUsernameAwaitingUserFree(String username, int id) {
+        return g1SRepository.isUsernameAwaitingUserFree(username, id);
     }
 
     public List<Project> getProjectsWithAssignees(int empId) {
