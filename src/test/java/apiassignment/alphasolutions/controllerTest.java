@@ -330,7 +330,7 @@ public class controllerTest {
 
     @Test
     void adminRegisterEmployee() throws Exception {
-        when(g1SService.isUsernameFree("hannibal")).thenReturn(true);
+        when(g1SService.isUsernameFree("hannibal", 2)).thenReturn(true);
         mockMvc.perform(post("/admin/register").session(session)
                         .param("employeeId", "2")
                         .param("employeeName", "hannibal")
@@ -389,7 +389,7 @@ public class controllerTest {
 
     @Test
     void adminUpdateEmployeePostUsernameNotFree () throws Exception {
-        when(g1SService.isUsernameFree("hannibal")).thenReturn(false);
+        when(g1SService.isUsernameFree("hannibal", 2)).thenReturn(false);
         mockMvc.perform(post("/admin/update")
                         .param("employeeId", "2")
                         .param("employeeName", "hannibal")
@@ -403,7 +403,7 @@ public class controllerTest {
 
     @Test
     void adminUpdateEmployeePostUsernameIsFree () throws Exception {
-        when(g1SService.isUsernameFree("hannibal")).thenReturn(true);
+        when(g1SService.isUsernameFree("hannibal", 2)).thenReturn(true);
         mockMvc.perform(post("/admin/update")
                         .param("employeeId", "2")
                         .param("employeeName", "hannibal")

@@ -319,7 +319,7 @@ public class G1SController {
 
     @PostMapping("/admin/register")
     public String adminRegisterEmployee(@ModelAttribute DTOEmployee employee, Model model){
-        if(!g1SService.isUsernameFree(employee.getEmployeeUsername()) || !g1SService.isUsernameAwaitingUserFree(employee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
+        if(!g1SService.isUsernameFree(employee.getEmployeeUsername(), employee.getEmployeeId()) || !g1SService.isUsernameAwaitingUserFree(employee.getEmployeeUsername(), employee.getEmployeeId())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
@@ -482,7 +482,7 @@ public class G1SController {
 
     @PostMapping("/admin/update")
     public String adminUpdateEmployeePost(@ModelAttribute DTOEmployee newEmployee, HttpSession session, Model model){
-        if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername()) || !g1SService.isUsernameAwaitingUserFree(newEmployee.getEmployeeUsername())){ //tjekker om brugernavnet er frit
+        if(!g1SService.isUsernameFree(newEmployee.getEmployeeUsername(), newEmployee.getEmployeeId()) || !g1SService.isUsernameAwaitingUserFree(newEmployee.getEmployeeUsername(), newEmployee.getEmployeeId())){ //tjekker om brugernavnet er frit
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
         }
@@ -624,7 +624,7 @@ public class G1SController {
 
     @PostMapping("/create/user")
     public String createUserPost(@ModelAttribute AwaitingEmployee employee) {
-        if(!g1SService.isUsernameFree(employee.getAwaitingEmployee_name()) || !g1SService.isUsernameAwaitingUserFree(employee.getAwaitingEmployee_name())) {
+        if(!g1SService.isUsernameFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID()) || !g1SService.isUsernameAwaitingUserFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID())) {
             return "redirect:/create/user";
         }
         employee.setAwaitingEmployee_password(g1SService.encryptTest(employee.getAwaitingEmployee_password()));
