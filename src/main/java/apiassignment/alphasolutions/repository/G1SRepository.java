@@ -284,7 +284,7 @@ public class G1SRepository {
         return employee;
     }
 
-    public boolean isUsernameFree(String employee){
+    public boolean isUsernameFree(String employee, int id){
         String sql = "SELECT * FROM employee WHERE employee_username = ?";
         List<Employee>employeeList = jdbcTemplate.query(sql, new EmployeeRowmapper(), employee);
         if(employeeList.isEmpty()){
@@ -294,7 +294,7 @@ public class G1SRepository {
         //men vi måske kun har opdateret vores email eller lignende
         //derfor tjekker vi om employeeId matcher
         for(Employee i: employeeList){
-            if(i.getEmployeeUsername().equalsIgnoreCase(employee)){
+            if(i.getEmployeeId() != id){
                 return false;
             }
         }
@@ -648,14 +648,14 @@ public class G1SRepository {
     }
 
 
-    public boolean isUsernameAwaitingUserFree(String employee) {
+    public boolean isUsernameAwaitingUserFree(String employee, int id) {
         String sql = "SELECT * FROM awaitingemployee WHERE awaitingEmployee_name = ?";
         List<AwaitingEmployee> employeeList = jdbcTemplate.query(sql, new AwaitingEmployeeRowMapper(), employee);
         if (employeeList.isEmpty()) {
             return true;
         }
         for (AwaitingEmployee i : employeeList) {
-            if (i.getAwaitingEmployee_username().equalsIgnoreCase(employee)) {
+            if (i.getAwaitingEmployeeID() != id) {
                 return false;
             }
         }
