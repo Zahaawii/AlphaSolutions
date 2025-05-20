@@ -15,7 +15,7 @@ VALUES
 
 -- Employees med brugernavn og password (password er plaintext for test formål)
 INSERT INTO employee (employee_Name, employee_email, employee_username, employee_password, roleID)
-VALUES ('Anders Jensen', 'anders.jensen@alphasolutions.dk', 'ajen', 'Password123!', 3),
+VALUES ('Anders Jensen', 'anders.jensen@alphasolutions.dk', 'ajen', '$2a$10$kem/osM1Q28t4Ruprxa7QOrl4N/jk8JS6tzEV6WZaYO68LDhs7Q3i', 3),
        ('Marie Nielsen', 'marie.nielsen@alphasolutions.dk', 'mnie', 'Password123!', 2),
        ('Peter Hansen', 'peter.hansen@alphasolutions.dk', 'phan', 'Password123!', 1),
        ('Louise Pedersen', 'louise.pedersen@alphasolutions.dk', 'lped', 'Password123!', 1),
