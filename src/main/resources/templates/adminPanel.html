@@ -38,11 +38,21 @@
             </thead>
             <tbody>
             <tr th:each="i : ${getAllEmployee}">
-                <td th:text="${i.getEmployeeId()}"></td>
-                <td th:text="${i.getEmployeeName()}"></td>
-                <td th:text="${i.getEmployeeEmail()}"></td>
-                <td th:text="${i.getEmployeeUsername()}"></td>
-                <td th:text="${i.getRoleId()}"></td>
+                <td>
+                    <a th:text="${i.getEmployeeId()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}"></a>
+                </td>
+                <td>
+                    <a th:text="${i.getEmployeeName()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}"></a>
+                </td>
+                <td>
+                    <a th:text="${i.getEmployeeEmail()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}"></a>
+                </td>
+                <td>
+                    <a th:text="${i.getEmployeeUsername()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}"></a>
+                </td>
+                <td>
+                    <a th:text="${i.getRoleId()}" th:href="@{/profile/{employeeId}(employeeId=${i.getEmployeeId()})}"></a>
+                </td>
                 <td>
                     <ul>
                         <li th:each="b : ${i.getSkills()}">
