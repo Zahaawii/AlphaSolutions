@@ -6,36 +6,42 @@
   <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<div class="layout">
 
-  <div class="taskListContainer">
 
-    <h1>Register Employee</h1>
+<div class="loginWrapper">
+  <div class="loginBox">
+
     <p th:if="${notFree}">There is already an employee with this username</p>
 
     <form th:action="@{/create/user}" th:object="${employee}" method="post" >
-      <div>
+      <div class="input-box">
         <label for="employeeName"></label>
-        <input type="text" id="employeeName" name="awaitingEmployee_name" placeholder="Name" required>
+        <input class="box" type="text" id="employeeName" name="awaitingEmployee_name" placeholder="NAME" required>
       </div>
-      <div>
+
+      <div class="input-box">
         <label for="employeeEmail"></label>
-        <input type="text" id="employeeEmail" name="awaitingEmployee_email" placeholder="Email" required>
+        <input class="box" type="text" id="employeeEmail" name="awaitingEmployee_email" placeholder="EMAIL" required>
       </div>
-      <div>
+
+      <div class="input-box">
         <label for="employeeUsername"></label>
-        <input type="text" id="employeeUsername" name="awaitingEmployee_username" placeholder="Username" required>
+        <input class="box" type="text" id="employeeUsername" name="awaitingEmployee_username" placeholder="USERNAME" required>
       </div>
-      <div>
+
+      <div class="input-box">
         <label for="employeePassword"></label>
-        <input type="password" id="employeePassword" name="awaitingEmployee_password" placeholder="Password" required>
+        <input class="box" type="password" id="employeePassword" name="awaitingEmployee_password" placeholder="PASSWORD" required>
       </div>
 
-      <button type="submit">Register</button>
-
+      <button type="submit" class="loginButton">REQUEST</button>
     </form>
+
+    <a class="requestaccount" href="/login">Back to login</a>
+
   </div>
 </div>
+
 
 
 </body>
