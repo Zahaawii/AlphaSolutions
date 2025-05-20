@@ -11,7 +11,7 @@
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
 
-<main class="main-content">
+<main class="taskListContainer">
   <div class="header">
     <h1>Sort Subtasks</h1>
     <form class="sort-form" th:action="@{/mySubTasks/sortBy}" method="get">
@@ -27,7 +27,16 @@
   </div>
 
   <section class="subtask-list" th:each="subtask : ${subTaskList}">
-    <div class="subtask-card">
+
+    <div class="taskelementEnd">
+      <h5>Name</h5>
+      <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}">
+        <h2 th:text="${subtask.subtaskName}"></h2></a>
+
+      </div>
+
+
+    <!--<div class="subtask-card">
       <div class="subtask-header">
         <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subtask.getSubProjectId()}, subtaskid=${subtask.subtaskID})}">
           <h2 th:text="${subtask.getSubtaskName()}">Subtask Name</h2>
@@ -36,33 +45,36 @@
 
       <div class="subtask-details">
         <div class="detail-item">
-          <span>Start:</span>
+          <span>Start</span>
           <p th:text="${#dates.format(subtask.subtaskStartDate, 'dd-MM-yyyy')}"></p>
         </div>
         <div class="detail-item">
-          <span>End:</span>
-          <p th:text="${#dates.format(subtask.subtaskEndDate, 'dd-MM-yyyy')}"></p>
+          <span>Deadline</span>
+          <p th:text="${subtask.remainingDays()}"></p>
         </div>
         <div class="detail-item">
-          <span>Priority:</span>
+          <span>Priority</span>
           <p th:text="${subtask.getSubtaskPriority()}"></p>
         </div>
         <div class="detail-item">
-          <span>Estimate:</span>
+          <span>Estimate</span>
           <p th:text="${subtask.getSubtaskEstimate().toString()} + ' hrs'"></p>
         </div>
         <div class="detail-item">
-          <span>Status:</span>
+          <span>Status</span>
           <p th:text="${subtask.getSubtaskStatus()}"></p>
         </div>
         <div class="detail-item">
-          <span>Hours Spent:</span>
+          <span>Hours Spent</span>
           <p th:text="${subtask.getSubtaskHoursSpent()} + ' hrs'"></p>
         </div>
       </div>
-    </div>
+    </div>-->
   </section>
+
 </main>
+
+
 
 </body>
 </html>
