@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>My Subtasks</title>
-  <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/mysubtasks.css}">
+  <!--<link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/mysubtasks.css}">-->
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -11,8 +11,6 @@
 <div class="layout">
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
-<div class="taskListContainer">
-
 
 
 <main class="taskListContainer">
@@ -22,28 +20,85 @@
       <h2>No subtasks found</h2>
     </div>
     <div th:if="${found}">
-    <h1>Sort Subtasks</h1>
-    <form class="sort-form" th:action="@{/mySubTasks/sortBy}" method="get">
-      <select name="chosen">
-        <option value="">-- Don't sort --</option>
-        <option value="subtask_estimate">Estimate</option>
-        <option value="subtask_end_date">End date</option>
-        <option value="subtask_end_date desc">End date Descending</option>
-        <option value="subtask_priority">Priority</option>
-      </select>
-      <button type="submit">Sort</button>
-    </form>
-  </div>
-  </div>
-
-  <section class="subtask-list" th:each="subtask : ${subTaskList}">
-
-    <div class="taskelementEnd">
-      <h5>Name</h5>
-      <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subproject.subprojectID}, subtaskid=${subtask.subtaskID})}">
-        <h2 th:text="${subtask.subtaskName}"></h2></a>
-
+      <div class="mysubtaskstitleandfilter">
+        <h1>My Subtasks</h1>
+        <form th:action="@{/mySubTasks/sortBy}" method="get">
+          <select class="sortselect" name="chosen">
+            <option value="">No filter</option>
+            <option value="subtask_estimate">Estimate</option>
+            <option value="subtask_priority">Priority</option>
+            <option value="subtask_end_date">Deadline</option>
+            <option value="subtask_end_date desc">Deadline descending</option>
+          </select>
+          <button class="filterbutton" type="submit">Filter</button>
+        </form>
       </div>
+
+  </div>
+  </div>
+
+  <section  th:each="subtask : ${subTaskList}">
+    <a th:href="@{/subproject/{subprojectid}/edit/subtask/{subtaskid}(subprojectid=${subtask.getSubProjectId()}, subtaskid=${subtask.subtaskID})}">
+
+    <div class="taskContentContainer">
+
+      <div class="taskelementEnd">
+        <h5>Name</h5>
+          <h2 th:text="${subtask.subtaskName}"></h2>
+        </div>
+
+      <div class="v-separator" ></div>
+
+      <div class="taskelement">
+        <h5>Estimate</h5>
+            <h2 th:text="${subtask.getSubtaskEstimate()}"></h2>
+      </div>
+
+      <div class="v-separator" ></div>
+
+
+      <div class="taskelement">
+        <h5>Priority</h5>
+            <h2 th:text="${subtask.getSubtaskPriority()}"></h2>
+      </div>
+
+      <div class="v-separator" ></div>
+
+      <div class="taskelement">
+        <h5>Deadline</h5>
+            <h2 th:text="${subtask.remainingDays()}"></h2>
+      </div>
+
+      <div class="v-separator" ></div>
+
+      <div class="taskelement">
+        <h5>Status</h5>
+        <h2 th:text="${subtask.getSubtaskStatus()}"></h2>
+      </div>
+
+      <div class="v-separator" ></div>
+
+
+      <div class="taskelement">
+        <h5>Hours Spent</h5>
+        <h2 th:text="${subtask.getSubtaskHoursSpent()}"></h2>
+      </div>
+
+      <div class="v-separator" ></div>
+
+
+
+    </div>
+    </a>
+    <div class="h-separator"></div>
+
+  </section>
+
+
+
+
+
+
 
 
     <!--<div class="subtask-card">
@@ -80,11 +135,10 @@
         </div>
       </div>
     </div>-->
-  </section>
+
 
 </main>
 
-</div>
 </div>
 
 </body>
