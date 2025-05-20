@@ -655,7 +655,7 @@ public class G1SController {
     public String sortMyTasks(@RequestParam(required = false) String chosen, HttpSession session, Model model){
         if(!g1SService.isLoggedIn(session)){
             return "redirect:/login";
-        }
+        } //sorterer en employees subtask ud for en given faktorer, såsom prioritet
         Employee employee = (Employee)session.getAttribute("employee");
         List<SubTask>subTaskList = g1SService.getSortedSubtaskByEmployeeId(chosen, employee.getEmployeeId());
         if(subTaskList == null || subTaskList.isEmpty()){
@@ -678,7 +678,6 @@ public class G1SController {
         if (employee == null) {
             return "redirect:/login";
         }
-
 
         SubProject subProject = g1SService.getSubProjectById(id);
         model.addAttribute("subproject", subProject);
