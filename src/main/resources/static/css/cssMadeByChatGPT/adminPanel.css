@@ -193,4 +193,42 @@ var(--accent-color);
     align-items: center;
 }
 
+.sort-form button {
+    background-color: #f04e64;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
+.sort-form button:hover {
+    background-color: #d43b52;
+}
+.addButton{
+    background-color: var(--accent-color);
+    color: white;
+    padding: 1em 2em;
+    border: none;
+}
+.sort-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.sort-form select,
+.sort-form button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.sort-form button {
+    background-color: #f04e64;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.sort-form button:hover {
+    background-color: #d43b52;
+}

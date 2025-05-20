@@ -3,59 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Register Employee</title>
-    <link rel="stylesheet" th:href="@{/css/adminPanel.css}">
+    <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/register.css}">
     <link rel="stylesheet" th:href="@{/css/main.css}">
+
 </head>
 <body>
-    <div class="layout">
-        <div th:replace="fragments/dashboard :: dashboard"></div>
+<div class="layout">
+    <aside class="sidebar" th:replace="fragments/dashboard :: dashboard"></aside>
 
-        <div class="taskListContainer">
+    <main class="main-content">
+        <div class="form-container">
+            <h1>Register Employee</h1>
+            <p th:if="${notFree}" class="error-message">There is already an employee with this username</p>
 
-        <h1>Register Employee</h1>
-        <p th:if="${notFree}">There is already an employee with this username</p>
-
-            <form th:action="@{/admin/register}" th:object="${employee}" method="post" >
-                <div>
-                    <label for="employeeName"></label>
+            <form th:action="@{/admin/register}" th:object="${employee}" method="post" class="register-form">
+                <label>
                     <input type="text" id="employeeName" name="employeeName" placeholder="Name" required>
-                </div>
-                <div>
-                    <label for="employeeEmail"></label>
+                </label>
+                <label>
                     <input type="text" id="employeeEmail" name="employeeEmail" placeholder="Email" required>
-                </div>
-                <div>
-                    <label for="employeeUsername"></label>
+                </label>
+                <label>
                     <input type="text" id="employeeUsername" name="employeeUsername" placeholder="Username" required>
-                </div>
-                <div>
-                    <label for="employeePassword"></label>
+                </label>
+                <label>
                     <input type="password" id="employeePassword" name="employeePassword" placeholder="Password" required>
-                </div>
+                </label>
 
                 <div th:if="${admin}">
-                    <label for="roleId"></label>
+                    <label for="roleId">Role:</label>
                     <select id="roleId" name="roleId">
                         <option th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
                     </select>
                 </div>
+
                 <h3>Skills:</h3>
-                <div th:each="skill : ${skillList}">
-                    <label>
-                        <input type="checkbox"
-                               th:value="${skill.skillId}"
-                               name="skills"/>
+                <div class="skills-list" th:each="skill : ${skillList}">
+                    <label class="skill-item">
+                        <input type="checkbox" th:value="${skill.skillId}" name="skills"/>
                         <span th:text="${skill.skillName}">Skill Name</span>
                     </label>
-                    <br/>
                 </div>
 
-                    <button type="submit">Register</button>
-
+                <button type="submit" class="submit-button">Register</button>
             </form>
         </div>
-    </div>
-
-
+    </main>
+</div>
 </body>
 </html>

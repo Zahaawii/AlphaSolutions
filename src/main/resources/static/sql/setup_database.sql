@@ -29,10 +29,10 @@ CREATE TABLE skill (
 
 CREATE TABLE employee (
                           employeeID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
-                          employee_Name VARCHAR(100),
-                          employee_email VARCHAR(100),
-                          employee_username VARCHAR(100),
-                          employee_password VARCHAR(256),
+                          employee_Name VARCHAR(100) NOT NULL,
+                          employee_email VARCHAR(100) NOT NULL,
+                          employee_username VARCHAR(100) NOT NULL,
+                          employee_password VARCHAR(256) NOT NULL,
                           roleID INTEGER,
                           FOREIGN KEY (roleID) REFERENCES roles(roleID) ON DELETE SET NULL
 );

@@ -3,16 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>My Subtasks</title>
-  <link rel="stylesheet" th:href="@{/css/mysubtasks.css}">
+  <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/mysubtasks.css}">
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<div class="layout">
 
 <div th:replace="fragments/dashboard :: dashboard"></div>
+<div class="taskListContainer">
+
+
 
 <main class="taskListContainer">
+
   <div class="header">
+    <div th:if="${noSubTasks}" class="noSubtasks">
+      <h2>No subtasks found</h2>
+    </div>
+    <div th:if="${found}">
     <h1>Sort Subtasks</h1>
     <form class="sort-form" th:action="@{/mySubTasks/sortBy}" method="get">
       <select name="chosen">
@@ -24,6 +33,7 @@
       </select>
       <button type="submit">Sort</button>
     </form>
+  </div>
   </div>
 
   <section class="subtask-list" th:each="subtask : ${subTaskList}">
@@ -74,7 +84,8 @@
 
 </main>
 
-
+</div>
+</div>
 
 </body>
 </html>

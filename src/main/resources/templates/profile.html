@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/cssMadeByChatGPT/adminPanel.css}">
+
 </head>
 <body>
+
+<div th:replace="fragments/dashboard :: dashboard"></div>
+    <div class="taskListContainer">
+
 <div class="profile-container">
     <h1 class="profile-title">
         Profile of <span class="employee-name" th:text="${employee.getEmployeeName()}"></span>
@@ -31,6 +38,8 @@
             <h3 class="project-date" th:text="${b.getProjectEndDate()}"></h3>
         </div>
     </div>
+</div>
+</div>
 </div>
 </body>
 </html>

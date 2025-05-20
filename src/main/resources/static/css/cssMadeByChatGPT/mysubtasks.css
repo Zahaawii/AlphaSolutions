@@ -1,9 +1,9 @@
-/* Basic Reset */
-* {
+html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -95,4 +95,21 @@ body {
 
 .detail-item p {
     color: #666;
+}
+.noSubtasks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* Only affects the container, not the whole layout */
+    text-align: center;
+    width: 100%;
+}
+
+.noSubtasks h2 {
+    font-size: 2rem;
+    color: #f04e64;
+    background-color: #fff0f3;
+    padding: 1.5rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
