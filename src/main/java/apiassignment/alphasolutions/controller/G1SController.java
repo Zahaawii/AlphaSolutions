@@ -222,16 +222,15 @@ public class G1SController {
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
 
-        //nedenstående metode skal fjernes når vi implementerer bcrypt
-        Employee employee = g1SService.login(username, password);
+
 
         /*
-        Nedenstående kode sættes i bero indtil vi er klar til at lancere. Ellers kan alle logge ind.
+        Nedenstående kode sættes i bero indtil vi er klar til at lancere. Ellers kan alle logge ind. */
         Employee employee = g1SService.findByUsername(username);
-         */
+
 
         //metoden er sat i bero indtil vi får gjort det vi skal
-        if(employee == null /*||  !g1SService.decryptTest(password, employee.getEmployeePassword()) */ ){
+        if(employee == null ||  !g1SService.decryptTest(password, employee.getEmployeePassword())  ){
             model.addAttribute("wrongLogin", true);
             return "login";
         }
