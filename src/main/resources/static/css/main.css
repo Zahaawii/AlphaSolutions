@@ -901,6 +901,13 @@ h2, .description-label, .date-group label {
     text-align: center;
 }
 
+.requestaccount{
+    font-family: Montserrat;
+    margin: 1em;
+    text-decoration: underline;
+    text-underline: var(--accent-color);
+}
+
 
 
 
