@@ -48,7 +48,7 @@ public class G1SController {
         if (employee == null) {
             return "redirect:/login";
         } else {
-            return "redirect:/home";
+            return "redirect:/projects";
         }
     }
 
@@ -236,7 +236,7 @@ public class G1SController {
         }
         session.setAttribute("employee", employee);
         session.setMaxInactiveInterval(3600);
-        return "redirect:/home";
+        return "redirect:/projects";
     }
 
     @GetMapping("/logout")
@@ -245,17 +245,7 @@ public class G1SController {
         return "login";
     }
 
-    @GetMapping("/home")
-    public String home(HttpSession session, Model model){
-        if(!g1SService.isLoggedIn(session)){
-            return "redirect:/login";
-        }
-        Employee employee = (Employee) session.getAttribute("employee");
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        return "home";
-    }
+
 
 
     @PostMapping("/subproject/delete/{id}")
@@ -301,7 +291,7 @@ public class G1SController {
         }
         Employee checkEmployee = (Employee) session.getAttribute("employee");
         if(checkEmployee.getRoleId() != 2 && checkEmployee.getRoleId() != 3){
-            return "redirect:/home";
+            return "redirect:/projects";
         }
         //projekleder(role 2) kan kun se medarbejdere
         if(checkEmployee.getRoleId() == 2){
@@ -326,7 +316,7 @@ public class G1SController {
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
         if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
-            return "redirect:/home";
+            return "redirect:/projects";
         }
         //tilføjer et nyt employee objekt
         DTOEmployee employee = new DTOEmployee();
@@ -527,7 +517,7 @@ public class G1SController {
         Employee checkEmployee = (Employee)session.getAttribute("employee");
         //hvis en employee ikke er role 3(admin) eller 2(projektleder), så bliver de redirectet væk fra siden
         if(checkEmployee.getRoleId() != 3 && checkEmployee.getRoleId() != 2){
-            return "redirect:/home";
+            return "redirect:/projects";
         }
         //laver et employee objekt ud fra det id vi får med i URL'en
         Employee oldEmployee = g1SService.getEmployeeByIdPlusSkills(id);
