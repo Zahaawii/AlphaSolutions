@@ -16,9 +16,7 @@
     <div class="dashboardTextContainer">
       <h1>DASHBOARD</h1>
 
-      <a href="/home">
-        <h2>Home</h2>
-      </a>
+
       <a th:if="${canManageProjects}" th:href="@{/projects/new}">
         <h2>New Project</h2>
       </a>

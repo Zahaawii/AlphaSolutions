@@ -21,7 +21,7 @@
                     <option value="">-- All employees --</option>
                     <option th:each="skill : ${skills}" th:value="${skill.getSkillName()}" th:text="${skill.getSkillName()}"></option>
                 </select>
-                <button type="submit">Filter</button>
+                <button class="addButton" type="submit">Filter</button>
             </form>
         </div>
 

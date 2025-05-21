@@ -97,6 +97,15 @@ public class Employee {
         this.skills = skills;
     }
 
+    public String calculateRole() {
+        return switch (roleId) {
+            case 1 -> "Developer";
+            case 2 -> "Project Manager";
+            case 3 -> "Admin";
+            default -> "No role";
+        };
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
