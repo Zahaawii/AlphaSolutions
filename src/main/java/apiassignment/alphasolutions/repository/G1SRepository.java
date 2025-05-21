@@ -559,7 +559,12 @@ public class G1SRepository {
                 "join projectassignees on projectassignees.projectID = project.projectID " +
                 "join employee on employee.employeeID = projectassignees.employeeID " +
                 "where employee.employeeID = ?";
-        return jdbcTemplate.query(sql, new ProjectRowmapper(), employeeId);
+        List<Project> projects = jdbcTemplate.query(sql, new ProjectRowmapper(), employeeId);
+
+        for (Project project : projects) {
+            project.setSubtasks(getAllSubtasksByProjectId(project.getProjectId()));
+        }
+        return projects;
     }
 
 

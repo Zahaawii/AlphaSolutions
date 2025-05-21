@@ -363,6 +363,12 @@ h1, h3 {
     margin: 80px;
     background: linear-gradient(to right, white, #FF325A, white);
 }
+.h-separator-small {
+    width: 40%;
+    height: 2px;
+    margin: 80px;
+    background: linear-gradient(to right, white, #FF325A, white);
+}
 
 .v-separator {
     width: 2px;
@@ -933,6 +939,37 @@ h2, .description-label, .date-group label {
     font-size: 1em;
 
 }
+
+.skillcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 1em;
+
+}
+
+.skill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background-color: var(--accent-color);
+    padding: 1em 2em;
+}
+
+
+.projectColumnContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4em;
+}
+
+
 
 
 
