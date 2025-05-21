@@ -490,6 +490,58 @@ public class G1SRepository {
                 "    WHERE projectID = ? )";
         return jdbcTemplate.query(sql, new EmployeeRowmapper(), projectId);
     }
+    public List<Employee>getProjectOwner(int employeeId){
+        String sql =
+        "SELECT employee.* from employee " +
+                "join project on project.employeeID = employee.employeeId " +
+                "where project.projectID = ?";
+        List<Employee>employeeList = jdbcTemplate.query(sql, new EmployeeRowmapper(), employeeId);
+        if(employeeList.isEmpty()){
+            return null;
+        }
+
+        return employeeList;
+    }
+
+
+    public List<Employee> getAllEmployeesWithSkillNotPartOfProject(String skill, int projectId) {
+        List<Employee> finalList = new ArrayList<>();
+        Employee projectOwner = getProjectOwner(projectId).getFirst(); //vi får ejeren af projektet fra tabelen project
+
+        String sqlStart = "SELECT e.* FROM employee e "; //vi vil gerne ende med en liste af employees
+
+        String sqlJoinSkill = "JOIN skillrelation sr ON e.employeeId = sr.employeeid " +
+                "JOIN skill s ON sr.skillid = s.skillid "; //vi laver joins mellem tabellerne employee, skillrelation og skill
+
+        String sqlNotInProject = "WHERE e.employeeid NOT IN (" +
+                "  SELECT pa.employeeid FROM projectassignees pa WHERE pa.projectid = ?" + //her indsætter vi projectId
+                ") "; //Vi vil kun have de employees som ikke allerde er en del af projektet.
+        String sqlWithoutOwner = "AND e.employeeid != ? "; //her indsætter vi employeeId, så vi ikke får ejeren af projektet
+        String sqlFilterSkill = "AND s.skill_name = ? "; //her indsætter vi den givne skill, som vi sortere efter
+
+        String finalSql; //starter med at lave en tom string, som efterfølgende bliver udfyldt med vores sql query
+        Object[] insertIntoQuery; //lav et tom array af datatypen Object
+
+        if (skill == null || skill.isEmpty()) { //tjekker at skill er null eller bare en tom string
+            finalSql = sqlStart + sqlNotInProject + sqlWithoutOwner;
+            // sammensætter vores string queries, nu får vi en liste over alle dem der ikke er i projektet, vi har ikke sorteret efter skills
+            insertIntoQuery = new Object[] { projectId, projectOwner.getEmployeeId() };
+            //vi smider nu projectId og ejer af projektets id i en array
+        } else { //i nedenstående metode, har vi bare sorteret dem ud for skills, så vi fx får alle dem der kan java
+            finalSql = sqlStart + sqlJoinSkill + sqlNotInProject + sqlWithoutOwner + sqlFilterSkill;
+            insertIntoQuery = new Object[] { projectId, projectOwner.getEmployeeId(), skill };
+        } //nu kan vi så lave en liste af employees, enten kun dem med en given skill eller bare alle der ikke er en del af projektet
+        List<Employee> employeeList = jdbcTemplate.query(finalSql, new EmployeeRowmapper(), insertIntoQuery);
+        //til sidst iterere vi igennem vores liste og for hver person sætter vi deres skills på dem.
+        for (Employee e : employeeList) {
+            List<Skill> skills = getSkillsForEmployee(e.getEmployeeId());
+            e.setSkills(skills);
+            finalList.add(e);
+        }
+        return finalList;
+    }
+
+
 
     public void addEmployeeToProject(int projectId, int employeeId){
         String sql = "INSERT INTO projectassignees (projectId, employeeId) VALUES (?, ?)";

@@ -269,8 +269,13 @@ public class G1SService {
         return g1SRepository.getSkillsForEmployee(employeeId);
     }
 
-    public List<Employee> getEmployeeBySkillNotPartOfProject(String skill, int projectId) {
+    public List<Employee> getAllEmployeesWithSkillNotPartOfProject(String skill, int projectId){
+        return g1SRepository.getAllEmployeesWithSkillNotPartOfProject(skill, projectId);
+    }
+
+        public List<Employee> getEmployeeBySkillNotPartOfProject(String skill, int projectId) {
         List<Employee> notPartOfProject = g1SRepository.getEmployeeNotPartOfProject(projectId);
+        Employee ownerOfProject = g1SRepository.getProjectOwner(projectId).getFirst();
         if(notPartOfProject == null || notPartOfProject.isEmpty()){
             return null;
         }
@@ -283,9 +288,12 @@ public class G1SService {
             for (Employee b : notPartOfProject) {
                 if (i.getEmployeeId() == b.getEmployeeId()) {
                     if (!finishList.contains(i)) {
-                        List<Skill> skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
-                        i.setSkills(skillList); //finder alle de skills der hører til en person
-                        finishList.add(i);
+                        if(i.getEmployeeId() != ownerOfProject.getEmployeeId()) {
+                            //ovenstående if statement tjekker at ejeren af projektet ikke kommer op på listen
+                            List<Skill> skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
+                            i.setSkills(skillList); //finder alle de skills der hører til en person
+                            finishList.add(i);
+                        }
                     } //finder alle dem med en given skill
                 } //finder alle dem der ikke er en del af projeketet
             } //sammenligner id på de to lister
@@ -295,6 +303,7 @@ public class G1SService {
             if(finishList.isEmpty()){
                 return null;
             }
+
         return finishList;
     }
 
