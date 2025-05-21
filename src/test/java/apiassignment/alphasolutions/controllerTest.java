@@ -461,7 +461,7 @@ public class controllerTest {
     void sortMyTasks() throws Exception{
         List<SubTask>subTaskList = new ArrayList<>();
         subTaskList.add(subtask);
-        String a = "";
+        String a = "subtask_estimate";
         when(g1SService.getSortedSubtaskByEmployeeId(a, employee.getEmployeeId())).thenReturn(subTaskList);
         mockMvc.perform(get("/mySubTasks/sortBy"))
                 .andExpect(status().isOk())

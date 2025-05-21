@@ -32,8 +32,8 @@
 
             <div th:if="${admin}">
                 <label for="roleId">Role:</label>
-                <select id="roleId" name="roleId">
-                    <option th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
+                <select id="roleId" name="roleId" th:field="${oldEmployee.roleId}">
+                    <option   th:each="i : ${roles}" th:value="${i.getRoleId()}" th:text="${i.getRoleName()}"></option>
                 </select>
             </div>
 
