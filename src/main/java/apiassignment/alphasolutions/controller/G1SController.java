@@ -221,15 +221,8 @@ public class G1SController {
     @PostMapping("/login")
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
-
-
-
-        /*
-        Nedenstående kode sættes i bero indtil vi er klar til at lancere. Ellers kan alle logge ind. */
         Employee employee = g1SService.findByUsername(username);
 
-
-        //metoden er sat i bero indtil vi får gjort det vi skal
         if(employee == null ||  !g1SService.decryptTest(password, employee.getEmployeePassword())  ){
             model.addAttribute("wrongLogin", true);
             return "login";
@@ -565,12 +558,13 @@ public class G1SController {
         return "redirect:/adminpanel";
     }
 
-
+    //nedenstående metode, modtager en pathvariable(projectId) og en requestParam(skill), den redirecter så en til
+    //project/projectId/assignees?skill=xxx" her bliver den valgte skill så URL-encoded, så den ikke forvirrer selve url'en
+    //dette er gjort, fordi den tidligere crashede, da man prøvede at tilgå "UI/UX", fordi den opfattede det som et nyt endpoint pga "/"
     @GetMapping("/project/{projectId}/assignees/select-skill")
     public String redirectToSkill(
             @PathVariable Long projectId,
             @RequestParam String skill) {
-
         return "redirect:/project/" + projectId + "/assignees?skill=" + UriUtils.encode(skill, StandardCharsets.UTF_8);
     }
 
@@ -590,7 +584,7 @@ public class G1SController {
         List<Employee> employees; // laver en tom liste af employee
         if (skill != null && !skill.isEmpty()) { // hvis skill ikke er null eller empty,
             // så finder vi alle dem der ikke er en del af projektet og som har en given skill
-            employees = g1SService.getEmployeeBySkillNotPartOfProject(skill, projectId);
+            employees = g1SService.getAllEmployeesWithSkillNotPartOfProject(skill, projectId);
             if (employees == null || employees.isEmpty()) {
                 //hvis den liste vi får tilbage ikke indeholder nogle empployee,
                 // så kom der en tekst om der siger, at den ikke kunne finde nogen med denne skill
@@ -602,7 +596,7 @@ public class G1SController {
         } else {
             //hvis vi ikke angav en given skill, fx vi trykkede "all employee"
             //Så får vi en liste af alle dem der ikke er en del af projektet i forvejen
-            employees = g1SService.getEmployeeNotPartOfProject(projectId);
+            employees = g1SService.getAllEmployeesWithSkillNotPartOfProject(skill, projectId);
             //så tjekker vi om denne liste er tom for employees
             if (employees == null || employees.isEmpty()) {
                 //hvis vi ikke finde nogen, så kommer der en tekst, der siger, at den ikke kunne finde nogen
