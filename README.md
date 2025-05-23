@@ -1,118 +1,138 @@
-# 📊 Projektkalkulationsværktøj – Eksamensprojekt (KEA Datamatiker 2. Semester F2025)
+# Alpha Solutions – Projektkalkulationsværktøj  
+*KEA Datamatiker – Eksamensprojekt, Forår 2025*
 
-Dette projekt er udviklet som del af eksamensopgaven i 2. semester for datamatikeruddannelsen på KEA. Opgaven går ud på at udvikle et **projektkalkulationsværktøj** for virksomheden **Alpha Solutions**.
+Dette system er udviklet som en del af eksamensprojektet på KEA 2. semester. Formålet er at understøtte Alpha Solutions’ behov for bedre overblik og styring af projekter, medarbejdere, tid og ressourcer.
 
-## 🧭 Overblik
+--
 
-Formålet med projektet er at skabe et system, der opfylder kravene fremlagt af kunden under kickoff den 23/04 og efterfølgende i slides præsenteret af Alpha Solutions. Projektet skal demonstrere vores evner inden for systemudvikling med sporbarhed gennem hele processen – fra analyse til deployment.
+## ⚡ TL;DR – Kom hurtigt i gang
 
-## 📝 Krav til rapport og projekt
+1. **Klon projektet**
+   ```bash
+   git clone https://github.com/Zahaawii/AlphaSolution.git
+   cd AlphaSolution
+   
+2. **Opsæt MySQL-database**
+   - Opret database: `alphasolutions`
+   - Kør SQL-scripts fra `src/main/resources/sql/`
 
-- Sporbarhed mellem:  
-  - Virksomhedsanalyse  
-  - Kravspecificering  
-  - UML-diagrammer  
-  - Kildekode  
-  - Database  
-  - Test cases  
+3. **Tilføj `application.properties` i `src/main/resources/`**
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/alphasolutions
+   spring.datasource.username=dinBruger
+   spring.datasource.password=ditPassword
+   spring.profiles.active=dev
+   
+4. **Kør applikationen**
+   - Åbn projektet i IntelliJ IDEA (Ultimate anbefales)
+   - Navigér til `AlphaSolutionsApplication.java` og klik på "Run"
 
-- Diagrammer og kodeudsnit skal suppleres med reflektion og argumentation for valg og fravalg undervejs i projektet.
+5. **Login testbruger**
+   - Brugernavn: `ajen`
+   - Adgangskode: `Password123!`
+---
 
-## 📈 IT & Forretningsforståelse
+## 🎯 Problemstilling og Formål
 
-- Feasibility Study: En analyse i opstartsfasen, som underbygger beslutningen om at igangsætte projektet.
+Alpha Solutions opererer i flere lande med over 80 medarbejdere og har identificeret et behov for et internt værktøj, der gør det muligt at:
 
-## 🔄 Systemudvikling
+- Nedbryde projekter i subprojekter, tasks og subtasks
+- Tilknytte medarbejdere og kompetencer til specifikke opgaver
+- Estimere og følge op på timer og deadlines
+- Få visuel indsigt i fremdrift og belastning
 
-- Udvikling efter **agile metoder (Scrum)**:
-  - Der arbejdes i 3 sprints
-  - Hvert sprint indeholder:
-    - Sprint Planning
-    - Sprint Review
-    - Sprint Backlog
-  - Product Backlog og Sprint Backlogs dokumenteres
-  - GitHub Projects bruges til Scrum-overblik
-
-## 🛠 Teknologistak
-
-Systemet er udviklet med følgende teknologier:  
-IntelliJ IDEA 2024.2 (Ultimate Edition)
-Build #IU-242.20224.300, built on August 6, 2024
-
-- Java (Spring Boot)
-- JDBC
-- MySQL
-- Thymeleaf (HTML/CSS)
-- GitHub / GitHub Actions
-- Maven
-
-## 🧩 Kravspecifikation
-
-- Beskrivelse af Alpha Solutions’ vision og forretningsværdi
-- User stories med:
-  - Korte beskrivelser
-  - Acceptkriterier
-  - Organisering i Sprint Backlogs
-
-### Ikke-funktionelle krav:
-
-- Anvendelse af MySQL-database
-- Webapplikation via Spring Boot
-- Brugervenligt UI med hensyntagen til heuristikker og designprincipper (The Golden Rules)
-
-## 🧠 Domænemodel og Database
-
-- Domænemodel over problemdomænet
-- ER-diagram over databasen
-- SQL scripts til:
-  - Oprettelse af databasen
-  - Indsættelse af testdata
-
-### Designovervejelser:
-
-- Normalisering (forklar hvis 3NF ikke er opnået)
-- Begrundelser for brug af:
-  - Fremmednøgler
-  - Constraints
-  - Unikke indeks
-  - Automatiske ID’er
-
-## 🌐 Navigationsflow
-
-- Aktivitetsdiagram over navigation mellem skærmbilleder
-- Screenshots af applikationen (bilag)
-
-## 🧱 Softwaredesign
-
-- UML Package Diagram eller oversigt over pakkestruktur
-- Klassediagram (læsbart og forståeligt for udviklere)
-- Refleksion over:
-  - Designvalg
-  - Brug af design patterns
-  - Principper for god arkitektur
-
-## 📌 Særlige forhold
-
-Dokumentation af tekniske valg i applikationen, fx:
-
-- Sessionshåndtering
-- Exception håndtering
-- Brugerinput-validering
-- Login-sikkerhed og roller
-- Brugertyper og rettigheder
-
-## 💡 Udvalgte kodeeksempler
-
-For at fremhæve kompleks og vigtig kode vises udvalgte kodeeksempler i rapporten, fx fra:
-
-- Sikkerhedshåndtering
-- Inputvalidering
-- Testbar logik
-
-## 📊 Status på implementering
-
-Et afsnit i rapporten beskriver projektets aktuelle status – hvad er implementeret, hvad er under udvikling og hvad er eventuelt udeladt eller udskudt.
+Målet er et simpelt, brugervenligt system, der kan anvendes af både projektledere og medarbejdere.
 
 ---
 
-> ✨ *Husk at linke til relaterede filer som f.eks. CONTRIBUTING.md og evt. testdata/scripts, hvis de findes i projektet.*
+## 🧱 Teknologier og Arkitektur
+
+| Teknologi       | Version     | Funktion                  |
+|-----------------|-------------|---------------------------|
+| Java            | 21          | Backend                   |
+| Spring Boot     | 3.x         | Webramme + MVC            |
+| JDBC Template   | N/A         | Database access           |
+| MySQL           | 8.x         | Primær database           |
+| H2              | In-memory   | Testdatabase              |
+| Thymeleaf       | N/A         | HTML templating           |
+| GitHub Actions  | YAML-based  | CI/CD workflow            |
+| Azure           | App Services| Hosting + MySQL cloud     |
+
+### 🧱 Arkitektur
+Applikationen er struktureret efter MVC-principper:
+
+src/
+├── controller/ // Web endpoints
+├── service/ // Forretningslogik
+├── repository/ // Data access (JDBC)
+├── model/ // Domæneklasser
+├── rowmapper/ // JDBC row mappers
+├── templates/ // Thymeleaf HTML-filer
+├── static/css/ // Frontend styling
+└── resources/sql/ // DB scripts
+
+Se docs folder for mere information
+---
+
+
+---
+
+## 🚀 Deployment og test
+
+| Miljø        | URL                                         |
+|--------------|---------------------------------------------|
+| Azure Prod   | https://g1ssolutions.azurewebsites.net/     |
+| Login        | `ajen` / `Password123` *(testkonto)*        |
+
+### CI/CD
+- GitHub Actions automatiserer build, test og deployment.
+- Deployment sker til Azure via `main` branch.
+
+---
+
+## 📦 Funktioner
+
+- Login med rollebaseret adgang (Admin, Projektleder, Medarbejder)
+- CRUD for projekter, subprojekter, tasks og subtasks
+- Filtrering af medarbejdere ud fra kompetencer
+- Tildeling af medarbejdere til projekter
+- Beregning af fremdrift og estimeret belastning
+- Gantt diagram (fremtidig feature)
+
+---
+
+## 🧪 Test og kvalitetssikring
+
+- Unit- og integrationstests (JUnit, H2)
+- Testdækning af controllers og services
+- Static code inspection med Qodana (CI-step)
+- Testdatabase og scripts medfølger i `test/resources/sql`
+
+---
+
+## 📄 Dokumentation og Bilag
+
+- **Klassediagram** – `docs/klassediagram.png`
+- **UML Package diagram** – `docs/architecture.png`
+- **ER-model** – `docs/er-model.png`
+- **SQL scripts** – `resources/sql/`
+- **Rapport** – `docs/rapport/`
+
+---
+
+## 👥 Udviklingsteam
+
+- 👥 Zahaa Al-khakani
+- 👥 Simon Pedersen
+- 👥 Victor Krogh Jensen
+- 👥 Hannibal Ussing-Widholm
+
+> Projektgruppe – KEA, Datamatikeruddannelsen, E24C – Forår 2025  
+> Produktet er udviklet med fokus på læring, best practices og overdragelig dokumentation.
+
+---
+
+## 📚 License
+
+Dette projekt er udelukkende udviklet til undervisningsbrug og må ikke anvendes kommercielt uden tilladelse fra udviklingsteamet og KEA.
+
