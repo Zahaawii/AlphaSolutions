@@ -1,4 +1,4 @@
-## TL:DR 
+## TLDR of our Contribute 
 
 ➡️ Fork the repository
 
