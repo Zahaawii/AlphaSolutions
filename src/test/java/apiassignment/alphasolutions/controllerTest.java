@@ -33,6 +33,7 @@ public class controllerTest {
     SubProject subProject;
     Skill skill;
     SubTask subtask;
+    Employee oldEmployee;
 
     //Calling MockMvc method to test our controllers
     @Autowired
@@ -52,6 +53,8 @@ public class controllerTest {
         subProject = new SubProject(1, "subProject test", null,null,1);
         skill = new Skill(1, "Frontend");
         subtask = new SubTask();
+        oldEmployee = new Employee(1, "test","test","test","test",null, 3);
+
 
     }
 
@@ -394,13 +397,13 @@ public class controllerTest {
     //tester man bliver sendt til html siden "adminUpdateEmployee", hvis man har rollen 2 eller 3
     @Test
     void adminUpdateEmployeeGet() throws  Exception{
+        when(g1SService.isLoggedIn(session)).thenReturn(true);
         employee.setRoleId(3);
         when(g1SService.getEmployeeById(1)).thenReturn(employee);
-        when(g1SService.isLoggedIn(session)).thenReturn(true);
+        when(g1SService.getEmployeeByIdPlusSkills(1)).thenReturn(oldEmployee);
         mockMvc.perform(get("/admin/update/1").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adminUpdateEmployee"));
-
     }
 
     @Test

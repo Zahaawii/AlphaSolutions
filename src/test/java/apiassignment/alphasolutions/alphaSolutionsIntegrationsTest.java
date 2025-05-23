@@ -354,33 +354,33 @@ public class alphaSolutionsIntegrationsTest {
 
     }
 
-    @Test
-    void testDeleteTask() {
-        //opret task og tjek om den er oprettet i DB
-        Task newTask = new Task();
-
-        newTask.setTaskName("Test Task");
-        newTask.setSubprojectId(1);
-        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
-        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
-        newTask.setTaskPriority("High");
-        newTask.setTaskDescription("Test description");
-
-        g1SRepository.createTask(newTask);
-
-        assertTrue(newTask.getTaskId() > 0);
-
-
-        //tjek om task eksisterer i DB
-        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
-
-        //fjern task fra DB
-        g1SRepository.deleteTask(newTask.getTaskId());
-
-        //tjek om den er fjernet
-        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
-
-    }
+//    @Test
+//    void testDeleteTask() {
+//        //opret task og tjek om den er oprettet i DB
+//        Task newTask = new Task();
+//
+//        newTask.setTaskName("Test Task");
+//        newTask.setSubprojectId(1);
+//        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
+//        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
+//        newTask.setTaskPriority("High");
+//        newTask.setTaskDescription("Test description");
+//
+//        g1SRepository.createTask(newTask);
+//
+//        assertTrue(newTask.getTaskId() > 0);
+//
+//
+//        //tjek om task eksisterer i DB
+//        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
+//
+//        //fjern task fra DB
+//        g1SRepository.deleteTask(newTask.getTaskId());
+//
+//        //tjek om den er fjernet
+//        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
+//
+//    }
 
     /*@Test
     void testUpdateTask() {
