@@ -70,10 +70,7 @@ src/
 ├── templates/ // Thymeleaf HTML-filer
 ├── static/css/ // Frontend styling
 └── resources/sql/ // DB scripts
-
 Se docs folder for mere information
----
-
 
 ---
 
