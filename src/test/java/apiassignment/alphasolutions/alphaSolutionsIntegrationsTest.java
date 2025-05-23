@@ -466,12 +466,12 @@ public class alphaSolutionsIntegrationsTest {
 
     @Test
     void testEncryptPassword() {
-        String testpassword = "hej";
-        String encrypted = g1SService.encryptTest(testpassword);
+        String testPassword = "hello";
+        String encrypted = g1SService.encryptTest(testPassword);
 
         assertNotNull(encrypted);
-        assertTrue(g1SService.decryptTest(testpassword, encrypted));
-        assertFalse(g1SService.decryptTest("forkert", encrypted));
+        assertTrue(g1SService.decryptTest(testPassword, encrypted));
+        assertFalse(g1SService.decryptTest("wrong", encrypted));
     }
 
     @Test
