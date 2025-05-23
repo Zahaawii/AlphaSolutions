@@ -60,7 +60,7 @@ Målet er et simpelt, brugervenligt system, der kan anvendes af både projektled
 
 ### 🧱 Arkitektur
 Applikationen er struktureret efter MVC-principper:
-
+``` 
 src/
 ├── controller/ // Web endpoints
 ├── service/ // Forretningslogik
@@ -70,7 +70,9 @@ src/
 ├── templates/ // Thymeleaf HTML-filer
 ├── static/css/ // Frontend styling
 └── resources/sql/ // DB scripts
-Se docs folder for mere information
+``` 
+
+Se `docs/`-folderen for yderligere diagrammer og dokumentation.
 
 ---
 
