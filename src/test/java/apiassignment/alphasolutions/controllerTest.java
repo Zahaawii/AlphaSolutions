@@ -219,9 +219,9 @@ public class controllerTest {
     @Test
     void checkLoginSuccessfully() throws Exception {
 
-        when(g1SService.login(employee.getEmployeeUsername(), employee.getEmployeePassword())).thenReturn(employee);
-        when(g1SService.isLoggedIn(session)).thenReturn(true);
-        mockMvc.perform((post("/login").session(session))
+        when(g1SService.findByUsername(employee.getEmployeeUsername())).thenReturn(employee);
+        when(g1SService.decryptTest(employee.getEmployeePassword(), employee.getEmployeePassword())).thenReturn(true);
+        mockMvc.perform((post("/login"))
                         .param("checkUsername",employee.getEmployeeUsername())
                         .param("checkUserpassword",employee.getEmployeePassword()))
                 .andExpect(status().is3xxRedirection())
