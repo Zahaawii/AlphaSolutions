@@ -10,7 +10,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -432,7 +431,7 @@ public class G1SService {
         return BCrypt.hashpw(password, salt);
     }
 
-    public boolean decryptTest(String password, String encrypted) {
+    public boolean verifyPassword(String password, String encrypted) {
         return BCrypt.checkpw(password, encrypted);
     }
 
