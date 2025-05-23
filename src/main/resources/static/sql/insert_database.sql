@@ -16,20 +16,20 @@ VALUES
 -- Employees med brugernavn og password (password er plaintext for test formål)
 INSERT INTO employee (employee_Name, employee_email, employee_username, employee_password, roleID)
 VALUES ('Anders Jensen', 'anders.jensen@alphasolutions.dk', 'ajen', '$2a$10$kem/osM1Q28t4Ruprxa7QOrl4N/jk8JS6tzEV6WZaYO68LDhs7Q3i', 3),
-       ('Marie Nielsen', 'marie.nielsen@alphasolutions.dk', 'mnie', 'Password123!', 2),
-       ('Peter Hansen', 'peter.hansen@alphasolutions.dk', 'phan', 'Password123!', 1),
-       ('Louise Pedersen', 'louise.pedersen@alphasolutions.dk', 'lped', 'Password123!', 1),
-       ('Mikkel Andersen', 'mikkel.andersen@alphasolutions.dk', 'mand', 'Password123!', 1),
-       ('Sofie Christensen', 'sofie.christensen@alphasolutions.dk', 'schr', 'Password123!', 1),
-       ('Jacob Larsen', 'jacob.larsen@alphasolutions.dk', 'jlar', 'Password123!', 2),
-       ('Emma Schmidt', 'emma.schmidt@alphasolutions.dk', 'esch', 'Password123!', 2),
-       ('Frederik Møller', 'frederik.moller@alphasolutions.dk', 'fmol', 'Password123!', 2),
-       ('Ida Olsen', 'ida.olsen@alphasolutions.dk', 'iols', 'Password123!', 1),
-       ('Christian Berg', 'christian.berg@alphasolutions.dk', 'cber', 'Password123!', 1),
-       ('Sarah Poulsen', 'sarah.poulsen@alphasolutions.dk', 'spou', 'Password123!', 1),
-       ('Thomas Kjær', 'thomas.kjaer@alphasolutions.dk', 'tkja', 'Password123!', 1),
-       ('Anne Bech', 'anne.bech@alphasolutions.dk', 'abec', 'Password123!', 1),
-       ('Lars Winther', 'lars.winther@alphasolutions.dk', 'lwin', 'Password123!', 1);
+       ('Marie Nielsen', 'marie.nielsen@alphasolutions.dk', 'mnie', '$2a$10$msZIhgxQzBAZg9XpuOsldeTDyoHfYmHtc5QRGRDhtx9ggB.6Bm3km', 2),
+       ('Peter Hansen', 'peter.hansen@alphasolutions.dk', 'phan', '$2a$10$FKQNyZpliZioU7eytpo/AuSj03rXpv61OcNIpjTQlbywJdF7v8ma6', 1),
+       ('Louise Pedersen', 'louise.pedersen@alphasolutions.dk', 'lped', '$2a$10$wswo/7zSvyKpXoHg2BgFGOsSBffu8UyoJS1ODUWe/yrOeRsnnwhIe', 1),
+       ('Mikkel Andersen', 'mikkel.andersen@alphasolutions.dk', 'mand', '$2a$10$tQrUeoURpXdAToeCuUcCU.VD4CIe/MLj7kEf2qLDD9ZRUCZ34yz1C', 1),
+       ('Sofie Christensen', 'sofie.christensen@alphasolutions.dk', 'schr', '$2a$10$iISnakGRuO11G/1QWgS0yug0Nb3BylIgKKiUmlpBI9Y2VdxMrVLUm', 1),
+       ('Jacob Larsen', 'jacob.larsen@alphasolutions.dk', 'jlar', '$2a$10$uPwv0Ro.N74gRhH.7IKgPuMB0tHlEIUI7Bg0AT7Ekm2efONGcR4we', 2),
+       ('Emma Schmidt', 'emma.schmidt@alphasolutions.dk', 'esch', '$2a$10$V6rCgeg7JzKjqKjc2XPQv.12YNYQlSSyZGbKO6hw85CNIb7dVdft6', 2),
+       ('Frederik Møller', 'frederik.moller@alphasolutions.dk', 'fmol', '$2a$10$ZLchF0M29j3Mcep8kr8jye97fr0.93y6GPMThaY.efzglGOlntEry', 2),
+       ('Ida Olsen', 'ida.olsen@alphasolutions.dk', 'iols', '$2a$10$amvF4kaNuKut3cJ0A4MC9uMa/HZrvh7RA5I1RhnNaHoCIFA/EU5vu', 1),
+       ('Christian Berg', 'christian.berg@alphasolutions.dk', 'cber', '$2a$10$TXGzNr/NEbcl0.rMeR..MeP.JhsmvEn7/B83VNcoReQypO3WSxWbm', 1),
+       ('Sarah Poulsen', 'sarah.poulsen@alphasolutions.dk', 'spou', '$2a$10$2C1ZawkSPQ6n/HMm0EUOfe/5.qLcpN1VZJOe1kZNETn2T9dtwJMRi', 1),
+       ('Thomas Kjær', 'thomas.kjaer@alphasolutions.dk', 'tkja', '$2a$10$8bMiHzhQAjEv8c9EjR5HQeElUBrCrohXw0R3acZzxEB/4GAYDtT7G', 1),
+       ('Anne Bech', 'anne.bech@alphasolutions.dk', 'abec', '$2a$10$nd4c8iucF9rYTJ9kfAOPy.f7MIa3ql8r06cs1Woe5O37/ZOypa1OW', 1),
+       ('Lars Winther', 'lars.winther@alphasolutions.dk', 'lwin', '$2a$10$JKM0eSeB54w9VQrt9NZvNuglsI1M/ZyK8dDYr89I8d5/8m2KnogyC', 1);
 
 -- Employee Skills
 INSERT INTO skillRelation (skillID, employeeID)
