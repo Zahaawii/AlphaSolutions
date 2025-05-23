@@ -3,7 +3,7 @@
 
 Dette system er udviklet som en del af eksamensprojektet på KEA 2. semester. Formålet er at understøtte Alpha Solutions’ behov for bedre overblik og styring af projekter, medarbejdere, tid og ressourcer.
 
---
+---
 
 ## ⚡ TL;DR – Kom hurtigt i gang
 
