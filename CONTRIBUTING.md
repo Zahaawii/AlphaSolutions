@@ -1,3 +1,7 @@
+# Contributing to this Project
+
+Thank you for considering contributing to this project! Below you will find guidelines and rules to ensure a smooth collaboration.
+
 ## TLDR of our Contribute 
 
 ➡️ Fork the repository
@@ -11,10 +15,6 @@
 ➡️ Wait for review and testing
 
 ➡️ Merge after approval
-
-# Contributing to this Project
-
-Thank you for considering contributing to this project! Below you will find guidelines and rules to ensure a smooth collaboration.
 
 ## General Information
 - This is a private project, but contributions are welcome.
