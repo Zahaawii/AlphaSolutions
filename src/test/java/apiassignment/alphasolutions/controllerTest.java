@@ -33,6 +33,7 @@ public class controllerTest {
     SubProject subProject;
     Skill skill;
     SubTask subtask;
+    Employee oldEmployee;
 
     //Calling MockMvc method to test our controllers
     @Autowired
@@ -44,6 +45,7 @@ public class controllerTest {
     //Before each run the code will setup these variables to be able to test
     @BeforeEach
     void setup() {
+        oldEmployee = new Employee(1, "test","test","test","test",null, 3);
         employee = new Employee(1, "test","test","test","test",null, 3);
         dtoEmployee = new DTOEmployee(1, "test","test","test","test",null, 3);
         session = new MockHttpSession();
@@ -371,20 +373,22 @@ public class controllerTest {
     //tester at man bliver redirected til "/home", hvis man ikke har rollen 2 eller 3
     @Test
     void adminUpdateEmployeeGetRoleIdNotAllowed () throws Exception {
+        when(g1SService.isLoggedIn(session)).thenReturn(true);
         employee.setRoleId(1);
         mockMvc.perform(get("/admin/update/1").session(session))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/home"));
+                .andExpect(redirectedUrl("/projects"));
     }
     //tester man bliver sendt til html siden "adminUpdateEmployee", hvis man har rollen 2 eller 3
     @Test
     void adminUpdateEmployeeGet() throws  Exception{
+        when(g1SService.isLoggedIn(session)).thenReturn(true);
         employee.setRoleId(3);
         when(g1SService.getEmployeeById(1)).thenReturn(employee);
+        when(g1SService.getEmployeeByIdPlusSkills(1)).thenReturn(oldEmployee);
         mockMvc.perform(get("/admin/update/1").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adminUpdateEmployee"));
-
     }
 
     @Test

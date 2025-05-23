@@ -7,15 +7,11 @@ import apiassignment.alphasolutions.model.SubTask;
 import apiassignment.alphasolutions.model.Task;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
-import com.mysql.cj.xdevapi.Table;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +20,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -470,8 +465,8 @@ public class alphaSolutionsIntegrationsTest {
         String encrypted = g1SService.encryptTest(testpassword);
 
         assertNotNull(encrypted);
-        assertTrue(g1SService.decryptTest(testpassword, encrypted));
-        assertFalse(g1SService.decryptTest("forkert", encrypted));
+        assertTrue(g1SService.verifyPassword(testpassword, encrypted));
+        assertFalse(g1SService.verifyPassword("forkert", encrypted));
     }
 
     @Test

@@ -3,7 +3,6 @@ package apiassignment.alphasolutions.controller;
 
 import apiassignment.alphasolutions.DTO.DTOEmployee;
 import apiassignment.alphasolutions.model.*;
-import apiassignment.alphasolutions.service.G1SEmailService;
 import apiassignment.alphasolutions.service.G1SService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -223,7 +220,7 @@ public class G1SController {
                              HttpSession session, Model model){
         Employee employee = g1SService.findByUsername(username);
 
-        if(employee == null ||  !g1SService.decryptTest(password, employee.getEmployeePassword())  ){
+        if(employee == null ||  !g1SService.verifyPassword(password, employee.getEmployeePassword())  ){
             model.addAttribute("wrongLogin", true);
             return "login";
         }
