@@ -81,7 +81,7 @@ public class controllerTest {
     void projectsLoggedIn() throws Exception {
         mockMvc.perform(get("/projects").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("myprojects"));
+                .andExpect(view().name("myProjects"));
     }
 
     //Testing if you get redirected to login page
@@ -212,13 +212,13 @@ public class controllerTest {
     //Testing if you can login with a created user
     @Test
     void checkLoginSuccessfully() throws Exception {
-
-        when(g1SService.login(employee.getEmployeeUsername(), employee.getEmployeePassword())).thenReturn(employee);
+        when(g1SService.findByUsername(employee.getEmployeeUsername())).thenReturn(employee);
+        when(g1SService.decryptTest(employee.getEmployeePassword(), employee.getEmployeePassword())).thenReturn(true);
         mockMvc.perform((post("/login"))
                         .param("checkUsername",employee.getEmployeeUsername())
                         .param("checkUserpassword",employee.getEmployeePassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/home"));
+                .andExpect(redirectedUrl("/projects"));
     }
 
     //Testing if you cannot login with invalid credentials
@@ -241,24 +241,6 @@ public class controllerTest {
         mockMvc.perform(get("/logout").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"));
-    }
-
-    //Testing if you can access home site while logged in
-    @Test
-    void home() throws Exception {
-
-        mockMvc.perform(get("/home").session(session))
-                .andExpect(status().isOk())
-                .andExpect(view().name("home"));
-    }
-
-    //Testing if you cannot access home while not logged in
-    @Test
-    void homeIfNotLoggedIn() throws Exception {
-
-        mockMvc.perform(get("/home"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
     }
 
     //Testing if you can delete a sub project
@@ -311,7 +293,7 @@ public class controllerTest {
         employee.setRoleId(1);
         mockMvc.perform(get("/adminpanel").session(session))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/home"));
+                .andExpect(redirectedUrl("/projects"));
     }
 
     @Test
