@@ -271,12 +271,11 @@ public class controllerTest {
     //Testing if you can delete a sub project
     @Test
     void deleteSubproject() throws Exception {
-        int projectID = project.getProjectId();
+        when(g1SService.getSubProjectById(project.getProjectId())).thenReturn(subProject);
         when(g1SService.isLoggedIn(session)).thenReturn(true);
-        mockMvc.perform(post("/subproject/delete/1").session(session)
-                .param("subprojectID","1"))
+        mockMvc.perform(post("/subproject/delete/" + subProject.getSubprojectID()).session(session))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/project/" + projectID));
+                .andExpect(redirectedUrl("/project/" + subProject.getProjectID()));
 
     }
 
