@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class G1SEmailService {
 
-    private final String SENDGRIP_API_KEY = System.getenv("API_KEY");
+    private final String SENDGRIP_API_KEY = System.getenv("MY_API_KEY");
 
     public void sendEmail(String to, String subject, String content) throws IOException {
         Email from = new Email("Zahaawii@gmail.com");
