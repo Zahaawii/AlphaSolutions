@@ -53,7 +53,7 @@ You are welcome to open issues for:
 Issues will be assigned to GitHub Projects for tracking.  
 Please use the provided issue templates when creating new issues.
 
-##Local Setup
+## Local Setup
 To run the project locally:
 
 Set up the database by executing setup_database.sql and insert_database.sql.
