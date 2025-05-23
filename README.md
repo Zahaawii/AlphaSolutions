@@ -81,7 +81,7 @@ Se `docs/`-folderen for yderligere diagrammer og dokumentation.
 | Miljø        | URL                                         |
 |--------------|---------------------------------------------|
 | Azure Prod   | https://g1ssolutions.azurewebsites.net/     |
-| Login        | `ajen` / `Password123` *(testkonto)*        |
+| Login        | `ajen` / `Password123!` *(testkonto)*        |
 
 ### CI/CD
 - GitHub Actions automatiserer build, test og deployment.
