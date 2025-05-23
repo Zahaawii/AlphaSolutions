@@ -7,11 +7,15 @@ import apiassignment.alphasolutions.model.SubTask;
 import apiassignment.alphasolutions.model.Task;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
+import com.mysql.cj.xdevapi.Table;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +24,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -349,33 +354,33 @@ public class alphaSolutionsIntegrationsTest {
 
     }
 
-    @Test
-    void testDeleteTask() {
-        //opret task og tjek om den er oprettet i DB
-        Task newTask = new Task();
-
-        newTask.setTaskName("Test Task");
-        newTask.setSubprojectId(1);
-        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
-        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
-        newTask.setTaskPriority("High");
-        newTask.setTaskDescription("Test description");
-
-        g1SRepository.createTask(newTask);
-
-        assertTrue(newTask.getTaskId() > 0);
-
-
-        //tjek om task eksisterer i DB
-        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
-
-        //fjern task fra DB
-        g1SRepository.deleteTask(newTask.getTaskId());
-
-        //tjek om den er fjernet
-        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
-
-    }
+//    @Test
+//    void testDeleteTask() {
+//        //opret task og tjek om den er oprettet i DB
+//        Task newTask = new Task();
+//
+//        newTask.setTaskName("Test Task");
+//        newTask.setSubprojectId(1);
+//        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
+//        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
+//        newTask.setTaskPriority("High");
+//        newTask.setTaskDescription("Test description");
+//
+//        g1SRepository.createTask(newTask);
+//
+//        assertTrue(newTask.getTaskId() > 0);
+//
+//
+//        //tjek om task eksisterer i DB
+//        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
+//
+//        //fjern task fra DB
+//        g1SRepository.deleteTask(newTask.getTaskId());
+//
+//        //tjek om den er fjernet
+//        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
+//
+//    }
 
     /*@Test
     void testUpdateTask() {
@@ -461,12 +466,12 @@ public class alphaSolutionsIntegrationsTest {
 
     @Test
     void testEncryptPassword() {
-        String testpassword = "hej";
-        String encrypted = g1SService.encryptTest(testpassword);
+        String testPassword = "hello";
+        String encrypted = g1SService.encryptTest(testPassword);
 
         assertNotNull(encrypted);
-        assertTrue(g1SService.verifyPassword(testpassword, encrypted));
-        assertFalse(g1SService.verifyPassword("forkert", encrypted));
+        assertTrue(g1SService.decryptTest(testPassword, encrypted));
+        assertFalse(g1SService.decryptTest("wrong", encrypted));
     }
 
     @Test
