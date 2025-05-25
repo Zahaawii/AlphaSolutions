@@ -1,21 +1,15 @@
 package apiassignment.alphasolutions;
 
 
-import apiassignment.alphasolutions.model.Project;
-import apiassignment.alphasolutions.model.SubProject;
-import apiassignment.alphasolutions.model.SubTask;
-import apiassignment.alphasolutions.model.Task;
+import apiassignment.alphasolutions.DTO.DTOEmployee;
+import apiassignment.alphasolutions.model.*;
 import apiassignment.alphasolutions.repository.G1SRepository;
 import apiassignment.alphasolutions.service.G1SService;
-import com.mysql.cj.xdevapi.Table;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +18,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -467,11 +460,11 @@ public class alphaSolutionsIntegrationsTest {
     @Test
     void testEncryptPassword() {
         String testPassword = "hello";
-        String encrypted = g1SService.encryptTest(testPassword);
+        String encrypted = g1SService.encryptPassword(testPassword);
 
         assertNotNull(encrypted);
-        assertTrue(g1SService.decryptTest(testPassword, encrypted));
-        assertFalse(g1SService.decryptTest("wrong", encrypted));
+        assertTrue(g1SService.verifyPassword(testPassword, encrypted));
+        assertFalse(g1SService.verifyPassword("wrong", encrypted));
     }
 
     @Test
@@ -525,5 +518,212 @@ public class alphaSolutionsIntegrationsTest {
         List<Integer> afterClear = g1SRepository.getSubtaskAssignees(subtaskId);
         assertTrue(afterClear.isEmpty());
     }
+
+    @Test
+    void testgetAllEmployee(){
+        List<Employee> employeeList = g1SRepository.getAllEmployee();
+        assertNotNull(employeeList);
+        assertEquals(15, employeeList.size());
+    }
+
+    @Test
+    void testgetAllCommonWorkers(){
+        List<Employee> employeeList = g1SRepository.getAllCommonWorkers();
+        assertNotNull(employeeList);
+        assertEquals(1, employeeList.getFirst().getRoleId());
+    }
+
+    @Test
+    void testadminRegisterEmployee(){
+        DTOEmployee employee = new DTOEmployee();
+        List<Integer> skills = List.of(2);
+        employee.setEmployeeName("hannibal");
+        employee.setEmployeeEmail("hannibal@ussing.com");
+        employee.setEmployeeUsername("huw02");
+        employee.setEmployeePassword("1234");
+        employee.setSkills(skills);
+        employee.setRoleId(3);
+        //vi tester vores nye bruger ikke har et employeeId
+        assertEquals(0, employee.getEmployeeId());
+        //vi registerer brugeren, og vi får retuneret samme bruger, men nu har vedkommende et employeeId
+        DTOEmployee insertedEmployee = g1SRepository.adminRegisterEmployee(employee);
+        assertNotNull(insertedEmployee);
+        assertEquals(16, insertedEmployee.getEmployeeId());
+
+        assertEquals(16, g1SRepository.getAllEmployee().size());
+
+    }
+
+    @Test
+    void testdeleteEmployee(){
+        DTOEmployee employee = new DTOEmployee();
+        List<Integer> skills = List.of(2);
+        employee.setEmployeeName("hannibal");
+        employee.setEmployeeEmail("hannibal@ussing.com");
+        employee.setEmployeeUsername("huw02");
+        employee.setEmployeePassword("1234");
+        employee.setSkills(skills);
+        employee.setRoleId(3);
+
+        g1SRepository.adminRegisterEmployee(employee); //registerer en bruger
+        assertNotNull(g1SRepository.getEmployeeById(16)); //ser at vi kan finde den her bruger
+        g1SRepository.deleteEmployee(16); //Sletter den givne bruger
+        assertNull(g1SRepository.getEmployeeById(16)); //ser at brugeren ikke længere er i vores system
+    }
+
+    @Test
+    void testgetEmployeeById(){
+        assertNotNull(g1SRepository.getEmployeeById(1));
+        assertEquals("Anders Jensen", g1SRepository.getEmployeeById(1).getEmployeeName());
+    }
+
+    @Test
+    void testgetAllSkills(){
+        List<Skill>skillList = g1SRepository.getAllSkills();
+        assertNotNull(skillList);
+    }
+
+    @Test
+    void testcreateSkill(){
+        Skill skill = new Skill();
+        skill.setSkillName("nySkill");
+        g1SRepository.createSkill(skill);
+        List<Skill>allSkills = g1SRepository.getAllSkills();
+        assertTrue(allSkills.contains(skill));
+    }
+
+    @Test
+    void testdeleteSkill(){
+        //vi laver en skill og giver den kun et navn, ikke et skillId
+        Skill skill = new Skill();
+        skill.setSkillName("nySkill");
+        //vi tilføjer den givne skill til vores database, her er det så vores h2 in-memory database
+        Skill createdSkill = g1SRepository.createSkill(skill);
+        //tjekker at det skill vi får retuneret ikke er null, nu har vores skill også en id på sig
+        assertNotNull(createdSkill);
+        //vi tjekker at den findes i databasen ved at kalde metoden getAllSkills
+        List<Skill>allSkills = g1SRepository.getAllSkills();
+        assertTrue(allSkills.contains(skill));
+        //vi sletter den fra datasbasen og kalder metoden getAllSkills igen
+        g1SRepository.deleteSkill(createdSkill.getSkillId());
+        List<Skill>allSkillsSecond = g1SRepository.getAllSkills();
+        //vi forventer nu at listen ikke indeholder vores skill, da vi har slettet den
+        assertFalse(allSkillsSecond.contains(createdSkill));
+    }
+
+    @Test
+    void testgetSubProjectIdWithSubTaskId(){
+        //følgende metode tester at vi ved hjælp af et subtask id, kan få et subproject id
+        //da insert dataen blev lavet, så lavede vi project, subproject, task og subproject for et projekt
+        //vi ved derfor at de alle har id'et 1, dette tester vi i følgende metode
+        assertEquals(1, g1SRepository.getSubProjectIdWithSubTaskId(1));
+        //metoden retunere true, hvilket betyder vores subtask med id'et 1, hører til et subproject med id'et 1
+    }
+
+
+    @Test
+    void testaddEmployeeToProject(){
+        //metoden tester hvorledes man kan tilføje en bruger til et projekt
+        //først laver vi en bruger
+
+        DTOEmployee employee = new DTOEmployee();
+        List<Integer> skills = List.of(2);
+        employee.setEmployeeName("hannibal");
+        employee.setEmployeeEmail("hannibal@ussing.com");
+        employee.setEmployeeUsername("huw02");
+        employee.setEmployeePassword("1234");
+        employee.setSkills(skills);
+        employee.setRoleId(3);
+
+        DTOEmployee dtoEmployee = g1SRepository.adminRegisterEmployee(employee); //registerer brugeren
+
+
+        //så tester vi at brugeren ikke er koblet på nogle projekter
+        assertTrue(g1SRepository.getProjectsForOneEmployee(dtoEmployee.getEmployeeId()).isEmpty());
+        //så tilføjer vi dem til et projekt
+        g1SRepository.addEmployeeToProject(1, dtoEmployee.getEmployeeId());
+        //tjekker at de nu er koblet på 1 projekt
+        assertEquals(1, g1SRepository.getProjectsForOneEmployee(employee.getEmployeeId()).size());
+    }
+
+    @Test
+    void testgetProjectsForOneEmployee(){
+        //følgende test vil teste, hvordan man ved hjælp af et employeeId, kan få alle de projekter vedkommende arbejder på
+        assertNotNull(g1SRepository.getProjectsForOneEmployee(1));
+        //vi ved tilfældigvis at en bruger med employeeId 1, arbejder på 3 projekter, lad os teste om det passer
+        assertEquals(3, g1SRepository.getProjectsForOneEmployee(1).size());
+    }
+
+
+
+
+
+    @Test
+    void testgetSortedSubtaskByEmployeeId(){
+        //vi tilføjer en person med EmployeeId 1 til subtask nr 10
+        g1SRepository.addAssigneeToSubtask(9, List.of(1)); //estimat er 20, prioritet er high
+        g1SRepository.addAssigneeToSubtask(2, List.of(1)); //estimat er 25, prioritet er medium
+        g1SRepository.addAssigneeToSubtask(7, List.of(1)); // esitmat er 15, prioritet er low
+
+        // vi tjekker om den kunne finde subtasks for en bruger med employeeId 1
+        assertNotNull(g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_estimate", 1));
+
+        //vi får den første subtask på listen
+        SubTask firstSubtask = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_estimate", 1).get(0);
+        //vi får den anden subtask på listen
+        SubTask secondSubtask = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_estimate", 1).get(1);
+        //vi får den tredje subtask på listen
+        SubTask thirdSubtask = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_estimate", 1).get(2);
+
+        //vi tester her at på listen over subtasks, så er vores anden subtasks estimat højere end den første
+        //dette skyldtes at listen bliver sortere fra mindst til højest estimat
+        assertTrue(firstSubtask.getSubtaskEstimate() < secondSubtask.getSubtaskEstimate());
+        assertTrue(secondSubtask.getSubtaskEstimate() < thirdSubtask.getSubtaskEstimate());
+
+
+        //testen går igennem som true, hvilket betyder at vores metode virker, der bliver sorteret efter estimat
+
+
+        //vi kan også teste om en anden sortering virker fx start-date/end-date og priority
+        //nu gør vi det ud fra priority, da den har en ekstra metode til at sortere
+        //vi får den første subtask på listen
+        SubTask firstSubtaskPriority = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_priority", 1).get(0);
+        //vi får den anden subtask på listen
+        SubTask secondSubtaskPriority = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_priority", 1).get(1);
+        //vi får den tredje subtask på listen
+        SubTask thirdSubtaskPriority = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_priority", 1).get(2);
+
+        assertEquals("High", firstSubtaskPriority.getSubtaskPriority());
+        assertEquals("Medium", secondSubtaskPriority.getSubtaskPriority());
+        assertEquals("Low", thirdSubtaskPriority.getSubtaskPriority());
+        //vi kan dermed konkludere ud fra vores test, at den sorterer subtaskene ud fra prioritet: high->medium->low
+
+    }
+
+
+    @Test
+    void testgetAllEmployeesWithSkillNotPartOfProject(){
+        //vi kan først se alle dem der ikke er på projektet, her sortere vi ikke ud fra en given skill
+        List<Employee> employeeList = g1SRepository.getAllEmployeesWithSkillNotPartOfProject(null, 1);
+        assertNotNull(employeeList);
+
+        //vi får nu en liste af alle dem der ikke er en del af projektet, men som har skill "java"
+        List<Employee> employeeListWithSkill = g1SRepository.getAllEmployeesWithSkillNotPartOfProject("Java", 1);
+        assertNotNull(employeeListWithSkill);
+
+        //vi kan også iterere igennem den her liste af medarbejdere for at tjekke om det er rigtigt, at de alle indeholder
+        //det Skill objekt kaldet "java".
+        Skill java = new Skill(3, "Java");
+        for(Employee employees : employeeListWithSkill){
+            assertTrue(employees.getSkills().contains(java));
+        }
+
+        //hvis metoden modtager en skill som ikke findes i databasen eller den ikke kan finde nogle med en given skill
+        //så vil den ikke fejle, den vil bare retunere en tom liste
+        List<Employee> employeeListWithUnknowSkill = g1SRepository.getAllEmployeesWithSkillNotPartOfProject("denne skill findes ikke", 1);
+        assertTrue(employeeListWithUnknowSkill.isEmpty());
+
+    }
+
 
 }

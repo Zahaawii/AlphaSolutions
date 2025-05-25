@@ -336,7 +336,7 @@ public class G1SController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addEmployee";
         }
-        employee.setEmployeePassword(g1SService.encryptTest(employee.getEmployeePassword()));
+        employee.setEmployeePassword(g1SService.encryptPassword(employee.getEmployeePassword()));
         g1SService.adminRegisterEmployee(employee);
         return "redirect:/adminpanel";
     }
@@ -540,7 +540,7 @@ public class G1SController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/update/" + newEmployee.getEmployeeId(); //hvis det ikke er frit, bliver man smidt tilbage til update siden
         }
-        newEmployee.setEmployeePassword(g1SService.encryptTest(newEmployee.getEmployeePassword()));
+        newEmployee.setEmployeePassword(g1SService.encryptPassword(newEmployee.getEmployeePassword()));
         g1SService.updateEmployee(newEmployee);
         return "redirect:/adminpanel";
     }
@@ -687,7 +687,7 @@ public class G1SController {
         if(!g1SService.isUsernameFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID()) || !g1SService.isUsernameAwaitingUserFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID())) {
             return "redirect:/create/user";
         }
-        employee.setAwaitingEmployee_password(g1SService.encryptTest(employee.getAwaitingEmployee_password()));
+        employee.setAwaitingEmployee_password(g1SService.encryptPassword(employee.getAwaitingEmployee_password()));
         g1SService.createUser(employee);
         g1SService.sendEmail(employee.getAwaitingEmployee_name());
         return "redirect:/login";

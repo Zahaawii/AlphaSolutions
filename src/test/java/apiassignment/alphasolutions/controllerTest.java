@@ -223,7 +223,7 @@ public class controllerTest {
     void checkLoginSuccessfully() throws Exception {
 
         when(g1SService.findByUsername(employee.getEmployeeUsername())).thenReturn(employee);
-        when(g1SService.decryptTest(employee.getEmployeePassword(), employee.getEmployeePassword())).thenReturn(true);
+        when(g1SService.verifyPassword(employee.getEmployeePassword(), employee.getEmployeePassword())).thenReturn(true);
         mockMvc.perform((post("/login"))
                         .param("checkUsername",employee.getEmployeeUsername())
                         .param("checkUserpassword",employee.getEmployeePassword()))
