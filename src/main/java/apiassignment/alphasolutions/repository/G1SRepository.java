@@ -28,7 +28,7 @@ import java.sql.Statement;
 
 @Repository
 public class G1SRepository {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public G1SRepository(JdbcTemplate jdbcTemplate) {
 
@@ -50,6 +50,7 @@ public class G1SRepository {
         try {
             String sql = "SELECT * FROM project WHERE projectID = ?";
             Project project = jdbcTemplate.queryForObject(sql, new ProjectRowmapper(), projectId);
+            assert project != null;
             project.setSubtasks(getAllSubtasksByProjectId(projectId));
             return project;
         } catch (EmptyResultDataAccessException e) {
@@ -587,8 +588,7 @@ public class G1SRepository {
     public Employee findByUsername(String username) {
         try {
             String sql = "SELECT * FROM employee WHERE employee_username = ?";
-            Employee emp = jdbcTemplate.queryForObject(sql, new EmployeeRowmapper(), username);
-            return emp;
+            return jdbcTemplate.queryForObject(sql, new EmployeeRowmapper(), username);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -765,17 +765,7 @@ public class G1SRepository {
     }
 
     public List<SubTask> getSortedSubtaskByEmployeeIdPerfected(String sortColumn, int employeeId) {
-        List<String> allowedSortColumns = List.of("subtask_estimate", "subtask_end_date", "subtask_end_date desc", "subtask_priority");
-        String order =""; //inizialiter en tom string
-        if (sortColumn != null && !sortColumn.isBlank()) { // checker om vores sortering input er en tom string
-            if (allowedSortColumns.contains(sortColumn)) { //checker om vores sortering input er en af dem i vores DB
-                order = "ORDER BY "; //starter vores string med mysql sorterings formen "order by"
-                order += sortColumn; //definere hvad vi vil sortere efter fx, slut dato
-            }
-        } //laver en query, hvor vi vil have alle subtask for en given employee og evt sortere dem ud for en parameter
-        String sql = "SELECT subtask.* FROM subtask " +
-                "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
-                "WHERE subtaskassignees.employeeId = ? " + order;
+        String sql = getString(sortColumn);
         List<SubTask> subTaskList = jdbcTemplate.query(sql, new SubTaskRowMapper(), employeeId);
         //vi får forhåbenligt en liste med subtask tilbage, hvis den er tom, så returnere vi null
         if(subTaskList.isEmpty()){
@@ -789,6 +779,20 @@ public class G1SRepository {
             return sortSubtasksByPriority(subTaskList);
         }
         return subTaskList;
+    }
+
+    private static String getString(String sortColumn) {
+        List<String> allowedSortColumns = List.of("subtask_estimate", "subtask_end_date", "subtask_end_date desc", "subtask_priority");
+        String order =""; //inizialiter en tom string
+        if (sortColumn != null && !sortColumn.isBlank()) { // checker om vores sortering input er en tom string
+            if (allowedSortColumns.contains(sortColumn)) { //checker om vores sortering input er en af dem i vores DB
+                order = "ORDER BY "; //starter vores string med mysql sorterings formen "order by"
+                order += sortColumn; //definere hvad vi vil sortere efter fx, slut dato
+            }
+        } //laver en query, hvor vi vil have alle subtask for en given employee og evt sortere dem ud for en parameter
+        return "SELECT subtask.* FROM subtask " +
+                "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
+                "WHERE subtaskassignees.employeeId = ? " + order;
     }
 
     public int getSubProjectIdWithSubTaskId(int subtaskId){
@@ -837,10 +841,8 @@ public class G1SRepository {
     public boolean skillNotInDb(Skill skill){
         String sqlChecker = "SELECT * FROM skill WHERE skill_name = ?";
         List<Skill> checkIfSkillExists = jdbcTemplate.query(sqlChecker, new SkillRowmapper(), skill.getSkillName());
-        if(!checkIfSkillExists.isEmpty()){ //checker om den givne skill allerede er i DB
-            return false;
-        }
-        return true;
+        //checker om den givne skill allerede er i DB
+        return checkIfSkillExists.isEmpty();
     }
     public List<SubTask>sortSubtasksByPriority(List<SubTask>subTasks){
         List<SubTask> subTasksList = new ArrayList<>();

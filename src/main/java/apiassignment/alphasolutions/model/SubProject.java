@@ -40,7 +40,7 @@ public class SubProject {
     }
 
     public java.sql.Date getSubprojectStartDate() {
-        return (java.sql.Date) subprojectStartDate;
+        return subprojectStartDate;
     }
 
     public void subprojectEndDate(java.sql.Date subprojectEndDate) {
@@ -48,7 +48,7 @@ public class SubProject {
     }
 
     public java.sql.Date getSubprojectEndDate() {
-        return (java.sql.Date) subprojectEndDate;
+        return subprojectEndDate;
     }
 
     public void setSubprojectName(String subprojectName) {
@@ -105,9 +105,8 @@ public class SubProject {
                 subtaskscomplete++;
             }
         }
-        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
 
-        return percentcomplete;
+        return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
     }
 
     public int calculateTotalEstimate() {

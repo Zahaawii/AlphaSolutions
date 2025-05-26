@@ -124,9 +124,8 @@ public class Project {
                 subtaskscomplete++;
             }
         }
-        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
 
-        return percentcomplete;
+        return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
     }
 
     public int calculateTotalEstimate() {
