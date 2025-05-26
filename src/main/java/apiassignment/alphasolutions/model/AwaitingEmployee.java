@@ -14,14 +14,7 @@ public class AwaitingEmployee {
 
     }
 
-    public AwaitingEmployee(int awaitingEmployeeID, String awaitingEmployee_name, String awaitingEmployee_email, String awaitingEmployee_username, String awaitingEmployee_password) {
-        this.awaitingEmployeeID = awaitingEmployeeID;
-        this.awaitingEmployee_name = awaitingEmployee_name;
-        this.awaitingEmployee_email = awaitingEmployee_email;
-        this.awaitingEmployee_username = awaitingEmployee_username;
-        this.awaitingEmployee_password = awaitingEmployee_password;
-        awaitingEmployee_status = "Awaiting admin approval";
-    }
+
 
     public int getAwaitingEmployeeID() {
         return awaitingEmployeeID;

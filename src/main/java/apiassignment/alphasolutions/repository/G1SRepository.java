@@ -102,11 +102,6 @@ public class G1SRepository {
     }
 
 
-    public void clearProjectAssignees(int projectId) {
-        String sql = "DELETE FROM projectassignees WHERE projectID = ?";
-        jdbcTemplate.update(sql, projectId);
-    }
-
     public List<Employee> getProjectAssignees(int projectId) {
         String sql = """
         SELECT *
@@ -219,28 +214,6 @@ public class G1SRepository {
 
         String sql = "SELECT * FROM employee";
         return jdbcTemplate.query(sql, new EmployeeRowmapper());
-    }
-
-
-    public List<Skill> getSkillsByEmployeeId(int employeeId) {
-        String sql = "SELECT skill.skillID, skill.skill_name\n" +
-                "FROM skill\n" +
-                "JOIN skillRelation ON skill.skillID = skillRelation.skillID\n" +
-                "WHERE skillRelation.employeeID = ?";
-        return jdbcTemplate.query(sql, new SkillRowmapper(), employeeId);
-    }
-
-    public List<Employee> getEmployeesByIds(List<Integer> ids) {
-        List<Employee> all = getAllEmployee();
-        List<Employee> selected = new ArrayList<>();
-
-        for (Employee emp : all) {
-            if (ids.contains(emp.getEmployeeId())) {
-                selected.add(emp);
-            }
-        }
-
-        return selected;
     }
 
     //henter alle employees som ikke er projektleder og admin, så dem der har role 1
@@ -472,25 +445,7 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new SkillRowmapper());
     }
 
-    public List<Employee>getEmployeeBySkills(String skills){
-        String sql = "SELECT employee.* from employee " +
-                "join skillrelation on employee.employeeID = skillrelation.employeeID " +
-                "join skill on skill.skillID = skillrelation.skillID " +
-                "where skill_name = ?";
-        List<Employee> listOfEmployees = jdbcTemplate.query(sql, new EmployeeRowmapper(), skills);
-        if(listOfEmployees.isEmpty()){
-            return null;
-        }
-        return listOfEmployees;
-    }
-    public List<Employee>getEmployeeNotPartOfProject(int projectId){
-        String sql ="SELECT * FROM employee " +
-                "WHERE employeeID NOT IN (" +
-                "    SELECT employeeID " +
-                "    FROM projectassignees " +
-                "    WHERE projectID = ? )";
-        return jdbcTemplate.query(sql, new EmployeeRowmapper(), projectId);
-    }
+
     public List<Employee>getProjectOwner(int employeeId){
         String sql =
         "SELECT employee.* from employee " +
@@ -643,11 +598,6 @@ public class G1SRepository {
         }
     }
 
-    public int getSubprojectIdFromTaskId(int taskId) {
-        String sql = "SELECT subProjectId FROM task WHERE taskID = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, taskId);
-    }
-
     public int getProjectIdFromSubprojectId(int subprojectId) {
         String sql = "SELECT projectID FROM subproject WHERE subprojectID = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
@@ -729,40 +679,6 @@ public class G1SRepository {
         return projects;
     }
 
-    public List<SubTask> getSortedSubtaskByEmployeeId(String sortColumn, int employeeId) {
-        List<String> allowedSortColumns = List.of("subtask_estimate", "subtask_end_date", "subtask_end_date desc", "subtask_priority");
-        if(sortColumn == null || sortColumn.isBlank()){
-            String sqlNotSorted = "SELECT subtask.* FROM subtask " +
-                    "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
-                    "WHERE subtaskassignees.employeeId = ? ";
-            List<SubTask> subTaskListNotSorted = jdbcTemplate.query(sqlNotSorted, new SubTaskRowMapper(), employeeId);
-            if(subTaskListNotSorted.isEmpty()){
-                return null;
-            }//sætter subprojectId på subtask objektet
-            for(SubTask i: subTaskListNotSorted){
-                i.setSubProjectId(getSubProjectIdWithSubTaskId(i.getSubtaskID()));
-            }
-            return subTaskListNotSorted;
-        }
-        if (!allowedSortColumns.contains(sortColumn)) {
-           return null;
-        }
-
-        String sql = "SELECT subtask.* FROM subtask " +
-                "JOIN subtaskassignees ON subtask.subtaskId = subtaskassignees.subtaskID " +
-                "WHERE subtaskassignees.employeeId = ? " +
-                "ORDER BY " + sortColumn;
-
-        List<SubTask> subTaskList = jdbcTemplate.query(sql, new SubTaskRowMapper(), employeeId);
-
-        if(subTaskList.isEmpty()){
-            return null;
-        }//sætter subprojectId på subtask objektet
-        for(SubTask b: subTaskList){
-            b.setSubProjectId(getSubProjectIdWithSubTaskId(b.getSubtaskID()));
-        }
-        return subTaskList;
-    }
 
     public List<SubTask> getSortedSubtaskByEmployeeIdPerfected(String sortColumn, int employeeId) {
         String sql = getString(sortColumn);

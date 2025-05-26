@@ -26,10 +26,6 @@ public class G1SService {
         return session.getAttribute("employee") != null;
     }
 
-    public List<Project> getAllProjects(int employeeID) {
-        return g1SRepository.getAllProjects(employeeID);
-    }
-
     public Project getProjectById(int projectId) {
         return g1SRepository.getProjectById(projectId);
     }
@@ -62,25 +58,8 @@ public class G1SService {
         return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
     }
 
-    public int getSubprojectCompletion(int subprojectID) {
-        List<SubTask> subtasks = g1SRepository.getAllSubtasksBySubprojectID(subprojectID);
 
-        int subtaskcount = subtasks.size();
-        int subtaskscomplete = 0;
 
-        for (SubTask subtask : subtasks) {
-            if (subtask.getSubtaskStatus().equalsIgnoreCase("Completed")) {
-                subtaskscomplete++;
-            }
-        }
-
-        return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
-
-    }
-
-    public List<Employee> getAllEmployees() {
-        return g1SRepository.getAllEmployee();
-    }
 
     public List<Employee> getProjectAssignees(int projectId) {
         return g1SRepository.getProjectAssignees(projectId);
@@ -96,21 +75,6 @@ public class G1SService {
 
     public void removeAssigneeFromProject(int projectId, int employeeId) {
         g1SRepository.removeAssigneeFromProject(projectId,employeeId);
-    }
-
-    public List<Employee> getAllEmployeeWithSkills() {
-        List<Employee> employees = g1SRepository.getAllEmployee();
-
-        for(Employee emp : employees) {
-            List<Skill> skills = g1SRepository.getSkillsByEmployeeId(emp.getEmployeeId());
-            emp.setSkills(skills);
-        }
-
-        return employees;
-    }
-
-    public List<Employee> getEmployeesByIds(List<Integer> ids) {
-        return g1SRepository.getEmployeesByIds(ids);
     }
 
 
@@ -129,9 +93,6 @@ public class G1SService {
         return g1SRepository.login(username, password);
     }
 
-    public List<Employee> getAllEmployee() {
-        return g1SRepository.getAllEmployee();
-    }
     public List<Employee>getAllEmployeePlusSkills(){
         List<Employee>employeeList = g1SRepository.getAllEmployee();
         if(employeeList == null || employeeList.isEmpty()){
@@ -144,9 +105,6 @@ public class G1SService {
         return employeeList;
     }
 
-    public List<Employee> getAllCommonWorkers() {
-        return g1SRepository.getAllCommonWorkers();
-    }
     public List<Employee> getAllCommonWorkersPlusSkills(){
         List<Employee>employeeList = g1SRepository.getAllCommonWorkers();
         if(employeeList == null || employeeList.isEmpty()){
@@ -228,10 +186,6 @@ public class G1SService {
         return g1SRepository.getTasksBySubprojectId(id);
     }
 
-    public List<SubTask> getSubtasksByTaskId(int id) {
-        return g1SRepository.getSubtasksByTaskId(id);
-    }
-
     public SubProject getSubProjectById(int id) {
         return g1SRepository.getSubProjectById(id);
     }
@@ -245,21 +199,6 @@ public class G1SService {
     }
 
 
-    public List<Employee> getEmployeeBySkills(String skills) {
-        return g1SRepository.getEmployeeBySkills(skills);
-    }
-
-    public List<Employee> getEmployeeNotPartOfProject(int projectId) {
-        List<Employee> employeeList = g1SRepository.getEmployeeNotPartOfProject(projectId);
-        if(employeeList == null || employeeList.isEmpty()){
-            return null;
-        } // først henter vi en liste over dem som ikke er i projektet
-        for(Employee i: employeeList){ //Så finder vi alle skills hver employee har
-            List<Skill>skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
-            i.setSkills(skillList); //Så tilføjer vi den givne employees skills til dem
-        }
-        return employeeList;
-    }
 
     public List<Skill>getSkillsForEmployee(int employeeId){
         return g1SRepository.getSkillsForEmployee(employeeId);
@@ -269,39 +208,7 @@ public class G1SService {
         return g1SRepository.getAllEmployeesWithSkillNotPartOfProject(skill, projectId);
     }
 
-        public List<Employee> getEmployeeBySkillNotPartOfProject(String skill, int projectId) {
-        List<Employee> notPartOfProject = g1SRepository.getEmployeeNotPartOfProject(projectId);
-        Employee ownerOfProject = g1SRepository.getProjectOwner(projectId).getFirst();
-        if(notPartOfProject == null || notPartOfProject.isEmpty()){
-            return null;
-        }
-        List<Employee> bySkill = g1SRepository.getEmployeeBySkills(skill);
-        if(bySkill == null || bySkill.isEmpty()){
-            return null;
-        }
-        List<Employee> finishList = new ArrayList<>();
-        for (Employee i : bySkill) {
-            for (Employee b : notPartOfProject) {
-                if (i.getEmployeeId() == b.getEmployeeId()) {
-                    if (!finishList.contains(i)) {
-                        if(i.getEmployeeId() != ownerOfProject.getEmployeeId()) {
-                            //ovenstående if statement tjekker at ejeren af projektet ikke kommer op på listen
-                            List<Skill> skillList = g1SRepository.getSkillsForEmployee(i.getEmployeeId());
-                            i.setSkills(skillList); //finder alle de skills der hører til en person
-                            finishList.add(i);
-                        }
-                    } //finder alle dem med en given skill
-                } //finder alle dem der ikke er en del af projeketet
-            } //sammenligner id på de to lister
-        } //hvis den tredje liste(finishList) ikke har objektet i sig,
-        //så finder den personens skills, sætter dem på og tilføjer dem til listen
-        //man får dermed en liste af folk, som har en given skill og som ikke allerede er tilføjet til projektet
-            if(finishList.isEmpty()){
-                return null;
-            }
 
-        return finishList;
-    }
 
     public void addEmployeeToProject(int projectId, int employeeId) {
         g1SRepository.addEmployeeToProject(projectId, employeeId);
@@ -319,23 +226,6 @@ public class G1SService {
         g1SRepository.updateSubproject(subProject);
     }
 
-    public Integer getSumOfTaskAndSubTask(int subprojectID) {
-        List<Task> tasks = getTasksBySubprojectId(subprojectID);
-        Integer sum = 0;
-
-        for(Task task : tasks) {
-            if(task.getTaskEstimate() != null) {
-                sum += task.getTaskEstimate();
-            }
-
-            for(SubTask subTask : task.getSubtasks()) {
-                if(subTask.getSubtaskEstimate() != null) {
-                    sum += subTask.getSubtaskEstimate();
-                }
-            }
-        }
-        return sum;
-    }
 
     public Integer getTotalEstimateOfProject(int projectID) {
         List<SubProject> subProjects = g1SRepository.getSubprojectByProjectId(projectID);
@@ -381,24 +271,13 @@ public class G1SService {
 
     }
 
-    public List<Project> getAllProjectsWithSum(int employeeID) {
-    List<Project> projects = g1SRepository.getAllProjects(employeeID);
-    for(Project project : projects) {
-        Integer sum = getTotalEstimateOfProject(project.getProjectId());
-        project.setSum(sum);
-        project.setSubtasks(g1SRepository.getAllSubtasksByProjectId(project.getProjectId()));
-    }
-     return projects;
-    }
+
 
 
     public void addAssigneeToTask(int taskId, List<Integer> employeeIds) {
         g1SRepository.addAssigneeToTask(taskId, employeeIds);
     }
 
-    public int getSubprojectIdFromTaskId(int taskId) {
-        return g1SRepository.getSubprojectIdFromTaskId(taskId);
-    }
 
     public int getProjectIdFromSubprojectId(int subprojectId) {
         return g1SRepository.getProjectIdFromSubprojectId(subprojectId);

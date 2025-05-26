@@ -20,19 +20,6 @@ public class SubTask {
     public SubTask() {
     }
 
-    public SubTask(int subtaskID, String subtaskName, int taskID, int subtaskEstimate, java.sql.Date subtaskStartDate, java.sql.Date subtaskEndDate, String subtaskPriority, String subtaskDescription, String subtaskStatus, List<Employee> assignees, int SubtaskHoursSpent) {
-        this.subtaskID = subtaskID;
-        this.subtaskName = subtaskName;
-        this.taskID = taskID;
-        this.subtaskEstimate = subtaskEstimate;
-        this.subtaskStartDate = subtaskStartDate;
-        this.subtaskEndDate = subtaskEndDate;
-        this.subtaskPriority = subtaskPriority;
-        this.subtaskDescription = subtaskDescription;
-        this.subtaskStatus = subtaskStatus;
-        this.assignees = assignees;
-        this.subtaskHoursSpent = SubtaskHoursSpent;
-    }
 
     public int getSubtaskID() {
         return subtaskID;

@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(G1SController.class)
 public class controllerTest {
 
-    //Adding test objects to testing page, so we can test our controllers with sesison
+    //Adding test objects to testing page, so we can test our controllers with session
     Employee employee;
     DTOEmployee dtoEmployee;
     MockHttpSession session;
@@ -63,13 +63,6 @@ public class controllerTest {
 
     }
 
-//    //Testing to see if you land on our homepage
-//    @Test
-//    void homepage() throws Exception {
-//        mockMvc.perform(get(""))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("homepage"));
-//    }
 
     //Testing if you get redirected if you are not logged in
     @Test
@@ -150,26 +143,6 @@ public class controllerTest {
                 .andExpect(redirectedUrl("/projects"));
     }
 
-//    //Method decapriated
-//    @Test
-//    void viewSubprojects () throws Exception {
-//
-//        List<SubProject> testList = List.of(subProject);
-//        when(g1SService.isLoggedIn(session)).thenReturn(true);
-//        when(g1SService.getSubProjectByProjectId(1)).thenReturn(testList);
-//        mockMvc.perform(get("/project/1").session(session))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("myprojectSubproject"));
-//
-//    }
-
-//    @Test
-//    void selectCollaborators() throws Exception {
-//        when(g1SService.isLoggedIn(session)).thenReturn(true);
-//        mockMvc.perform(get("/select-collaborators").session(session))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("selectCollaborators"));
-//    }
 
     //Testing if you can see all subprojects that has been mocked
     @Test
@@ -298,16 +271,7 @@ public class controllerTest {
 
     }
 
-    //mangler nedenstående controller test
 
-    @Test
-    void editSubprojectView() throws Exception {}
-
-    @Test
-    void subProjectView() throws Exception {}
-
-    @Test
-    void testUrl() throws Exception {}
 
     @Test
     void adminPanel() throws Exception {
@@ -372,17 +336,6 @@ public class controllerTest {
 
     }
 
-    @Test
-    void deleteSubTask() throws Exception {}
-
-    @Test
-    void deleteTask() throws Exception {}
-
-    @Test
-    void editTask() throws Exception {}
-
-    @Test
-    void editSubTask() throws Exception {}
 
     //tester at man bliver redirected til "/home", hvis man ikke har rollen 2 eller 3
     @Test
@@ -495,9 +448,6 @@ public class controllerTest {
                 .andExpect(view().name("mySubTasks"));
 
     }
-
-
-
 
 
 
