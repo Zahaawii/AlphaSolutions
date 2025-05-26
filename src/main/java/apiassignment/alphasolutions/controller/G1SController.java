@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriUtils;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -683,7 +684,7 @@ public class G1SController {
     }
 
     @PostMapping("/create/user")
-    public String createUserPost(@ModelAttribute AwaitingEmployee employee) {
+    public String createUserPost(@ModelAttribute AwaitingEmployee employee) throws IOException {
         if(!g1SService.isUsernameFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID()) || !g1SService.isUsernameAwaitingUserFree(employee.getAwaitingEmployee_name(), employee.getAwaitingEmployeeID())) {
             return "redirect:/create/user";
         }
