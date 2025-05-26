@@ -196,13 +196,6 @@ public class alphaSolutionsIntegrationsTest {
 
     }
 
-    //afventer
-    @Test
-    void testDeleSubproject() throws SQLException {
-
-
-    }
-
     @Test
     void testUpdateSubProject() {
         SubProject subProject = new SubProject(0, "Test name", Date.valueOf("2025-05-20"), Date.valueOf("2025-05-25"), 1);
@@ -225,99 +218,6 @@ public class alphaSolutionsIntegrationsTest {
         assertEquals(Date.valueOf("2025-06-01"), updatedSubProject.getSubprojectStartDate());
         assertEquals(Date.valueOf("2025-06-15"), updatedSubProject.getSubprojectEndDate());
     }
-
-    /*@Test
-    void testGetSumOfTaskAndSubTask() throws SQLException {
-        SubProject testSub = new SubProject
-                        (99, "test",
-                        Date.valueOf("2025-05-12"),
-                        Date.valueOf("2025-05-12"),
-                        1);
-        g1SRepository.addSubProject(testSub);
-        int subprojectId = testSub.getSubprojectID();
-
-        Task taskWithEstimate = new Task(1, "test task", 99, 10,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-                );
-        g1SRepository.createTask(taskWithEstimate);
-
-        Task taskWithOutEstimate = new Task(1, "test task", 99, 0,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createTask(taskWithOutEstimate);
-
-        SubTask subTaskWithEstimate = new SubTask(1, "test task", 1, 10,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createSubTask(subTaskWithEstimate);
-
-        SubTask subTaskWithoutEstimate = new SubTask(1, "test task", 1, 0,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createSubTask(subTaskWithoutEstimate);
-
-
-
-       Integer result = g1SService.getSumOfTaskAndSubTask(subprojectId);
-        assertNotNull(result);
-        assertEquals(10, result);
-    }*/
-
-    /*@Test
-    void testGetTotalSumOfProject() throws SQLException {
-        Project testProject = new Project(99, "test", 1, Date.valueOf("2025-05-12"), Date.valueOf("2025-05-12"),"testDB", "test");
-        g1SRepository.createProject(testProject);
-
-        SubProject testSub = new SubProject
-                (99, "test",
-                        Date.valueOf("2025-05-12"),
-                        Date.valueOf("2025-05-12"),
-                        testProject.getProjectId());
-        g1SRepository.addSubProject(testSub);
-        int subprojectId = testSub.getSubprojectID();
-
-        Task taskWithEstimate = new Task(1, "test task", subprojectId, 10,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createTask(taskWithEstimate);
-
-        Task taskWithOutEstimate = new Task(2, "test task", subprojectId, 0,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createTask(taskWithOutEstimate);
-
-        SubTask subTaskWithEstimate = new SubTask(1, "test task", 1, 10,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createSubTask(subTaskWithEstimate);
-
-        SubTask subTaskWithoutEstimate = new SubTask(2, "test task", 2, 0,
-                Date.valueOf("2025-05-12"),
-                Date.valueOf("2025-05-12"),
-                "high", "test", "in progress", null
-        );
-        g1SRepository.createSubTask(subTaskWithoutEstimate);
-
-
-        Integer result = g1SService.getTotalSumOfProject(testSub.getProjectID());
-        assertNotNull(result);
-        assertEquals(10, result);
-    }*/
-
 
 
     @Test
@@ -347,54 +247,7 @@ public class alphaSolutionsIntegrationsTest {
 
     }
 
-//    @Test
-//    void testDeleteTask() {
-//        //opret task og tjek om den er oprettet i DB
-//        Task newTask = new Task();
-//
-//        newTask.setTaskName("Test Task");
-//        newTask.setSubprojectId(1);
-//        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
-//        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
-//        newTask.setTaskPriority("High");
-//        newTask.setTaskDescription("Test description");
-//
-//        g1SRepository.createTask(newTask);
-//
-//        assertTrue(newTask.getTaskId() > 0);
-//
-//
-//        //tjek om task eksisterer i DB
-//        assertNotNull(g1SRepository.getTaskById(newTask.getTaskId()));
-//
-//        //fjern task fra DB
-//        g1SRepository.deleteTask(newTask.getTaskId());
-//
-//        //tjek om den er fjernet
-//        assertNull(g1SRepository.getTaskById(newTask.getTaskId()));
-//
-//    }
 
-    /*@Test
-    void testUpdateTask() {
-        //create task
-        Task newTask = new Task();
-
-        newTask.setTaskName("Test Task");
-        newTask.setSubprojectId(1);
-        newTask.setTaskEstimate(40);
-        newTask.setTaskStartDate(Date.valueOf("2025-05-12"));
-        newTask.setTaskEndDate(Date.valueOf("2025-05-14"));
-        newTask.setTaskPriority("High");
-        newTask.setTaskDescription("Test description");
-        newTask.setTaskStatus("In Progress");
-
-        g1SRepository.createTask(newTask);
-
-        assertTrue(newTask.getTaskId() > 0);
-
-        g1SRepository.updateTask();
-    }*/
 
     @Test
     void testGetTasks() {
