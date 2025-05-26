@@ -445,17 +445,6 @@ public class G1SRepository {
         return jdbcTemplate.query(sql, new SkillRowmapper());
     }
 
-    public List<Employee>getEmployeeBySkills(String skills){
-        String sql = "SELECT employee.* from employee " +
-                "join skillrelation on employee.employeeID = skillrelation.employeeID " +
-                "join skill on skill.skillID = skillrelation.skillID " +
-                "where skill_name = ?";
-        List<Employee> listOfEmployees = jdbcTemplate.query(sql, new EmployeeRowmapper(), skills);
-        if(listOfEmployees.isEmpty()){
-            return null;
-        }
-        return listOfEmployees;
-    }
 
     public List<Employee>getProjectOwner(int employeeId){
         String sql =
