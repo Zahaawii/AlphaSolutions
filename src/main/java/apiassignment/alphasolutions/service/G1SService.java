@@ -58,9 +58,8 @@ public class G1SService {
                 subtaskscomplete++;
             }
         }
-        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
 
-        return percentcomplete;
+        return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
     }
 
     public int getSubprojectCompletion(int subprojectID) {
@@ -75,9 +74,7 @@ public class G1SService {
             }
         }
 
-        int percentcomplete = Math.round(((float) subtaskscomplete / subtaskcount) * 100);
-
-        return percentcomplete;
+        return Math.round(((float) subtaskscomplete / subtaskcount) * 100);
 
     }
 
@@ -457,15 +454,12 @@ public class G1SService {
         g1SRepository.deleteAwaitingEmployeeWithUsername(username);
     }
 
-    public void sendEmail(String employee) {
+    public void sendEmail(String employee) throws IOException{
         var emailService = new G1SEmailService();
         var body = "Hej, der er en bruger ved navn: " + employee + " som har anmodet om at blive oprettet i systemet." +
                 " Du kan se brugeren herinde: www.localhost:8080/awaitingusers";
-        try {
-            emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
     }
 
     public boolean isUsernameAwaitingUserFree(String username, int id) {

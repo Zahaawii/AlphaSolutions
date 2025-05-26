@@ -4,10 +4,6 @@ package apiassignment.alphasolutions.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import apiassignment.alphasolutions.model.Skill;
-
-
 public class DTOEmployee {
     private int employeeId;
     private String employeeName;

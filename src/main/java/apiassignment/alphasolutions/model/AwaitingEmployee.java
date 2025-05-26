@@ -1,7 +1,5 @@
 package apiassignment.alphasolutions.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AwaitingEmployee {
 
@@ -16,7 +14,7 @@ public class AwaitingEmployee {
 
     }
 
-    public AwaitingEmployee(int awaitingEmployeeID, String awaitingEmployee_name, String awaitingEmployee_email, String awaitingEmployee_username, String awaitingEmployee_password, String awaitingEmployee_status) {
+    public AwaitingEmployee(int awaitingEmployeeID, String awaitingEmployee_name, String awaitingEmployee_email, String awaitingEmployee_username, String awaitingEmployee_password) {
         this.awaitingEmployeeID = awaitingEmployeeID;
         this.awaitingEmployee_name = awaitingEmployee_name;
         this.awaitingEmployee_email = awaitingEmployee_email;
