@@ -58,10 +58,6 @@ public class G1SController {
         Employee employee = (Employee) session.getAttribute("employee");
         List <Project> getAllProjects = g1SService.getProjectsWithAssignees(employee.getEmployeeId());
 
-        if (employee == null) {
-            return "redirect:/login";
-        }
-
         model.addAttribute("projects", getAllProjects);
 
         return "myProjects";
