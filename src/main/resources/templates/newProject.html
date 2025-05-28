@@ -19,7 +19,7 @@
 
         <div class="gradientBorder">
             <div class="inputDescriptionBox">
-                <textarea placeholder="Project Description" th:field="*{projectDescription}" class="inputDescriptionText" rows="4" maxlength="256"></textarea>
+                <textarea placeholder="Project Description" th:field="*{projectDescription}" class="inputDescriptionText" rows="4" maxlength="256" required></textarea>
             </div>
         </div>
 
@@ -27,11 +27,11 @@
             <div class="date-container">
                 <div class="date-group">
                     <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" th:field="*{projectStartDate}">
+                    <input type="date" id="startDate" th:field="*{projectStartDate}" required>
                 </div>
                 <div class="date-group">
                     <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" th:field="*{projectEndDate}">
+                    <input type="date" id="endDate" th:field="*{projectEndDate}" required>
                 </div>
             </div>
         </div>

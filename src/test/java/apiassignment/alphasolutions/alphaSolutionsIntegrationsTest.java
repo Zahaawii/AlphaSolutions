@@ -513,7 +513,8 @@ public class alphaSolutionsIntegrationsTest {
 
     @Test
     void testgetSortedSubtaskByEmployeeId(){
-        //vi tilføjer en person med EmployeeId 1 til subtask nr 10
+        //Vi har en bruger med EmployeeId 1, han er ikke koblet på nogle subtask
+        //vi tilføjer så personen med EmployeeId 1 til subtask nr 9, 2 og 7
         g1SRepository.addAssigneeToSubtask(9, List.of(1)); //estimat er 20, prioritet er high
         g1SRepository.addAssigneeToSubtask(2, List.of(1)); //estimat er 25, prioritet er medium
         g1SRepository.addAssigneeToSubtask(7, List.of(1)); // esitmat er 15, prioritet er low
@@ -537,7 +538,7 @@ public class alphaSolutionsIntegrationsTest {
         //testen går igennem som true, hvilket betyder at vores metode virker, der bliver sorteret efter estimat
 
 
-        //vi kan også teste om en anden sortering virker fx start-date/end-date og priority
+        //vi kan også teste om en anden sortering virker fx priority
         //nu gør vi det ud fra priority, da den har en ekstra metode til at sortere
         //vi får den første subtask på listen
         SubTask firstSubtaskPriority = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_priority", 1).get(0);
@@ -551,6 +552,29 @@ public class alphaSolutionsIntegrationsTest {
         assertEquals("Low", thirdSubtaskPriority.getSubtaskPriority());
         //vi kan dermed konkludere ud fra vores test, at den sorterer subtaskene ud fra prioritet: high->medium->low
 
+        //Lad os til sidst, teste sortering ud fra slut dato på projekt, først stigende, herefter faldende
+        SubTask firstSubtaskAscDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date", 1).get(0);
+
+        SubTask secondSubtaskAscDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date", 1).get(1);
+
+        SubTask thirdSubtaskAscDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date", 1).get(2);
+
+        //"compareTo" metoden retunerer -1, hvis den første dato er mindre end den anden dato
+        assertEquals(-1, firstSubtaskAscDate.getSubtaskEndDate().compareTo(secondSubtaskAscDate.getSubtaskEndDate()));
+        assertEquals(-1, secondSubtaskAscDate.getSubtaskEndDate().compareTo(thirdSubtaskAscDate.getSubtaskEndDate()));
+        //vores sortering ud fra "end date" virker, lad os prøve at se på den i desc order
+
+        SubTask firstSubtaskDescDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date desc", 1).get(0);
+
+        SubTask secondSubtaskDescDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date desc", 1).get(1);
+
+        SubTask thirdSubtaskDescDate = g1SRepository.getSortedSubtaskByEmployeeIdPerfected("subtask_end_date desc", 1).get(2);
+
+        //"compareTo" metoden retunerer 1, hvis den første dato er større end den anden dato
+        assertEquals(1, firstSubtaskDescDate.getSubtaskEndDate().compareTo(secondSubtaskDescDate.getSubtaskEndDate()));
+        assertEquals(1, secondSubtaskDescDate.getSubtaskEndDate().compareTo(thirdSubtaskDescDate.getSubtaskEndDate()));
+
+        //vi har nu testet, at metoden kan finde en brugers subtask og den kan sortere dem ud fra fire faktorer
     }
 
 
