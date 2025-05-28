@@ -335,7 +335,7 @@ public class G1SService {
     public void sendEmail(String employee) throws IOException{
         var emailService = new G1SEmailService();
         var body = "Hej, der er en bruger ved navn: " + employee + " som har anmodet om at blive oprettet i systemet." +
-                " Du kan se brugeren herinde: www.localhost:8080/awaitingusers";
+                " Du kan se brugeren herinde: https://g1ssolutions.azurewebsites.net/awaitingusers" ;
 
         emailService.sendEmail("Zahaawii@gmail.com", "Ny bruger anmodet om adgang", body);
     }
